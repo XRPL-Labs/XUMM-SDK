@@ -18,4 +18,4 @@
 
 ##### Run development code:
 
-`npm run dev` (Compiles and runs `/samples/Sample.ts`)
+`npm run dev` (Compiles and runs `/samples/....ts`)
