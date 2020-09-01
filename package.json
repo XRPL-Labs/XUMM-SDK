@@ -9,30 +9,35 @@
     "clean": "rm -rf dist",
     "build": "tsc",
     "watch": "tsc -w",
-    "dev": "clear; npm run build; DEBUG=orderbook* nodemon dist/samples/Sample.js",
+    "dev": "clear; npm run build; DEBUG=xumm-sdk* nodemon dist/samples/dev.js",
     "test": "jest --ci --verbose",
     "lint": "tslint -p ./"
   },
   "files": [
-    "dist/**/*.js",
-    "dist/**/*.js.map",
-    "dist/**/*.d.ts"
+    "dist/src/**/*.js",
+    "dist/src/**/*.js.map",
+    "dist/src/**/*.d.ts"
   ],
   "directories": {
     "test": "test"
   },
   "dependencies": {
-    "@types/debug": "^4.1.5",
     "assert": "^2.0.0",
     "bignumber.js": "^9.0.0",
-    "debug": "^4.1.1"
+    "debug": "^4.1.1",
+    "isomorphic-ws": "^4.0.1",
+    "node-fetch": "^2.6.0",
+    "ws": "^7.3.1"
   },
   "devDependencies": {
-    "@types/jest": "^24.9.1",
+    "@types/debug": "^4.1.5",
+    "@types/node-fetch": "^2.5.7",
+    "@types/ws": "^7.2.6",
+    "@types/jest": "^26.0.12",
     "@types/node": "^12.12.47",
     "jest": "^24.8.0",
     "rippled-ws-client": "^1.6.1",
-    "ts-jest": "^26.1.0",
+    "ts-jest": "^26.3.0",
     "tslint": "^5.20.1",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.9.5"
