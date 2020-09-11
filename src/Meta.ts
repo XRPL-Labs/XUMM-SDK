@@ -60,6 +60,7 @@ export class Meta {
 
     this.apiKey = apiKey
     this.apiSecret = apiSecret
+
     return this
   }
 

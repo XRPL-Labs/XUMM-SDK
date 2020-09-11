@@ -8,6 +8,7 @@ const log = Debug('xumm-Meta')
 
 class XummSdk {
   private Meta: Meta
+
   public storage: Storage
   public payload: Payload
 
@@ -23,7 +24,7 @@ class XummSdk {
   }
 
   /**
-   * Proxy methods to Meta class
+   * Proxy methods to Meta class below
    */
 
   public async ping () {
