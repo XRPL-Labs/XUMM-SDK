@@ -1,4 +1,5 @@
 import Debug from 'debug'
+import * as dotenv from 'dotenv'
 import {Meta} from './Meta'
 import {Storage} from './Storage'
 import {Payload} from './Payload'
@@ -12,10 +13,19 @@ class XummSdk {
   public storage: Storage
   public payload: Payload
 
-  constructor (apiKey: string, apiSecret: string) {
+  constructor (apiKey?: string, apiSecret?: string) {
     log('Constructed')
 
-    this.Meta = new Meta(apiKey, apiSecret)
+    try {
+      dotenv.config()
+    } catch (e) {
+      // Couldn't load .env
+    }
+
+    this.Meta = new Meta(
+      apiKey || process.env.XUMM_APIKEY || '',
+      apiSecret || process.env.XUMM_APISECRET || ''
+    )
 
     this.storage = new Storage(this.Meta)
     this.payload = new Payload(this.Meta)
