@@ -2,9 +2,9 @@ name: XUMM SDK CI (node)
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ master ]
   pull_request:
-    branches: [ develop ]
+    branches: [ master ]
 
 jobs:
   tsci:
