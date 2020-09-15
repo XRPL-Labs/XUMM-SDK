@@ -126,13 +126,124 @@ console.log(storageGetAfterDelete)
 
 #### Payloads
 
-...
-TODO
+##### Intro
 
-#### Payload subscriptions (subscribe to live updates)
+Payloads are the primary reason for the XUMM API (thus this SDK) to exist. The [XUMM API Docs explain '**Payloads**'](https://xumm.readme.io/docs/introduction) like this:
 
-...
-TODO
+>  An XRPL transaction "template" can be posted to the XUMM API. Your transaction tample to sign (so: your "sign request") will be persisted at the XUMM API backend. We now call it a  a **Payload**. XUMM app user(s) can open the Payload (sign request) by scanning a QR code, opening deeplink or receiving push notification and resolve (reject or sign) on their own device.
+
+A payload can contain an XRPL transaction template. Some properties may be omitted, as they will be added by the XUMM app when a user signs a transaction. A simple payload may look like this:
+
+```javascript
+{
+  txjson: {
+    TransactionType : 'Payment',
+    Destination : 'rwiETSee2wMz3SBnAG8hkMsCgvGy9LWbZ1',
+    Amount: '1337'
+  }
+}
+```
+
+As you can see the payload looks like a regular XRPL transaction, wrapped in an `txjson` object, omitting the mandatory `Account`, `Fee` and `Sequence` properties. They will be added containing the correct values when the payload is signed by an app user.
+
+Optionally (besides `txjson`) a payload can contain these properties ([TS definition](https://github.com/XRPL-Labs/XUMM-SDK/blob/d2aae98eb8f496f4d77079c777aa41df754d4ebc/src/types/xumm-api/index.ts#L79)):
+
+- `options` to define payload options like a return URL, expiration, etc.
+- `custom_meta` to add metadata, user insruction, your own unique ID, ...
+- `user_token` to push the payload to a user (after [obtaining a user specific token](https://xumm.readme.io/docs/pushing-sign-requests))
+
+A more complex payload [could look like this](https://gist.github.com/WietseWind/ecdfd58bece14e5d15e41138fa4b0f4a). A [reference for payload options & custom meta](https://xumm.readme.io/reference/post-payload) can be found in the [API Docs](https://xumm.readme.io/reference/post-payload).
+
+Instead of providing a `txjson` transaction, a transaction formatted as HEX blob (string) can be provided in a `txblob` property.
+
+##### Sdk.payload.get
+
+```typescript
+async Sdk.payload.get (
+  payload: string | CreatedPayload,
+  returnErrors: boolean = false
+): Promise<XummPayload | null>
+```
+
+To get payload details, status and if resolved & signed: results (transaction, transaction hash, etc.) you can `get()` a payload.
+
+Note! Please don't use _polling_! The XUMM API offers Webhooks (configure your Webhook endpoint in the [Developer Console](https://apps.xumm.dev)) or use [a subscription](#payload-subscriptions-live-updates) to receive live payload updates (for non-SDK users: [Webhooks](https://xumm.readme.io/docs/payload-status)).
+
+You can `get()` a payload by:
+
+- Payload UUID  
+  ```javascript
+  const payload = await Sdk.payload.get('aaaaaaaa-bbbb-cccc-dddd-1234567890ab')
+  ```
+
+- Passing a created Payload object (see: [Sdk.payload.create](#sdk.payload.create))  
+  ```javascript
+  const newPayload: XummTypes.CreatedPayload = {txjson: {...}}
+  const created = await Sdk.payload.create(newPayload)
+  const payload = await Sdk.payload.get(created)
+  ```
+
+If a payload can't be fetched (eg. doesn't exist), `null` will be returned, unless a second param (boolean) is provided to get the SDK to throw an Error in case a payload can't be retrieved:
+
+```javascript
+await Sdk.payload.get('aaaaaaaa-bbbb-cccc-dddd-1234567890ab', true)
+```
+
+##### Sdk.payload.create
+
+```typescript
+async Sdk.payload.create (
+  payload: CreatePayload,
+  returnErrors: boolean = false
+): Promise<CreatedPayload | null>
+```
+
+WIP
+
+##### Sdk.payload.cancel
+
+```typescript
+async Sdk.payload.cancel (
+  payload: string | XummPayload | CreatedPayload,
+  returnErrors: boolean = false
+): Promise<DeletedPayload | null>
+```
+
+WIP
+
+#### Payload subscriptions: live updates
+
+WIP
+
+- Note: Two methods: callback + return non void = break, of return object en resolve()
+  - onPayloadEvent
+- Reminder: type for callback event?
+
+##### Sdk.payload.subscribe
+
+```typescript
+async Sdk.payload.subscribe (
+    payload: string | XummPayload | CreatedPayload,
+    callback?: onPayloadEvent
+  ): Promise<PayloadSubscription>
+```
+
+The [`<PayloadSubscription>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Payload/PayloadSubscription.ts) object looks like this:
+
+WIP
+
+##### Sdk.payload.createAndSubscribe
+
+```typescript
+async Sdk.payload.createAndSubscribe (
+    payload: CreatePayload,
+    callback?: onPayloadEvent
+  ): Promise<PayloadAndSubscription>
+```
+
+The [`<PayloadAndSubscription>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Payload/PayloadAndSubscription.ts) object is basically a [`<PayloadSubscription>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Payload/PayloadSubscription.ts) object with the created payload results in the `created` property:
+
+WIP
 
 ## Debugging (logging)
 
