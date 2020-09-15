@@ -1,8 +1,8 @@
 import Debug from 'debug'
-import {Meta, AnyJson} from './Meta'
+import {Meta} from './Meta'
+import type {AnyJson} from './types'
 
 import {throwIfError} from './utils'
-
 
 const log = Debug('xumm-sdk:storage')
 

@@ -1,14 +1,15 @@
 import Debug from 'debug'
-import {Meta, AnyJson} from './Meta'
+import {Meta} from './Meta'
 import WebSocket from 'ws'
 
 import type {
+  AnyJson,
   XummPostPayloadBodyJson as JsonPayload,
   XummPostPayloadBodyBlob as BlobPayload,
   XummPostPayloadResponse as CreatedPayload,
   XummDeletePayloadResponse as DeletedPayload,
   XummGetPayloadResponse as XummPayload
-} from './types/xumm-api'
+} from './types'
 
 import {
   throwIfError,
