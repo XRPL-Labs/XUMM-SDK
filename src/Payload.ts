@@ -4,6 +4,9 @@ import WebSocket from 'ws'
 
 import type {
   AnyJson,
+  PayloadSubscription,
+  PayloadAndSubscription,
+  onPayloadEvent,
   XummPostPayloadBodyJson as JsonPayload,
   XummPostPayloadBodyBlob as BlobPayload,
   XummPostPayloadResponse as CreatedPayload,
@@ -18,26 +21,6 @@ import {
 
 const log = Debug('xumm-sdk:payload')
 const logWs = log.extend('websocket')
-
-interface SubscriptionCallbackParams {
-  uuid: string
-  data: AnyJson
-  resolve: (resolveData?: any) => void,
-  payload: XummPayload
-}
-
-interface PayloadSubscription {
-  payload: XummPayload,
-  resolved: Promise<any> | undefined
-  resolve: (resolveData?: any) => void
-  websocket: WebSocket
-}
-
-interface PayloadAndSubscription extends PayloadSubscription {
-  created: CreatedPayload
-}
-
-type onPayloadEvent = (subscriptionCallback: SubscriptionCallbackParams) => any | Promise<any> | void
 
 export class Payload {
   private Meta: Meta
