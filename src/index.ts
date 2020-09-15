@@ -51,5 +51,5 @@ export {
 }
 
 export type {
-  Types
+  Types as XummTypes
 }

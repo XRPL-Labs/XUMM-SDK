@@ -16,7 +16,7 @@ const {XummSdk} = require('xumm-sdk')
 ```typescript
 import {XummSdk} from 'xumm-sdk'
 // Or with types:
-//   import {XummSdk, Types} from 'xumm-sdk'
+//   import {XummSdk, XummTypes} from 'xumm-sdk'
 ```
 
 Now continue by constructing the XummSdk object:
@@ -172,7 +172,7 @@ Build, run, show debug output & watch `/dist/samples/dev.js`, compiled from `/sa
 
 ```typescript
 import Debug from 'debug'
-import {XummSdk, Types} from '../src/'
+import {XummSdk, XummTypes} from '../src/'
 
 const log = Debug('xumm-sdk:sample')
 
@@ -185,7 +185,7 @@ const main = async () => {
     const curatedAssets = await Sdk.getCuratedAssets()
     log({curatedAssets})
 
-    const PaymentPayload: Types.CreatePayload = {
+    const PaymentPayload: XummTypes.CreatePayload = {
       txjson: {
         TransactionType : 'Payment',
         Destination : 'rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY',
