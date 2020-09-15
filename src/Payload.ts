@@ -7,11 +7,10 @@ import type {
   PayloadSubscription,
   PayloadAndSubscription,
   onPayloadEvent,
-  XummPostPayloadBodyJson as JsonPayload,
-  XummPostPayloadBodyBlob as BlobPayload,
-  XummPostPayloadResponse as CreatedPayload,
-  XummDeletePayloadResponse as DeletedPayload,
-  XummGetPayloadResponse as XummPayload
+  CreatePayload,
+  CreatedPayload,
+  DeletedPayload,
+  XummPayload
 } from './types'
 
 import {
@@ -43,7 +42,7 @@ export class Payload {
     throw new Error('Could not resolve payload (not found)')
   }
 
-  async create (payload: JsonPayload | BlobPayload, returnErrors: boolean = false): Promise<CreatedPayload | null> {
+  async create (payload: CreatePayload, returnErrors: boolean = false): Promise<CreatedPayload | null> {
     const call = await this.Meta.call<CreatedPayload>('payload', 'POST', payload)
     if (returnErrors) {
       throwIfError(call)
@@ -176,7 +175,7 @@ export class Payload {
   }
 
   async createAndSubscribe (
-    payload: JsonPayload | BlobPayload,
+    payload: CreatePayload,
     callback?: onPayloadEvent
   ): Promise<PayloadAndSubscription> {
     const createdPayload = await this.create(payload, true)
