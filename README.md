@@ -8,7 +8,7 @@ Get the SDK straight from npm: `npm install xumm-sdk`.
 
 Initialize the SDK in Javascript:
 ```javascript
-const {XummSdk} = require('xumm-sdk').
+const {XummSdk} = require('xumm-sdk')
 ```
 
 ... or in Typescript:
