@@ -7,21 +7,16 @@ import type {
   XummPostPayloadBodyBlob as BlobPayload,
   XummPostPayloadResponse as CreatedPayload,
   XummDeletePayloadResponse as DeletedPayload,
-  XummApiError as ApiError,
   XummGetPayloadResponse as XummPayload
 } from './types/xumm-api'
 
+import {
+  throwIfError,
+  DeferredPromise
+} from './utils'
+
 const log = Debug('xumm-sdk:payload')
 const logWs = log.extend('websocket')
-
-interface FatalApiError {
-  error: boolean
-  message: string
-  reference?: string
-  code: number
-  req?: string
-  method?: string
-}
 
 interface SubscriptionCallbackParams {
   uuid: string
@@ -34,38 +29,11 @@ interface PayloadSubscription {
   payload: XummPayload,
   resolved: Promise<any> | undefined
   resolve: (resolveData?: any) => void
-  websocket: WebSocket,
+  websocket: WebSocket
 }
 
 interface PayloadAndSubscription extends PayloadSubscription {
   created: CreatedPayload
-}
-
-class DeferredPromise {
-  private resolveFn: (arg?: any) => void = (arg?: any) => {
-    // Will be replaced by Promise fn
-  }
-  private rejectFn: (arg?: any) => void = (arg?: any) => {
-    // Will be replaced by Promise fn
-  }
-
-  public promise: Promise<any>
-
-  constructor () {
-    this.promise = new Promise((resolve, reject) => {
-      this.resolveFn = resolve
-      this.rejectFn = reject
-    })
-  }
-
-  resolve (arg?: any) {
-    this.resolveFn(arg)
-    return this.promise
-  }
-  reject (arg?: any) {
-    this.rejectFn(arg)
-    return this.promise
-  }
 }
 
 type onPayloadEvent = (subscriptionCallback: SubscriptionCallbackParams) => any | Promise<any> | void
@@ -80,61 +48,47 @@ export class Payload {
   }
 
   async resolvePayload(payload: string | XummPayload | CreatedPayload): Promise<XummPayload | null> {
-    let r = null
-
     if (typeof payload === 'string') {
-      r = await this.get(payload)
+      return await this.get(payload, true)
     } else if (typeof (payload as CreatedPayload)?.uuid !== 'undefined') {
-      r = await this.get((payload as CreatedPayload).uuid)
+      return await this.get((payload as CreatedPayload).uuid, true)
     } else if (typeof (payload as XummPayload)?.meta?.uuid !== 'undefined') {
-      r = (payload as XummPayload)
+      return (payload as XummPayload)
     }
 
-    return r
-  }
-
-  throwIfError(call: unknown): Error | void {
-    const isFatalError = (call as unknown as FatalApiError).message !== undefined
-    if (isFatalError) {
-      throw new Error((call as unknown as FatalApiError).message)
-    }
-
-    const isError = (call as unknown as CreatedPayload).next === undefined
-      && (call as unknown as XummPayload)?.meta?.uuid === undefined
-      && (call as unknown as ApiError)?.error?.code !== undefined
-
-    if (isError) {
-      const e = (call as unknown as ApiError).error
-      /**
-       * TODO:
-       *   add local error code list + descriptions?
-       *   (note: can be endpoint specific,)
-       */
-      throw new Error(`Error ${e.code}, see XUMM Dev Console, ref# ${e.reference}`)
-    }
+    throw new Error('Could not resolve payload (not found)')
   }
 
   async create (payload: JsonPayload | BlobPayload, returnErrors: boolean = false): Promise<CreatedPayload | null> {
     const call = await this.Meta.call<CreatedPayload>('payload', 'POST', payload)
     if (returnErrors) {
-      this.throwIfError(call as unknown)
+      throwIfError(call)
     }
+
     const isCreatedPayload = (call as unknown as CreatedPayload)?.next !== undefined
     if (!isCreatedPayload) {
       return null
     }
+
     return call
   }
 
-  async get (payload: string, returnErrors: boolean = false): Promise<XummPayload | null> {
-    const call = await this.Meta.call<XummPayload>('payload/' + payload, 'GET')
+  async get (payload: string | CreatedPayload, returnErrors: boolean = false): Promise<XummPayload | null> {
+    const payloadUuid = typeof payload === 'string'
+     ? payload
+     : payload?.uuid
+
+    const call = await this.Meta.call<XummPayload>('payload/' + payloadUuid, 'GET')
+
     if (returnErrors) {
-      this.throwIfError(call as unknown)
+      throwIfError(call)
     }
+
     const isPayload = (call as unknown as XummPayload)?.meta?.uuid !== undefined
     if (!isPayload) {
       return null
     }
+
     return call
   }
 
@@ -146,17 +100,20 @@ export class Payload {
     const payloadDetails = await this.resolvePayload(payload)
 
     if (payloadDetails) {
-      const socket = await new WebSocket('wss://xumm.app/sign/' + payloadDetails.meta.uuid)
+      const socket = typeof (global as any)?.MockedWebSocket !== 'undefined' && typeof jest !== 'undefined'
+        ? new ((global as any)?.MockedWebSocket)('ws://xumm.local')
+        : new WebSocket('wss://xumm.app/sign/' + payloadDetails.meta.uuid)
 
       callbackPromise.promise.then(() => {
         socket.close()
       })
 
-      socket.on('open', () => {
+      socket.onopen = () => {
         logWs(`Payload ${payloadDetails.meta.uuid}: Subscription active (WebSocket opened)`)
-      })
+      }
 
-      socket.on('message', async m => {
+      socket.onmessage = async (MessageEvent: any) => {
+        const m = MessageEvent.data
         let json: AnyJson | undefined = undefined
 
         try {
@@ -187,11 +144,11 @@ export class Payload {
             logWs(`Payload ${payloadDetails.meta.uuid}: Callback exception`, e)
           }
         }
-      })
+      }
 
-      socket.on('close', e => {
+      socket.onclose = (e: any) => {
         logWs(`Payload ${payloadDetails.meta.uuid}: Subscription ended (WebSocket closed)`)
-      })
+      }
 
       return {
         payload: payloadDetails,
@@ -203,7 +160,7 @@ export class Payload {
       }
     }
 
-    this.throwIfError(payloadDetails)
+    throwIfError(payloadDetails)
 
     throw Error(`Couldn't subscribe: couldn't fetch payload`)
   }
@@ -216,7 +173,7 @@ export class Payload {
 
     const call = await this.Meta.call<DeletedPayload>('payload/' + fullPayload?.meta?.uuid, 'DELETE')
     if (returnErrors) {
-      this.throwIfError(call as unknown)
+      throwIfError(call)
     }
 
     const isValidResponse = (call as unknown as DeletedPayload)?.meta?.uuid !== undefined
