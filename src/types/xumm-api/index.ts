@@ -100,6 +100,8 @@ export interface XummPostPayloadBodyBlob extends XummPayloadBodyBase {
   txblob: string
 }
 
+export type CreatePayload = XummPostPayloadBodyJson | XummPostPayloadBodyBlob
+
 export interface XummPostPayloadResponse {
   uuid: string
   next: {
