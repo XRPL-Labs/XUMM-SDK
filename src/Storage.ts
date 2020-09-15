@@ -1,31 +1,16 @@
 import Debug from 'debug'
 import {Meta} from './Meta'
-import type {AnyJson} from './types'
+
+import type {
+  AnyJson,
+  StorageDeleteResponse,
+  StorageGetResponse,
+  StorageSetResponse
+} from './types'
 
 import {throwIfError} from './utils'
 
 const log = Debug('xumm-sdk:storage')
-
-export interface StorageResponse {
-  application: {
-    name: string
-    uuidv4: string
-  }
-}
-
-export interface StorageGetResponse extends StorageResponse {
-  data: AnyJson | null
-}
-
-export interface StorageSetResponse extends StorageResponse {
-  stored: boolean
-  data: AnyJson
-}
-
-export interface StorageDeleteResponse extends StorageResponse {
-  stored: boolean
-  data: null
-}
 
 export class Storage {
   private Meta: Meta

@@ -1,10 +1,9 @@
 import type {
+  StorageResponse,
   XummPostPayloadResponse as CreatedPayload,
   XummApiError as ApiError,
   XummGetPayloadResponse as XummPayload
-} from './types/xumm-api'
-
-import type {StorageResponse} from './Storage'
+} from './types'
 
 export interface FatalApiError {
   error: boolean
