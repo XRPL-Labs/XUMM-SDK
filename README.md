@@ -63,7 +63,7 @@ const pong = await Sdk.ping()
 ```
 
 Returns [`<ApplicationDetails>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/ApplicationDetails.ts):
-```json
+```javascript
 {
   quota: {},
   application: {
@@ -86,13 +86,15 @@ const curatedAssets = await Sdk.getCuratedAssets()
 ```
 
 Returns [`<CuratedAssetsResponse>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/CuratedAssetsResponse.ts):
-```json
-curatedAssets: {
-  issuers: [ 'Bitstamp', 'GateHub' ],
-  currencies: [ 'USD', 'BTC', 'EUR', 'ETH' ],
-  details: {
-    Bitstamp: [Object],
-    GateHub: [Object]
+```javascript
+{
+  curatedAssets: {
+    issuers: [ 'Bitstamp', 'GateHub' ],
+    currencies: [ 'USD', 'BTC', 'EUR', 'ETH' ],
+    details: {
+      Bitstamp: [Object],
+      GateHub: [Object]
+    }
   }
 }
 ```
