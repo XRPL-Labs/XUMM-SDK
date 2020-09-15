@@ -37,11 +37,11 @@ class XummSdk {
    * Proxy methods to Meta class below
    */
 
-  public async ping () {
+  public ping () {
     return this.Meta.ping()
   }
 
-  public async getCuratedAssets () {
+  public getCuratedAssets () {
     return this.Meta.getCuratedAssets()
   }
 }
