@@ -97,6 +97,13 @@ export class Payload {
     callback?: onPayloadEvent
   ): Promise<PayloadSubscription> {
     const callbackPromise = new DeferredPromise()
+
+    /**
+     * This is ugly, but there's a small chance a created XUMM payload has not been distributed
+     * across the load balanced XUMM backend, so wait a bit.
+     */
+    await new Promise(resolve => setTimeout(resolve, 75))
+
     const payloadDetails = await this.resolvePayload(payload)
 
     if (payloadDetails) {
