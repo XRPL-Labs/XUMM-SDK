@@ -5,5 +5,8 @@ module.exports = {
   },
   testEnvironment: "node",
   testRegex: "(.*|(\\.|/)(test|spec))\\.ts?$",
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"]
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+  testPathIgnorePatterns: [
+    "fixtures"
+  ]
 };

@@ -1,0 +1,169 @@
+{
+  "api": {
+    "key": "aaaaaaaa-bbbb-cccc-dddd-1234567890ab",
+    "secret": "cbbbbbbb-aaaa-cccc-dddd-1234567890ab"
+  },
+  "invalidCredentials": {
+    "error": {
+      "reference": "26279bfe-c7e1-4b12-a680-26119d8f5062",
+      "code": 813
+    }
+  },
+  "ping": {
+    "pong": {
+      "pong": true,
+      "auth": {
+        "quota": {},
+        "application": {
+          "uuidv4": "00000000-0000-4839-af2f-f794874a80b0",
+          "name": "SomeApplication",
+          "webhookurl": "https://webhook.site/00000000-0000-4e34-8112-c4391247a8ee",
+          "disabled": 0
+        },
+        "call": {
+          "uuidv4": "2904b05f-5b37-4f3e-a624-940ad817943c"
+        }
+      }
+    }
+  },
+  "storage": {
+    "getResponse": {
+      "application": {
+        "name": "SomeApplication",
+        "uuidv4": "00000000-0000-4839-af2f-f794874a80b0"
+      },
+      "data": {
+        "some": "other_data"
+      }
+    },
+    "deleteResponse": {
+      "application": {
+        "name": "SomeApplication",
+        "uuidv4": "00000000-0000-4839-af2f-f794874a80b0"
+      },
+      "stored": true,
+      "data": null
+    },
+    "setResponse": {
+      "application": {
+        "name": "SomeApplication",
+        "uuidv4": "00000000-0000-4839-af2f-f794874a80b0"
+      },
+      "stored": true,
+      "data": {
+        "name": "Wietse"
+      }
+    }
+  },
+  "payload": {
+    "created": {
+      "uuid": "00000000-0000-4839-af2f-f794874a80b0",
+      "next": {
+        "always": "http://localhost:3001/sign/00000000-0000-4839-af2f-f794874a80b0"
+      },
+      "refs": {
+        "qr_png": "http://localhost:3001/sign/00000000-0000-4839-af2f-f794874a80b0_q.png",
+        "qr_matrix": "http://localhost:3001/sign/00000000-0000-4839-af2f-f794874a80b0_q.json",
+        "qr_uri_quality_opts": ["m", "q", "h"],
+        "websocket_status": "ws://localhost:3001/sign/00000000-0000-4839-af2f-f794874a80b0"
+      },
+      "pushed": false
+    },
+    "cancelled": {
+      "result": {
+        "cancelled": true,
+        "reason": "OK"
+      },
+      "meta": {
+        "exists": true,
+        "uuid": "00000000-0000-4839-af2f-f794874a80b0",
+        "multisign": false,
+        "submit": false,
+        "destination": "",
+        "resolved_destination": "",
+        "resolved": false,
+        "signed": false,
+        "cancelled": false,
+        "expired": true,
+        "pushed": false,
+        "app_opened": false,
+        "return_url_app": "https://xumm.dev/beta/test?payloadId=00000000-0000-4839-af2f-f794874a80b0&customIdent=&txid=&hex=",
+        "return_url_web": "https://xumm.dev/beta/test?payloadId=00000000-0000-4839-af2f-f794874a80b0&customIdent=&txid=&hex="
+      },
+      "custom_meta": {
+        "identifier": null,
+        "blob": {
+          "location": "Amersfoort"
+        },
+        "instruction": null
+      }
+    },
+    "get": {
+      "meta": {
+        "exists": true,
+        "uuid": "00000000-0000-4839-af2f-f794874a80b0",
+        "multisign": false,
+        "submit": false,
+        "destination": "",
+        "resolved_destination": "",
+        "resolved": true,
+        "signed": true,
+        "cancelled": false,
+        "expired": true,
+        "pushed": false,
+        "app_opened": true,
+        "return_url_app": "https://xumm.dev/beta/test?payloadId=00000000-0000-4839-af2f-f794874a80b0&customIdent=&txid=9B124C14528ED14C0BDA17075A39B90ABED598B77A22DFEEBD913CAC07A513BC&hex=1200032280000000240000003241833237B8665D2F4E00135E8DE646589F68400000000000000C732103709723A5967EAAED571B71DB511D87FA44CC7CDDF827A37F457A25E14D862BCD74473045022100C6A6999BD33153C6A236D78438D1BFEEEC810CFE05D0E41339B577560C9143CA022074F07881F559F56593FF680049C12FC3BCBB0B73CE02338651522891D95886F981146078086881F39B191D63B528D914FEA7F8CA2293F9EA7C06636C69656E747D15426974686F6D7020746F6F6C20762E20302E302E337E0A706C61696E2F74657874E1F1",
+        "return_url_web": "https://xumm.dev/beta/test?payloadId=00000000-0000-4839-af2f-f794874a80b0&customIdent=&txid=9B124C14528ED14C0BDA17075A39B90ABED598B77A22DFEEBD913CAC07A513BC&hex=1200032280000000240000003241833237B8665D2F4E00135E8DE646589F68400000000000000C732103709723A5967EAAED571B71DB511D87FA44CC7CDDF827A37F457A25E14D862BCD74473045022100C6A6999BD33153C6A236D78438D1BFEEEC810CFE05D0E41339B577560C9143CA022074F07881F559F56593FF680049C12FC3BCBB0B73CE02338651522891D95886F981146078086881F39B191D63B528D914FEA7F8CA2293F9EA7C06636C69656E747D15426974686F6D7020746F6F6C20762E20302E302E337E0A706C61696E2F74657874E1F1"
+      },
+      "application": {
+        "name": "SomeApp",
+        "description": "SomeDesc",
+        "disabled": 0,
+        "uuidv4": "00000000-1111-2222-af2f-f794874a80b0",
+        "icon_url": "https://xumm-cdn.imgix.net/app-logo/00000000-1111-2222-9abc-bf0a7cf9f5cc.png",
+        "issued_user_token": null
+      },
+      "payload": {
+        "tx_type": "SignIn",
+        "tx_destination": "",
+        "tx_destination_tag": null,
+        "request_json": {
+          "TransactionType": "SignIn",
+          "SignIn": true
+        },
+        "created_at": "2020-05-03T19:28:21Z",
+        "expires_at": "2020-05-03T19:38:21Z",
+        "expires_in_seconds": -11557255
+      },
+      "response": {
+        "hex": "ABCDEF123456789",
+        "txid": "ABCDEF123456789",
+        "resolved_at": "2020-05-03T17:28:40.000Z",
+        "dispatched_to": "wss://xrpl.ws",
+        "dispatched_result": "tes_SUCCESS",
+        "dispatched_nodetype": "MAINNET",
+        "multisign_account": "rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY",
+        "account": "rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY"
+      },
+      "custom_meta": {
+        "identifier": null,
+        "blob": {
+          "country": "Netherlands"
+        },
+        "instruction": "Hey ❤️! Please sign for\n\nThis\nThat 🍻"
+      }
+    },
+    "error": {
+      "error": {
+        "reference": "a61ba59a-0304-44ae-a86e-d74808bd5190",
+        "code": 602
+      }
+    },
+    "notfound": {
+      "error": {
+        "reference": "a61ba59a-0304-44ae-a86e-d74808bd5190",
+        "code": 404
+      }
+    }
+  }
+}
