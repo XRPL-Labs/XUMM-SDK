@@ -1,0 +1,29 @@
+name: XUMM SDK CI (node)
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  tsci:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [10.x, 12.x, 14.x]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - run: git config --global core.autocrlf false
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install --ignore-scripts
+    - run: npm run lint
+    - run: npm run build
+    - run: npm run test
+      env:
+        XUMM_APIKEY: aaaaaaaa-cccc-eeee-1111-333333333333
+        XUMM_APISECRET: bbbbbbbb-dddd-ffff-2222-444444444444
