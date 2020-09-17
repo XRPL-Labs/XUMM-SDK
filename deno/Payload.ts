@@ -99,7 +99,7 @@ export class Payload {
         logWs(`Payload ${payloadDetails.meta.uuid}: Subscription active (WebSocket opened)`)
       }
 
-      socket.onmessage = async (MessageEvent: any) => {
+      socket.onmessage = async (MessageEvent: MessageEvent) => {
         const m = MessageEvent.data
         let json: AnyJson | undefined = undefined
 

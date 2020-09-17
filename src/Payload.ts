@@ -90,7 +90,7 @@ export class Payload {
     const payloadDetails = await this.resolvePayload(payload)
 
     if (payloadDetails) {
-      const socket = typeof (global as any)?.MockedWebSocket !== 'undefined' && typeof jest !== 'undefined'
+      const socket: WebSocket = typeof (global as any)?.MockedWebSocket !== 'undefined' && typeof jest !== 'undefined'
         ? new ((global as any)?.MockedWebSocket)('ws://xumm.local')
         : new WebSocket('wss://xumm.app/sign/' + payloadDetails.meta.uuid)
 
@@ -102,7 +102,7 @@ export class Payload {
         logWs(`Payload ${payloadDetails.meta.uuid}: Subscription active (WebSocket opened)`)
       }
 
-      socket.onmessage = async (MessageEvent: any) => {
+      socket.onmessage = async (MessageEvent: WebSocket.MessageEvent) => {
         const m = MessageEvent.data
         let json: AnyJson | undefined = undefined
 
