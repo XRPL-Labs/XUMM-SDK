@@ -1,5 +1,5 @@
 export interface ApplicationDetails {
-  quota: object
+  quota: Record<string, unknown>
   application: {
     uuidv4: string
     name: string
