@@ -1,10 +1,10 @@
-# XUMM SDK (JS/TS)  [![npm version](https://badge.fury.io/js/xumm-sdk.svg)](https://www.npmjs.com/xumm-sdk)
+# XUMM SDK (JS/TS) [![npm version](https://badge.fury.io/js/xumm-sdk.svg)](https://www.npmjs.com/xumm-sdk)
 
 Interact with the XUMM SDK from Javascript / Typescript environments.
 
 ## How to use the XUMM SDK
 
-Get the SDK straight from npm: `npm install xumm-sdk`.
+Get the SDK straight from npm: `npm install xumm-sdk`. The SDK is [also available](https://deno.land/x/xumm) for [Deno](https://deno.land) ([XUMM SDK Deno Readme](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/deno/README.md)).
 
 Initialize the SDK in Javascript:
 ```javascript
