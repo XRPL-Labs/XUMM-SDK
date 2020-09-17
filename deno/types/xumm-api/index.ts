@@ -44,16 +44,13 @@ export type XummTransactionApprovalType = 'PIN'
 
 export type XummQrQuality = 'm' | 'q' | 'h'
 
-export interface XummJsonTransaction {
+export interface XummJsonTransaction extends Record<string, unknown> {
   TransactionType: XummTransactionType | XrplTransactionType
-  [key: string]: any
 }
 
 export interface XummCustomMeta {
   identifier?: string | null
-  blob?: {
-    [key: string]: any
-  } | null
+  blob?: Record<string, unknown> | null
   instruction?: string | null
 }
 
@@ -135,9 +132,7 @@ export interface XummGetPayloadResponse {
     created_at: string
     expires_at: string
     expires_in_seconds: number
-    computed?: {
-      [key: string]: any
-    }
+    computed?: Record<string, unknown>
   }
   response: {
       hex: string | null

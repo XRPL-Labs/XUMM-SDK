@@ -6,6 +6,6 @@ import type {
 export interface SubscriptionCallbackParams {
   uuid: string
   data: AnyJson
-  resolve: (resolveData?: any) => void,
+  resolve: (resolveData?: unknown) => void,
   payload: XummPayload
 }
