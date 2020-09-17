@@ -45,6 +45,8 @@ jobs:
       uses: denolib/setup-deno@v2
       with:
         deno-version: ${{ matrix.deno-version }}
-    - run: |
-        deno lint --unstable mod.ts deno/*.ts deno/*/*
-        deno test --allow-read=.env,.env.defaults --allow-env=DEBUG,XUMM_API* mod.ts
+    - run: deno lint --unstable mod.ts deno/*.ts deno/*/*
+    - run: deno test --allow-read=.env,.env.defaults --allow-env=DEBUG,XUMM_API* mod.ts
+      env:
+        XUMM_APIKEY: aaaaaaaa-cccc-eeee-1111-333333333333
+        XUMM_APISECRET: bbbbbbbb-dddd-ffff-2222-444444444444
