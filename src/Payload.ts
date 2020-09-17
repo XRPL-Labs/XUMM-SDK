@@ -42,7 +42,7 @@ export class Payload {
     throw new Error('Could not resolve payload (not found)')
   }
 
-  async create (payload: CreatePayload, returnErrors: boolean = false): Promise<CreatedPayload | null> {
+  async create (payload: CreatePayload, returnErrors = false): Promise<CreatedPayload | null> {
     const call = await this.Meta.call<CreatedPayload>('payload', 'POST', payload)
     if (returnErrors) {
       throwIfError(call)
@@ -56,7 +56,7 @@ export class Payload {
     return call
   }
 
-  async get (payload: string | CreatedPayload, returnErrors: boolean = false): Promise<XummPayload | null> {
+  async get (payload: string | CreatedPayload, returnErrors = false): Promise<XummPayload | null> {
     const payloadUuid = typeof payload === 'string'
      ? payload
      : payload?.uuid
@@ -157,7 +157,7 @@ export class Payload {
 
   async cancel (
     payload: string | XummPayload | CreatedPayload,
-    returnErrors: boolean = false
+    returnErrors = false
   ): Promise<DeletedPayload | null> {
     const fullPayload = await this.resolvePayload(payload)
 

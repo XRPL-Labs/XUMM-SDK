@@ -32,7 +32,7 @@ export class Meta {
     return this
   }
 
-  public async call<T> (endpoint: string, httpMethod: string = 'GET', data?: AnyJson | string): Promise<T> {
+  public async call<T> (endpoint: string, httpMethod = 'GET', data?: AnyJson | string): Promise<T> {
     const method = httpMethod.toUpperCase()
 
     try {
