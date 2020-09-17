@@ -1,9 +1,8 @@
-import Debug from 'debug'
-import * as dotenv from 'dotenv'
-import {Meta} from './Meta'
-import {Storage} from './Storage'
-import {Payload} from './Payload'
-import type * as Types from './types/xumm-api'
+import {debug as Debug} from 'https://deno.land/x/debug/mod.ts'
+import {Meta} from './Meta.ts'
+import {Storage} from './Storage.ts'
+import {Payload} from './Payload.ts'
+import type * as Types from './types/xumm-api/index.ts'
 
 const log = Debug('xumm-Meta')
 
@@ -16,15 +15,9 @@ class XummSdk {
   constructor (apiKey?: string, apiSecret?: string) {
     log('Constructed')
 
-    try {
-      dotenv.config()
-    } catch (e) {
-      // Couldn't load .env
-    }
-
     this.Meta = new Meta(
-      apiKey || process.env.XUMM_APIKEY || '',
-      apiSecret || process.env.XUMM_APISECRET || ''
+      apiKey || '',
+      apiSecret || ''
     )
 
     this.storage = new Storage(this.Meta)

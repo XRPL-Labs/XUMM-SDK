@@ -1,15 +1,12 @@
-import Debug from 'debug'
-import fetch from 'node-fetch'
-import {hostname} from 'os'
-import packageJson from '../package.json'
-import {throwIfError} from './utils'
+import {debug as Debug} from 'https://deno.land/x/debug/mod.ts'
+import {throwIfError} from './utils.ts'
 
 import type {
   ApplicationDetails,
   Pong,
   AnyJson,
   CuratedAssetsResponse
-} from './types'
+} from './types/index.ts'
 
 const log = Debug('xumm-sdk:main')
 
@@ -23,7 +20,7 @@ export class Meta {
     const uuidRe = new RegExp('^[a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}$')
 
     if (!uuidRe.test(apiKey) || !uuidRe.test(apiSecret)) {
-      throw new Error('Invalid API Key and/or API Secret. Use dotenv or constructor params.')
+      throw new Error('Invalid API Key and/or API Secret.')
     }
 
     this.apiKey = apiKey
@@ -48,7 +45,7 @@ export class Meta {
 
       const headers = {
         'Content-Type': 'application/json',
-        'User-Agent': `xumm-sdk/${packageJson.version} (${hostname()}) node-fetch`,
+        'User-Agent': `xumm-sdk/deno`,
         'x-api-key': this.apiKey,
         'x-api-secret': this.apiSecret
       }

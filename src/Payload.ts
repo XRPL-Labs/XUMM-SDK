@@ -1,6 +1,5 @@
-import Debug from 'debug'
-import {Meta} from './Meta'
-import WebSocket from 'ws'
+import {debug as Debug} from 'https://deno.land/x/debug/mod.ts'
+import type {Meta} from './Meta.ts'
 
 import type {
   AnyJson,
@@ -11,15 +10,15 @@ import type {
   CreatedPayload,
   DeletedPayload,
   XummPayload
-} from './types'
+} from './types/index.ts'
 
 import {
   throwIfError,
   DeferredPromise
-} from './utils'
+} from './utils.ts'
 
 const log = Debug('xumm-sdk:payload')
-const logWs = log.extend('websocket')
+const logWs = Debug('xumm-sdk:payload:websocket')
 
 export class Payload {
   private Meta: Meta
@@ -90,9 +89,7 @@ export class Payload {
     const payloadDetails = await this.resolvePayload(payload)
 
     if (payloadDetails) {
-      const socket = typeof (global as any)?.MockedWebSocket !== 'undefined' && typeof jest !== 'undefined'
-        ? new ((global as any)?.MockedWebSocket)('ws://xumm.local')
-        : new WebSocket('wss://xumm.app/sign/' + payloadDetails.meta.uuid)
+      const socket = new WebSocket('wss://xumm.app/sign/' + payloadDetails.meta.uuid)
 
       callbackPromise.promise.then(() => {
         socket.close()

@@ -1,14 +1,14 @@
-import Debug from 'debug'
-import {Meta} from './Meta'
+import {debug as Debug} from 'https://deno.land/x/debug/mod.ts'
+import type {Meta} from './Meta.ts'
 
 import type {
   AnyJson,
   StorageDeleteResponse,
   StorageGetResponse,
   StorageSetResponse
-} from './types'
+} from './types/index.ts'
 
-import {throwIfError} from './utils'
+import {throwIfError} from './utils.ts'
 
 const log = Debug('xumm-sdk:storage')
 

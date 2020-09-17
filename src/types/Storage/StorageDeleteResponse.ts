@@ -1,4 +1,4 @@
-import type {StorageResponse} from '../'
+import type {StorageResponse} from '../index.ts'
 
 export interface StorageDeleteResponse extends StorageResponse {
   stored: boolean

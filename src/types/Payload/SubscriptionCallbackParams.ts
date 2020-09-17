@@ -1,7 +1,7 @@
 import type {
   AnyJson,
   XummGetPayloadResponse as XummPayload
-} from '../'
+} from '../index.ts'
 
 export interface SubscriptionCallbackParams {
   uuid: string

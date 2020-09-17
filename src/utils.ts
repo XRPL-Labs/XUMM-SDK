@@ -3,7 +3,7 @@ import type {
   XummPostPayloadResponse as CreatedPayload,
   XummApiError as ApiError,
   XummGetPayloadResponse as XummPayload
-} from './types'
+} from './types/index.ts'
 
 export interface FatalApiError {
   error: boolean

@@ -1,5 +1,4 @@
-import type WebSocket from 'ws'
-import type {XummGetPayloadResponse as XummPayload} from '../'
+import type {XummGetPayloadResponse as XummPayload} from '../index.ts'
 
 export interface PayloadSubscription {
   payload: XummPayload,

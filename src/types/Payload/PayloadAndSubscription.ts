@@ -1,7 +1,7 @@
 import type {
   PayloadSubscription,
   XummPostPayloadResponse as CreatedPayload
-} from '../'
+} from '../index.ts'
 
 export interface PayloadAndSubscription extends PayloadSubscription {
   created: CreatedPayload

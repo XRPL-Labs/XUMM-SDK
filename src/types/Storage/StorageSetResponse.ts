@@ -1,7 +1,7 @@
 import type {
   StorageResponse,
   AnyJson
-} from '../'
+} from '../index.ts'
 
 export interface StorageSetResponse extends StorageResponse {
   stored: boolean
