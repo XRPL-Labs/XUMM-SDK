@@ -4,7 +4,7 @@ import fetchMock from 'jest-fetch-mock'
 
 fetchMock.enableMocks()
 
-import {XummSdk, Types} from '../src/'
+import {XummSdk, XummTypes} from '../src/'
 
 afterEach(() => fetchMock.dontMock())
 
@@ -45,7 +45,7 @@ describe('Cancel XUMM payloads', () => {
   it('should cancel a payload by Created Payload', async () => {
     fetchMock.doMockOnce(JSON.stringify(jsonFixtures.payload.created))
 
-    const payload = jestFixtures.validPayload as Types.XummPostPayloadBodyJson
+    const payload = jestFixtures.validPayload as XummTypes.XummPostPayloadBodyJson
     const createdPayload = await Sdk.payload.create(payload)
 
     expect(createdPayload).not.toBeNull()

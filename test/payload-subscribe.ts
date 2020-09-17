@@ -4,7 +4,7 @@ import fetchMock from 'jest-fetch-mock'
 
 fetchMock.enableMocks()
 
-import {XummSdk, Types} from '../src/'
+import {XummSdk, XummTypes} from '../src/'
 import {Server, WebSocket as MockedWebSocket} from 'mock-socket'
 
 const wsEol = [MockedWebSocket.CLOSED, MockedWebSocket.CLOSING]
@@ -102,7 +102,7 @@ describe('XUMM Payload Subscriptions', () => {
     fetchMock.doMockOnce(JSON.stringify(jsonFixtures.payload.created))
     fetchMock.doMockOnce(JSON.stringify(jsonFixtures.payload.get))
 
-    const payload = jestFixtures.validPayload as Types.XummPostPayloadBodyJson
+    const payload = jestFixtures.validPayload as XummTypes.XummPostPayloadBodyJson
     const createdAndSubscribed = await Sdk.payload.createAndSubscribe(payload, event => {
       if (typeof event.data.signed !== 'undefined') {
         return event.data
@@ -130,7 +130,7 @@ describe('XUMM Payload Subscriptions', () => {
     fetchMock.doMockOnce(JSON.stringify(jsonFixtures.payload.created))
     fetchMock.doMockOnce(JSON.stringify(jsonFixtures.payload.get))
 
-    const payload = jestFixtures.validPayload as Types.XummPostPayloadBodyJson
+    const payload = jestFixtures.validPayload as XummTypes.XummPostPayloadBodyJson
     const createdAndSubscribed = await Sdk.payload.createAndSubscribe(payload)
 
     expect(createdAndSubscribed).toMatchObject({
