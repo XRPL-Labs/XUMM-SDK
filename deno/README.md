@@ -18,13 +18,13 @@ Most of the content of the [node README](https://github.com/XRPL-Labs/XUMM-SDK) 
 
 Import the SDK like this:
 ```
-import {XummSdk} from 'https://raw.githubusercontent.com/XRPL-Labs/XUMM-SDK/deno/0.1/mod.ts'
+import {XummSdk} from 'https://raw.githubusercontent.com/XRPL-Labs/XUMM-SDK/deno_v0.1.2/mod.ts'
 ```
 
 A sample script `test.ts` could look like this:
 
 ```typescript
-import {XummSdk} from 'https://raw.githubusercontent.com/XRPL-Labs/XUMM-SDK/deno/0.1/mod.ts'
+import {XummSdk} from 'https://raw.githubusercontent.com/XRPL-Labs/XUMM-SDK/deno_v0.1.2/mod.ts'
 
 const Sdk = new XummSdk()
 const pong = await Sdk.ping()
