@@ -120,7 +120,7 @@ export class Payload {
             const callbackResult = await callback({
               uuid: payloadDetails.meta.uuid,
               data: json,
-              async resolve (resolveData?: any) {
+              async resolve (resolveData?: unknown) {
                 callbackPromise.resolve(resolveData || undefined)
               },
               payload: payloadDetails
@@ -136,13 +136,13 @@ export class Payload {
         }
       }
 
-      socket.onclose = (e: any) => {
+      socket.onclose = (e: WebSocket.CloseEvent) => {
         logWs(`Payload ${payloadDetails.meta.uuid}: Subscription ended (WebSocket closed)`)
       }
 
       return {
         payload: payloadDetails,
-        resolve (resolveData?: any) {
+        resolve (resolveData?: unknown) {
           callbackPromise.resolve(resolveData || undefined)
         },
         resolved: callbackPromise.promise,

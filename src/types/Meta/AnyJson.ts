@@ -1,3 +1,1 @@
-export interface AnyJson {
-  [key: string]: AnyJson | any
-}
+export type AnyJson = Record<string, unknown>

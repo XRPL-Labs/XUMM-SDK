@@ -7,6 +7,7 @@ import {throwIfError} from './utils'
 import type {
   ApplicationDetails,
   Pong,
+  CreatePayload,
   AnyJson,
   CuratedAssetsResponse
 } from './types'
@@ -32,7 +33,7 @@ export class Meta {
     return this
   }
 
-  public async call<T> (endpoint: string, httpMethod = 'GET', data?: AnyJson | string): Promise<T> {
+  public async call<T> (endpoint: string, httpMethod = 'GET', data?: CreatePayload | AnyJson): Promise<T> {
     const method = httpMethod.toUpperCase()
 
     try {

@@ -37,14 +37,14 @@ export function throwIfError(call: unknown): Error | void {
 }
 
 export class DeferredPromise {
-  private resolveFn: (arg?: any) => void = (arg?: any) => {
+  private resolveFn: (arg?: unknown) => void = (arg?: unknown) => {
     // Will be replaced by Promise fn
   }
-  private rejectFn: (arg?: any) => void = (arg?: any) => {
+  private rejectFn: (arg?: unknown) => void = (arg?: unknown) => {
     // Will be replaced by Promise fn
   }
 
-  public promise: Promise<any>
+  public promise: Promise<unknown>
 
   constructor () {
     this.promise = new Promise((resolve, reject) => {
@@ -53,11 +53,11 @@ export class DeferredPromise {
     })
   }
 
-  resolve (arg?: any) {
+  resolve (arg?: unknown) {
     this.resolveFn(arg)
     return this.promise
   }
-  reject (arg?: any) {
+  reject (arg?: unknown) {
     this.rejectFn(arg)
     return this.promise
   }
