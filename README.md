@@ -1,4 +1,5 @@
-# XUMM SDK (JS/TS) [![npm version](https://badge.fury.io/js/xumm-sdk.svg)](https://www.npmjs.com/xumm-sdk)
+# XUMM SDK (JS/TS) [![npm version](https://badge.fury.io/js/xumm-sdk.svg)](https://www.npmjs.com/xumm-sdk) [![GitHub Actions NodeJS status](https://github.com/XRPL-Labs/XUMM-SDK/workflows/NodeJS/badge.svg?branch=master)](https://github.com/XRPL-Labs/XUMM-SDK/actions)
+
 
 Interact with the XUMM SDK from Javascript / Typescript environments.
 

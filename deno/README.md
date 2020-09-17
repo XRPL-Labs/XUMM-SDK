@@ -1,4 +1,4 @@
-# XUMM SDK (JS/TS)
+# XUMM SDK (JS/TS) [![GitHub Actions Deno status](https://github.com/XRPL-Labs/XUMM-SDK/workflows/Deno/badge.svg?branch=master)](https://github.com/XRPL-Labs/XUMM-SDK/actions)
 
 Interact with the XUMM SDK from Javascript / Typescript environments.
 
