@@ -29,9 +29,7 @@ const Sdk = new XummSdk()
 
 ### Credentials
 
-The SDK will look in your environment or dotenv file (`.env`) for the `XUMM_APIKEY` and `XUMM_APISECRET` values.
-A [sample dotenv file looks like this](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/sample.env). Alternatively
-you can provide your XUMM API Key & Secret by passing them to the XummSdk constructor. If both your environment and the SDK constructor contain credentials, the values provided to the constructor will be used.
+The SDK will look in your environment or dotenv file (`.env`) for the `XUMM_APIKEY` and `XUMM_APISECRET` values. A `.env.sample` file is provided in this repository. A [sample dotenv file looks like this](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/sample.env). Alternatively you can provide your XUMM API Key & Secret by passing them to the XummSdk constructor. If both your environment and the SDK constructor contain credentials, the values provided to the constructor will be used.
 
 Create your app and get your XUMM API credentials at the XUMM Developer Console:
 
@@ -279,48 +277,6 @@ Lint the code using `npm run lint`, run tests (jest) using `npm run test`
 
 ##### Run development code:
 
-Build, run, show debug output & watch `/dist/samples/dev.js`, compiled from `/samples/dev.ts` using `npm run dev`. The `/samples/dev.ts` file is **not included by default**. A sample file could contain:
+Build, run, show debug output & watch `dist/samples/dev.js`, compiled from `samples/dev.ts` using `npm run dev`. The `samples/dev.ts` file is **not included by default**.
 
-```typescript
-import Debug from 'debug'
-import {XummSdk, XummTypes} from '../src/'
-
-const log = Debug('xumm-sdk:sample')
-
-const main = async () => {
-  try {
-    const Sdk = new XummSdk('someAppKey', 'someAppSecret')
-    const pong = await Sdk.ping()
-    log({pong})
-
-    const curatedAssets = await Sdk.getCuratedAssets()
-    log({curatedAssets})
-
-    const PaymentPayload: XummTypes.CreatePayload = {
-      txjson: {
-        TransactionType : 'Payment',
-        Destination : 'rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY',
-        DestinationTag: 495,
-        Amount: '1337'
-      }
-    }
-
-    const payload = await Sdk.payload.create(PaymentPayload)
-    log({payload})
-
-    if (payload) {
-      await Sdk.payload.subscribe(payload, event => {
-        log('Subscription Event data', event.data)
-
-        if (typeof event.data.expired !== 'undefined' || typeof event.data.signed !== 'undefined') {
-          return event.data
-        }
-      })
-    }
-  } catch (e) {
-    log({error: e.message, stack: e.stack})
-  }
-}
-
-main()
-```
+[Here's a sample `samples/dev.ts` file](https://gist.github.com/WietseWind/e2e9729619872cb736fe29b486e9c623).
