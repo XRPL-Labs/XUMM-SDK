@@ -196,9 +196,9 @@ async Sdk.payload.create (
 ): Promise<CreatedPayload | null>
 ```
 
-To create a payload, a `txjson` XRPL transaction can be provided. Alternatively, a transaction formatted as HEX blob (string) can be provided in a `txblob` property. **See the [intro](#intro) for more information about payloads.**
+To create a payload, a `txjson` XRPL transaction can be provided. Alternatively, a transaction formatted as HEX blob (string) can be provided in a `txblob` property. **See the [intro](#intro) for more information about payloads.** Take a look at the [Developer Docs for more information about payloads](https://xumm.readme.io/docs/your-first-payload).
 
-The response of a `Sdk.payload.create()` operation, a `<CreatedPayload>` object, looks like this:
+The response (see: [Developer Docs](https://xumm.readme.io/docs/payload-response-resources)) of a `Sdk.payload.create()` operation, a `<CreatedPayload>` object, looks like this:
 
 ```json
 {
@@ -217,9 +217,9 @@ The response of a `Sdk.payload.create()` operation, a `<CreatedPayload>` object,
 }
 ```
 
-The `next.always` URL is the URL to send the end user to, to scan a QR code or automatically open the XUMM app (if on mobile). If a `user_token` has been provided as part of the payload data provided to `Sdk.payload.create()`, you can see if the payload has been pushed to the end user. A button "didn't receive a push notification" could then take the user to the `next.no_push_msg_received` URL. 
+The `next.always` URL is the URL to send the end user to, to scan a QR code or automatically open the XUMM app (if on mobile). If a `user_token` has been provided as part of the payload data provided to `Sdk.payload.create()`, you can see if the payload has been pushed to the end user. A button "didn't receive a push notification" could then take the user to the `next.no_push_msg_received` URL. The 
 
-Alternatively user routing / instruction flows can be custom built using the QR information provided in the `refs` object, and a subscription for live status updates (opened, signed, etc.) using a WebSocket client can be setup by conneting to the `refs.websocket_status` URL. **Please note: this SDK already offers subscriptions. There's no need to setup your own WebSocket client, see [Payload subscriptions: live updates](#payload-subscriptions-live-updates).**
+Alternatively user routing / instruction flows can be custom built using the QR information provided in the `refs` object, and a subscription for live status updates (opened, signed, etc.) using a WebSocket client can be setup by conneting to the `refs.websocket_status` URL. **Please note: this SDK already offers subscriptions. There's no need to setup your own WebSocket client, see [Payload subscriptions: live updates](#payload-subscriptions-live-updates).** There's more information about the [payload workflow](https://xumm.readme.io/docs/payload-workflow) and a [paylaod lifecycle](https://xumm.readme.io/docs/doc-payload-life-cycle) in the Developer Docs.
 
 ##### Sdk.payload.cancel
 
@@ -255,6 +255,8 @@ To subscribe to live payload status updates, the XUMM SDK can setup a WebSocket 
 - Payload expiration updates (remaining time in seconds)
 - The payload was resolved by rejecting
 - The payload was resolved by accepting (signing)
+
+More information about the status update events & sample event data [can be found in the Developer Docs](https://xumm.readme.io/docs/payload-status).
 
 Status updates can be processed by providing a *callback function* to the `Sdk.payload.subscribe()` method. Alternatively, the (by the `Sdk.payload.subscribe()` method) returned raw websocket can be used to listen for WebSocket `onmessage` events.
 
