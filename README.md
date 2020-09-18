@@ -1,6 +1,5 @@
 # XUMM SDK (JS/TS) [![npm version](https://badge.fury.io/js/xumm-sdk.svg)](https://www.npmjs.com/xumm-sdk) [![GitHub Actions NodeJS status](https://github.com/XRPL-Labs/XUMM-SDK/workflows/NodeJS/badge.svg?branch=master)](https://github.com/XRPL-Labs/XUMM-SDK/actions) [![GitHub Actions Deno status](https://github.com/XRPL-Labs/XUMM-SDK/workflows/Deno/badge.svg?branch=master)](https://github.com/XRPL-Labs/XUMM-SDK/actions)
 
-
 Interact with the XUMM SDK from Javascript / Typescript environments.
 
 ## How to use the XUMM SDK
@@ -197,7 +196,30 @@ async Sdk.payload.create (
 ): Promise<CreatedPayload | null>
 ```
 
-WIP
+To create a payload, a `txjson` XRPL transaction can be provided. Alternatively, a transaction formatted as HEX blob (string) can be provided in a `txblob` property. **See the [intro](#intro) for more information about payloads.**
+
+The response of a `Sdk.payload.create()` operation, a `<CreatedPayload>` object, looks like this:
+
+```json
+{
+  "uuid": "1289e9ae-7d5d-4d5f-b89c-18633112ce09",
+  "next": {
+    "always": "https://xumm.app/sign/1289e9ae-7d5d-4d5f-b89c-18633112ce09",
+    "no_push_msg_received": "https://xumm.app/sign/1289e9ae-7d5d-4d5f-b89c-18633112ce09/qr"
+  },
+  "refs": {
+    "qr_png": "https://xumm.app/sign/1289e9ae-7d5d-4d5f-b89c-18633112ce09_q.png",
+    "qr_matrix": "https://xumm.app/sign/1289e9ae-7d5d-4d5f-b89c-18633112ce09_q.json",
+    "qr_uri_quality_opts": [ "m", "q", "h" ],
+    "websocket_status": "wss://xumm.app/sign/1289e9ae-7d5d-4d5f-b89c-18633112ce09"
+  },
+  "pushed": true
+}
+```
+
+The `next.always` URL is the URL to send the end user to, to scan a QR code or automatically open the XUMM app (if on mobile). If a `user_token` has been provided as part of the payload data provided to `Sdk.payload.create()`, you can see if the payload has been pushed to the end user. A button "didn't receive a push notification" could then take the user to the `next.no_push_msg_received` URL. 
+
+Alternatively user routing / instruction flows can be custom built using the QR information provided in the `refs` object, and a subscription for live status updates (opened, signed, etc.) using a WebSocket client can be setup by conneting to the `refs.websocket_status` URL. **Please note: this SDK already offers subscriptions. There's no need to setup your own WebSocket client, see [Payload subscriptions: live updates](#payload-subscriptions-live-updates).**
 
 ##### Sdk.payload.cancel
 
@@ -208,28 +230,71 @@ async Sdk.payload.cancel (
 ): Promise<DeletedPayload | null>
 ```
 
-WIP
+To cancel a payload, provide a payload UUID (string), a `<XummPayload>` (by performing a `Sdk.payload.get()` first) or a `<CreatedPayload>` (by using the response of a `Sdk.payload.create()` call). By cancelling an existing payload, the payload will be marked as expired and can no longer be opened by users. 
+
+**Please note**: *if a user already opened the payload in XUMM APP, the payload cannot be cancelled: the user may still be resolving the payload in the XUMM App, and should have a chance to complete that process*.
+
+A response (generic API types [here](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/xumm-api/index.ts)) looks like:
+```javascript
+{
+  result: {
+    cancelled: boolean
+    reason: XummCancelReason
+  }
+  meta: XummPayloadMeta
+  custom_meta: XummCustomMeta
+}
+```
 
 #### Payload subscriptions: live updates
 
-WIP
+To subscribe to live payload status updates, the XUMM SDK can setup a WebSocket connection and monitor live status events. Emitted events include:
 
-- Note: Two methods: callback + return non void = break, of return object en resolve()
-  - onPayloadEvent
-- Reminder: type for callback event?
+- The payload is opened by a XUMM App user (webpage)
+- The payload is opened by a XUMM App user (in the app)
+- Payload expiration updates (remaining time in seconds)
+- The payload was resolved by rejecting
+- The payload was resolved by accepting (signing)
+
+Status updates can be processed by providing a *callback function* to the `Sdk.payload.subscribe()` method. Alternatively, the (by the `Sdk.payload.subscribe()` method) returned raw websocket can be used to listen for WebSocket `onmessage` events.
+
+The subscription will be closed by either:
+
+- Returning non-void in the *callback function* passed to the `Sdk.payload.subscribe()` method
+- Manually calling `.resolve()` on the object returned by the `Sdk.payload.subscribe()` method
 
 ##### Sdk.payload.subscribe
 
 ```typescript
 async Sdk.payload.subscribe (
-    payload: string | XummPayload | CreatedPayload,
-    callback?: onPayloadEvent
-  ): Promise<PayloadSubscription>
+  payload: string | XummPayload | CreatedPayload,
+  callback?: onPayloadEvent
+): Promise<PayloadSubscription>
 ```
+
+If a callback function is not provided, the subscription will stay active until the `<PayloadSubscription>.resolve()` method is called manually, eg. based on handling `<PayloadSubscription>.websocket.onmessage` events.
+
+When a callback function is provided, for every paylaod specific event the callback function will be called with [`<SubscriptionCallbackParams>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/651bd409ee2aab47fb9151513b8cf981cc1a4f30/src/types/Payload/SubscriptionCallbackParams.ts). The `<SubscriptionCallbackParams>.data` property contains parsed JSON containing event information. Either by calling `<SubscriptionCallbackParams>.resolve()` or by returning a non-void value in the *callback function* the subscription will be ended, and the `<PayloadSubscription>.resolved` promise will resolve with the value returned or passed to the `<SubscriptionCallbackParams>.resolve()` method.
+
+Resolving (by returning non-void in the callback or calling `resolve()` manually) closes the WebSocket client the XUMM SDK sets up 'under the hood'.
 
 The [`<PayloadSubscription>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Payload/PayloadSubscription.ts) object looks like this:
 
-WIP
+```javascript
+{
+  payload: XummPayload,
+  resolved: Promise<unknown> | undefined
+  resolve: (resolveData?: unknown) => void
+  websocket: WebSocket
+}
+```
+
+Examples:
+
+- [Async process after returning data in the callback function](https://gist.github.com/WietseWind/e13ab068f06b5e9f2f4a0aeac96f6e2e)
+- [Await based on returning data in the callback function](https://gist.github.com/WietseWind/698ff9a5838e600a8ae36ddcc45d0793)
+- [Await based on resolving a callback event](https://gist.github.com/WietseWind/1afaf3a23b8ea18ded526bbbf1b577dd)
+- [Await based on resolving without using a callback function](https://gist.github.com/WietseWind/76890afd39a01e9876c8a629b3e58174)
 
 ##### Sdk.payload.createAndSubscribe
 
@@ -242,7 +307,10 @@ async Sdk.payload.createAndSubscribe (
 
 The [`<PayloadAndSubscription>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Payload/PayloadAndSubscription.ts) object is basically a [`<PayloadSubscription>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Payload/PayloadSubscription.ts) object with the created payload results in the `created` property:
 
-WIP
+All information that applies on [`Sdk.payload.create()`](#sdk.payload.create) and [`Sdk.payload.subscribe()`](#sdk.payload.subscribe) applies. Differences are:
+
+1. The input for a `Sdk.payload.createAndSubscribe()` call isn't a payload UUID / existing payload, but a paykiad to create. 
+2. The response object also contains (`<PayloadAndSubscription>.created`) the response obtained when creating the payload
 
 ## Debugging (logging)
 
