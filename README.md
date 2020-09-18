@@ -263,7 +263,7 @@ Status updates can be processed by providing a *callback function* to the `Sdk.p
 The subscription will be closed by either:
 
 - Returning non-void in the *callback function* passed to the `Sdk.payload.subscribe()` method
-- Manually calling `.resolve()` on the object returned by the `Sdk.payload.subscribe()` method
+- Manually calling `<PayloadSubscription>.resolve()` on the object returned by the `Sdk.payload.subscribe()` method
 
 ##### Sdk.payload.subscribe
 
