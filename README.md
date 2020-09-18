@@ -174,7 +174,7 @@ You can `get()` a payload by:
   const payload = await Sdk.payload.get('aaaaaaaa-bbbb-cccc-dddd-1234567890ab')
   ```
 
-- Passing a created Payload object (see: [Sdk.payload.create](#sdk.payload.create))  
+- Passing a created Payload object (see: [Sdk.payload.create](#sdkpayloadcreate))  
   ```javascript
   const newPayload: XummTypes.CreatedPayload = {txjson: {...}}
   const created = await Sdk.payload.create(newPayload)
@@ -309,7 +309,7 @@ async Sdk.payload.createAndSubscribe (
 
 The [`<PayloadAndSubscription>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Payload/PayloadAndSubscription.ts) object is basically a [`<PayloadSubscription>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Payload/PayloadSubscription.ts) object with the created payload results in the `created` property:
 
-All information that applies on [`Sdk.payload.create()`](#sdk.payload.create) and [`Sdk.payload.subscribe()`](#sdk.payload.subscribe) applies. Differences are:
+All information that applies on [`Sdk.payload.create()`](#sdkpayloadcreate) and [`Sdk.payload.subscribe()`](#sdkpayloadsubscribe) applies. Differences are:
 
 1. The input for a `Sdk.payload.createAndSubscribe()` call isn't a payload UUID / existing payload, but a paykiad to create. 
 2. The response object also contains (`<PayloadAndSubscription>.created`) the response obtained when creating the payload
