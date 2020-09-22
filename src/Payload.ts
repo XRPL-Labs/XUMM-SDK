@@ -1,5 +1,5 @@
-import Debug from 'debug'
-import {Meta} from './Meta'
+import {debug as Debug} from 'debug'
+import type {Meta} from './Meta'
 import WebSocket from 'ws'
 
 import type {
@@ -19,7 +19,7 @@ import {
 } from './utils'
 
 const log = Debug('xumm-sdk:payload')
-const logWs = log.extend('websocket')
+const logWs = Debug('xumm-sdk:payload:websocket')
 
 export class Payload {
   private Meta: Meta

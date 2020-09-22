@@ -1,4 +1,4 @@
-import Debug from 'debug'
+import {debug as Debug} from 'debug'
 import fetch from 'node-fetch'
 import {hostname} from 'os'
 import packageJson from '../package.json'

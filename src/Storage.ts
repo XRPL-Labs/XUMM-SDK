@@ -1,5 +1,5 @@
-import Debug from 'debug'
-import {Meta} from './Meta'
+import {debug as Debug} from 'debug'
+import type {Meta} from './Meta'
 
 import type {
   AnyJson,

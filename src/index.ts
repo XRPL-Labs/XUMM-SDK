@@ -1,4 +1,4 @@
-import Debug from 'debug'
+import {debug as Debug} from 'debug'
 import * as dotenv from 'dotenv'
 import {Meta} from './Meta'
 import {Storage} from './Storage'
@@ -16,21 +16,33 @@ class XummSdk {
   constructor (apiKey?: string, apiSecret?: string) {
     log('Constructed')
 
-    try {
-      dotenv.config()
-    } catch (e) {
-      // Couldn't load .env
-    }
-
     this.Meta = new Meta(
-      apiKey || process.env.XUMM_APIKEY || '',
-      apiSecret || process.env.XUMM_APISECRET || ''
+      apiKey || this.getEnv('XUMM_APIKEY'),
+      apiSecret || this.getEnv('XUMM_APISECRET')
     )
 
     this.storage = new Storage(this.Meta)
     this.payload = new Payload(this.Meta)
 
     return this
+  }
+
+  private getEnv (arg: string): string {
+    let value = ''
+
+    if (typeof global === 'undefined') {
+      // @ts-ignore
+      value = Deno.env.get(arg) || ''
+    } else {
+      try {
+        dotenv.config()
+        value = process?.env[arg] || ''
+      } catch (e) {
+        // Couldn't load .env
+      }
+    }
+
+    return value
   }
 
   /**
