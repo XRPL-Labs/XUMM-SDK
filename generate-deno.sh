@@ -43,6 +43,11 @@ sed -i -e "/import.*'..\/package.json'/d" ./deno/Meta.ts
 
 sed -i -e "s+.*from 'dotenv'+import 'https://deno.land/x/dotenv/load.ts'+g" ./deno/index.ts
 
+# Fix index Env/Dotenv import Deno vs Node
+sed -i -e "/.*\/\* Node \*\/.*/d" ./deno/index.ts
+sed -i -e "/.*\@ts-ignore/d" ./deno/index.ts
+sed -i -e "s+/\* Deno \*/ ++g" ./deno/index.ts
+
 # Remove ws lib. import / namespace
 sed -i -e "/import type WebSocket from 'ws'/d" ./deno/types/Payload/PayloadSubscription.ts
 sed -i -e "/import WebSocket from 'ws'/d" ./deno/Payload.ts

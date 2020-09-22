@@ -30,16 +30,10 @@ class XummSdk {
   private getEnv (arg: string): string {
     let value = ''
 
-    if (typeof global === 'undefined') {
-      // @ts-ignore
-      value = Deno.env.get(arg) || ''
-    } else {
-      try {
-        dotenv.config()
-        value = process?.env[arg] || ''
-      } catch (e) {
-        // Couldn't load .env
-      }
+    try {
+      value = typeof Deno !== 'undefined' ? (Deno.env.get(arg) || '') : ''
+    } catch (e) {
+      // Couldn't load .env
     }
 
     return value
