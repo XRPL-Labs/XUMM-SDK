@@ -21,7 +21,7 @@ export class Meta {
     const uuidRe = new RegExp('^[a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}$')
 
     if (!uuidRe.test(apiKey) || !uuidRe.test(apiSecret)) {
-      throw new Error('Invalid API Key and/or API Secret.')
+      throw new Error('Invalid API Key and/or API Secret. Use dotenv or constructor params.')
     }
 
     this.apiKey = apiKey
@@ -46,7 +46,7 @@ export class Meta {
 
       const headers = {
         'Content-Type': 'application/json',
-        'User-Agent': `xumm-sdk/deno`,
+        'User-Agent': 'xumm-sdk/deno:0.1.4',
         'x-api-key': this.apiKey,
         'x-api-secret': this.apiSecret
       }
