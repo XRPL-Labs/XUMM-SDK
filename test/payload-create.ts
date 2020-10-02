@@ -23,6 +23,15 @@ describe('Create XUMM payloads', () => {
     expect(createdPayload).toMatchObject(jestFixtures.createPayloadResponseObject)
   })
 
+  it('should create a simple payment based on only (unwrapped payload) TX Json', async () => {
+    fetchMock.doMockOnce(JSON.stringify(jsonFixtures.payload.created))
+
+    const payload = jestFixtures.validPayload as XummTypes.XummPostPayloadBodyJson
+    const createdPayload = await Sdk.payload.create(payload.txjson)
+
+    expect(createdPayload).toMatchObject(jestFixtures.createPayloadResponseObject)
+  })
+
   it('should return null on invalid payload', async () => {
     fetchMock.doMockOnce(JSON.stringify(jsonFixtures.payload.error))
 
