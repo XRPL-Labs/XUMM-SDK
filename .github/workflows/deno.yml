@@ -22,6 +22,8 @@ jobs:
       uses: denolib/setup-deno@v2
       with:
         deno-version: ${{ matrix.deno-version }}
+    - name: Generate Deno source from TS
+      run: ./generate-deno.sh
     - run: deno lint --unstable mod.ts deno/*.ts deno/*/*
     - run: deno test --allow-read=.env,.env.defaults --allow-env=DEBUG,XUMM_API* mod.ts
       env:
