@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "Parsing TS to Deno"
+
 replaceTsPath(){
 	grep -R "from '$1'" ./deno/*|grep '.ts:'|cut -d ":" -f 1|sort|uniq|xargs -I___ sed -i -e "s+from '$1'+from '$2'+g" ___
 }
@@ -61,3 +63,11 @@ replaceTsPath 'debug' 'https://deno.land/x/debug/mod.ts'
 
 # Clean OSX sed backup files:
 find ./deno -iname '*.ts-e' -delete
+
+##### RUN CHECKS
+echo "Done, generated"
+echo
+echo "Generated, running basic checks (Deno Docker)"
+docker run --rm -v $(pwd)/.deno-cache:/deno-dir -v $(pwd):/root/xumm-sdk hayd/deno sh -c 'cd ~/xumm-sdk; deno lint --unstable mod.ts deno/*.ts deno/*/*; deno test --allow-read=.env,.env.defaults --allow-env=DEBUG,XUMM_API* mod.ts'
+echo "Done"
+echo
