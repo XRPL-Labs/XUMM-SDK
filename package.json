@@ -22,7 +22,6 @@
     "bignumber.js": "^9.0.0",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
-    "isomorphic-ws": "^4.0.1",
     "node-fetch": "^2.6.1",
     "ws": "^7.3.1"
   },
