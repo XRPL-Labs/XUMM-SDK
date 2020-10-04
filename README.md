@@ -2,6 +2,11 @@
 
 Interact with the XUMM SDK from Javascript / Typescript environments.
 
+#### **Please note! The XUMM SDK (XUMM API in general) is for BACKEND USE only. Please DO NOT use your API credentials in a FRONTEND environment.**
+
+<div class="alert alert-danger shadow-sm" style="color: #ca0000; border: 1px solid #ca0000; padding: 4px 6px; border-radius: 5px; background-color: rgba(200, 110, 50, .2)">To implement the XUMM SKD (or XUMM API directly) in your own web project, make sure your frontend calls your own backend, where the follow up
+communication with the XUMM SDK (or XUMM API) will take place. Your XUMM credentials should never be publicly available.</div>
+
 ## How to use the XUMM SDK
 
 Get the SDK straight from npm: `npm install xumm-sdk`. The SDK is [also available](https://deno.land/x/xumm) for [Deno](https://deno.land) ([XUMM SDK Deno Readme](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/deno/README.md)).
