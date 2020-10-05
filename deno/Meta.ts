@@ -9,7 +9,7 @@ import type {
   CuratedAssetsResponse
 } from './types/index.ts'
 
-const log = Debug('xumm-sdk:main')
+const log = Debug('xumm-sdk:meta')
 
 export class Meta {
   private apiKey: string

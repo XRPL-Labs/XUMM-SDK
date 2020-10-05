@@ -5,7 +5,7 @@ import {Storage} from './Storage.ts'
 import {Payload} from './Payload.ts'
 import type * as Types from './types/xumm-api/index.ts'
 
-const log = Debug('xumm-Meta')
+const log = Debug('xumm-sdk')
 
 class XummSdk {
   private Meta: Meta
