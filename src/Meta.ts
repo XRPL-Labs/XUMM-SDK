@@ -12,7 +12,7 @@ import type {
   CuratedAssetsResponse
 } from './types'
 
-const log = Debug('xumm-sdk:main')
+const log = Debug('xumm-sdk:meta')
 
 export class Meta {
   private apiKey: string
