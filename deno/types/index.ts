@@ -4,6 +4,7 @@ export type {AnyJson} from './Meta/AnyJson.ts'
 export type {ApplicationDetails} from './Meta/ApplicationDetails.ts'
 export type {CuratedAssetsResponse} from './Meta/CuratedAssetsResponse.ts'
 export type {Pong} from './Meta/Pong.ts'
+export type {XrplTransaction} from './Meta/XrplTransaction.ts'
 
 export type {onPayloadEvent} from './Payload/onPayloadEvent.ts'
 export type {PayloadAndSubscription} from './Payload/PayloadAndSubscription.ts'

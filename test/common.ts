@@ -56,6 +56,20 @@ describe('Common XUMM API client tests', () => {
     expect((new XummSdk(jsonFixtures.api.key, jsonFixtures.api.secret)).ping()).rejects.toThrow(err)
   })
 
+  it('should fetch curated assets', async () => {
+    fetchMock.doMockOnce(JSON.stringify(jsonFixtures.curatedAssets))
+
+    const Sdk = new XummSdk(jsonFixtures.api.key, jsonFixtures.api.secret)
+    expect(await Sdk.getCuratedAssets()).toMatchObject(jsonFixtures.curatedAssets)
+  })
+
+  it('should fetch an XRPL tx', async () => {
+    fetchMock.doMockOnce(JSON.stringify(jsonFixtures.xrplTx))
+
+    const Sdk = new XummSdk(jsonFixtures.api.key, jsonFixtures.api.secret)
+    expect(await Sdk.getTransaction('')).toMatchObject(jsonFixtures.xrplTx)
+  })
+
   /**
    * Tests done
    */

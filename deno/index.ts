@@ -50,6 +50,10 @@ class XummSdk {
   public getCuratedAssets () {
     return this.Meta.getCuratedAssets()
   }
+
+  public getTransaction (txHash: string) {
+    return this.Meta.getTransaction(txHash)
+  }
 }
 
 export {

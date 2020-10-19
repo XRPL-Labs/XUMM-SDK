@@ -165,5 +165,100 @@
         "code": 404
       }
     }
+  },
+  "curatedAssets": {
+    "issuers": [
+      "Bitstamp",
+      "Wietse"
+    ],
+    "currencies": [
+      "USD",
+      "BTC",
+      "ETH",
+      "WIE"
+    ],
+    "details": {
+      "Bitstamp": {
+        "id": 185,
+        "name": "Bitstamp",
+        "domain": "bitstamp.net",
+        "avatar": "https://xumm.app/assets/icons/currencies/ex-bitstamp.png",
+        "shortlist": 1,
+        "currencies": {
+          "USD": {
+            "id": 178,
+            "issuer_id": 185,
+            "issuer": "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
+            "currency": "USD",
+            "name": "US Dollar",
+            "avatar": "https://xumm.app/assets/icons/currencies/fiat-dollar.png",
+            "shortlist": 1
+          },
+          "BTC": {
+            "id": 492,
+            "issuer_id": 185,
+            "issuer": "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
+            "currency": "BTC",
+            "name": "Bitcoin",
+            "avatar": "https://xumm.app/assets/icons/currencies/crypto-btc.png",
+            "shortlist": 1
+          }
+        }
+      },
+      "Wietse": {
+        "id": 17553,
+        "name": "Wietse",
+        "domain": "wietse.com",
+        "avatar": "https://xumm.app/assets/icons/currencies/wietse.jpg",
+        "shortlist": 0,
+        "currencies": {
+          "WIE": {
+            "id": 17552,
+            "issuer_id": 17553,
+            "issuer": "rwietsevLFg8XSmG3bEZzFein1g8RBqWDZ",
+            "currency": "WIE",
+            "name": "Wietse",
+            "avatar": "https://xumm.app/assets/icons/currencies/transparent.png",
+            "shortlist": 0
+          }
+        }
+      }
+    }
+  },
+  "xrplTx": {
+    "txid": "A17E4DEAD62BF705D9B73B4EAD2832F1C55C6C5A0067327A45E497FD8D31C0E3",
+    "balanceChanges": {
+      "r4bA4uZgXadPMzURqGLCvCmD48FmXJWHCG": [
+        {
+          "counterparty": "",
+          "currency": "XRP",
+          "value": "-1.000012"
+        }
+      ],
+      "rPdvC6ccq8hCdPKSPJkPmyZ4Mi1oG2FFkT": [
+        {
+          "counterparty": "",
+          "currency": "XRP",
+          "value": "1"
+        }
+      ]
+    },
+    "node": "wss://xrpl.ws",
+    "transaction": {
+      "Account": "r4bA4uZgXadPMzURqGLCvCmD48FmXJWHCG",
+      "Amount": "1000000",
+      "Destination": "rPdvC6ccq8hCdPKSPJkPmyZ4Mi1oG2FFkT",
+      "Fee": "12",
+      "Flags": 2147483648,
+      "Sequence": 58549314,
+      "SigningPubKey": "0260F06C0590C470E7E7FA9DE3D9E85B1825E19196D8893DD84431F6E9491739AC",
+      "TransactionType": "Payment",
+      "meta": {
+        "TransactionIndex": 0,
+        "TransactionResult": "tesSUCCESS",
+        "delivered_amount": "1000000"
+      },
+      "validated": true
+    }
   }
 }

@@ -23,6 +23,7 @@ replaceTsPath './utils' './utils.ts'
 replaceTsPath './xumm-api' './xumm-api/index.ts'
 replaceTsPath './SubscriptionCallbackParams' './SubscriptionCallbackParams.ts'
 replaceTsPath './ApplicationDetails' './ApplicationDetails.ts'
+replaceTsPath './AnyJson' './AnyJson.ts'
 
 replaceTsPath './Storage' './Storage.ts'
 replaceTsPath './Payload' './Payload.ts'

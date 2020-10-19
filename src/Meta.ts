@@ -9,7 +9,8 @@ import type {
   Pong,
   CreatePayload,
   AnyJson,
-  CuratedAssetsResponse
+  CuratedAssetsResponse,
+  XrplTransaction
 } from './types'
 
 const log = Debug('xumm-sdk:meta')
@@ -81,7 +82,11 @@ export class Meta {
     throw new Error(`Unexpected response for ping request`)
   }
 
-  async getCuratedAssets (): Promise<CuratedAssetsResponse> {
+  public async getCuratedAssets (): Promise<CuratedAssetsResponse> {
     return await this.call<CuratedAssetsResponse>('curated-assets')
+  }
+
+  public async getTransaction (txHash: string): Promise<XrplTransaction> {
+    return await this.call<XrplTransaction>('xrpl-tx/' + txHash.trim())
   }
 }
