@@ -34,7 +34,7 @@ const Sdk = new XummSdk()
 
 ### Credentials
 
-The SDK will look in your environment or dotenv file (`.env`) for the `XUMM_APIKEY` and `XUMM_APISECRET` values. A `.env.sample` file is provided in this repository. A [sample dotenv file looks like this](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/sample.env). Alternatively you can provide your XUMM API Key & Secret by passing them to the XummSdk constructor. If both your environment and the SDK constructor contain credentials, the values provided to the constructor will be used.
+The SDK will look in your environment or dotenv file (`.env`) for the `XUMM_APIKEY` and `XUMM_APISECRET` values. A `.env.sample` file is provided in this repository. A [sample dotenv file looks like this](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/.env.sample). Alternatively you can provide your XUMM API Key & Secret by passing them to the XummSdk constructor. If both your environment and the SDK constructor contain credentials, the values provided to the constructor will be used.
 
 Create your app and get your XUMM API credentials at the XUMM Developer Console:
 
@@ -101,6 +101,20 @@ Returns [`<CuratedAssetsResponse>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/m
   }
 }
 ```
+
+##### Sdk.getTransaction()
+
+The `getTransaction` method allows you to get the transaction outcome (mainnet)
+live from the XRP ledger, as fetched for you by the XUMM backend.
+
+**Note**: it's best to retrieve these results **yourself** instead of relying on the XUMM platform to get live XRPL transaction information! You can use the **[xrpl-txdata](https://www.npmjs.com/package/xrpl-txdata)** package to do this:  
+[![npm version](https://badge.fury.io/js/xrpl-txdata.svg)](https://www.npmjs.com/xrpl-txdata)
+
+```typescript
+const txInfo = await Sdk.getTransaction(txHash)
+```
+
+Returns: `<XrplTransaction>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/XrplTransaction.ts)
 
 #### App Storage
 
