@@ -67,6 +67,7 @@ export interface XummPayloadMeta {
   expired: boolean
   pushed: boolean
   app_opened: boolean
+  opened_by_deeplink: boolean | null
   immutable?: boolean
   forceAccount?: boolean
   return_url_app: string | null
