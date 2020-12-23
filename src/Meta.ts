@@ -1,7 +1,6 @@
 import {debug as Debug} from 'debug'
 import fetch from 'node-fetch'
 import {hostname} from 'os'
-import packageJson from '../package.json'
 import {throwIfError} from './utils'
 
 import type {
@@ -50,7 +49,7 @@ export class Meta {
 
       const headers = {
         'Content-Type': 'application/json',
-        'User-Agent': `xumm-sdk/${packageJson.version} (${hostname()}) node-fetch`,
+        'User-Agent': `xumm-sdk/node (${hostname()}) node-fetch`,
         'x-api-key': this.apiKey,
         'x-api-secret': this.apiSecret
       }
