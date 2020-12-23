@@ -14,8 +14,8 @@
     "lint": "tslint -p ./"
   },
   "files": [
-    "src/**/*.js",
-    "src/**/*.d.ts"
+    "dist/src/**/*.js",
+    "dist/src/**/*.d.ts"
   ],
   "dependencies": {
     "assert": "^2.0.0",
