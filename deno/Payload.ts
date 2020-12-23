@@ -126,7 +126,7 @@ export class Payload {
               uuid: payloadDetails.meta.uuid,
               data: json,
               async resolve (resolveData?: unknown) {
-                callbackPromise.resolve(resolveData || undefined)
+                await callbackPromise.resolve(resolveData || undefined)
               },
               payload: payloadDetails
             })

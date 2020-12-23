@@ -43,6 +43,31 @@ describe('XUMM Payload Subscriptions', () => {
 
   const Sdk = new XummSdk()
 
+  it('should susbscribe & resolve using inner resolve method @ callback', async () => {
+    fetchMock.doMockOnce(JSON.stringify(jsonFixtures.payload.get))
+
+    const subscriptionSocket = await Sdk.payload.subscribe('0ef943e9-18ae-4fa2-952a-6f55dce363f0', event => {
+      if (typeof event.data.signed !== 'undefined') {
+        return event.resolve(event.data)
+      }
+    })
+
+    expect(subscriptionSocket).toMatchObject({
+      payload: jsonFixtures.payload.get,
+      resolve: expect.any(Function),
+      resolved: expect.any(Promise),
+      websocket: expect.any(MockedWebSocket)
+    })
+
+    await new Promise(resolve => subscriptionSocket.websocket.onopen = resolve)
+
+    expect(subscriptionSocket.websocket.readyState).toEqual(subscriptionSocket.websocket.OPEN)
+    expect(await subscriptionSocket.resolved).toMatchObject(jestFixtures.subscriptionUpdates.rejected)
+    expect(wsEol).toEqual(expect.arrayContaining([subscriptionSocket.websocket.readyState]))
+
+    return
+  })
+
   it('should susbscribe & resolve using return @ callback', async () => {
     fetchMock.doMockOnce(JSON.stringify(jsonFixtures.payload.get))
 
