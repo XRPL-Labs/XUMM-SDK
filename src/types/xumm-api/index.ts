@@ -130,6 +130,8 @@ export interface XummGetPayloadResponse {
     tx_destination: string
     tx_destination_tag: number | null
     request_json: XummJsonTransaction
+    origintype: string | null
+    signmethod: string | null
     created_at: string
     expires_at: string
     expires_in_seconds: number
