@@ -136,7 +136,7 @@ export interface XummGetPayloadResponse {
     computed?: Record<string, unknown>
   }
   response: {
-      hex: string | null
+    hex: string | null
     txid: string | null
     resolved_at: string | null
     dispatched_nodetype: string | null
