@@ -3,6 +3,7 @@ import 'https://deno.land/x/dotenv/load.ts'
 import {Meta} from './Meta.ts'
 import {Storage} from './Storage.ts'
 import {Payload} from './Payload.ts'
+import {xApp} from './xApp.ts'
 import type * as Types from './types/xumm-api/index.ts'
 
 const log = Debug('xumm-sdk')
@@ -12,6 +13,7 @@ class XummSdk {
 
   public storage: Storage
   public payload: Payload
+  public xApp: xApp
 
   constructor (apiKey?: string, apiSecret?: string) {
     log('Constructed')
@@ -23,6 +25,7 @@ class XummSdk {
 
     this.storage = new Storage(this.Meta)
     this.payload = new Payload(this.Meta)
+    this.xApp = new xApp(this.Meta)
 
     return this
   }

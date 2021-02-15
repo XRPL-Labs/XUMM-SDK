@@ -16,6 +16,11 @@ export type {StorageGetResponse} from './Storage/StorageGetResponse'
 export type {StorageResponse} from './Storage/StorageResponse'
 export type {StorageSetResponse} from './Storage/StorageSetResponse'
 
+export type {xAppOttData} from './xApp/xAppOttData'
+export type {xAppEventResponse} from './xApp/xAppEventResponse'
+export type {xAppPushResponse} from './xApp/xAppPushResponse'
+export type {xAppEventPushPostBody} from './xApp/xAppEventPushPostBody'
+
 /**
  * Aliasses
  */

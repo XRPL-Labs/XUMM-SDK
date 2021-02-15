@@ -264,5 +264,22 @@
       },
       "validated": true
     }
+  },
+  "xApp": {
+    "get": {
+      "account": "r...",
+      "accountaccess": "FULL",
+      "accounttype": "REGULAR",
+      "locale": "en",
+      "style": "LIGHT",
+      "version": "1.0.1"
+    },
+    "push": {
+      "pushed": true
+    },
+    "event": {
+      "pushed": true,
+      "uuid": "19dd8a5b-e167-49a1-8f21-50f0254c55ef"
+    }
   }
 }

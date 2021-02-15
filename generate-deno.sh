@@ -28,6 +28,7 @@ replaceTsPath './AnyJson' './AnyJson.ts'
 replaceTsPath './Storage' './Storage.ts'
 replaceTsPath './Payload' './Payload.ts'
 replaceTsPath './Meta' './Meta.ts'
+replaceTsPath './xApp' './xApp.ts'
 
 # Transform TS / Deno paths globally in type export 
 sed -i -e "s+from './\(.*\)/\([a-zA-Z]*\)'+from './\1/\2.ts'+g" ./deno/types/index.ts

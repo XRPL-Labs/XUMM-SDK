@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv'
 import {Meta} from './Meta'
 import {Storage} from './Storage'
 import {Payload} from './Payload'
+import {xApp} from './xApp'
 import type * as Types from './types/xumm-api'
 
 const log = Debug('xumm-sdk')
@@ -12,6 +13,7 @@ class XummSdk {
 
   public storage: Storage
   public payload: Payload
+  public xApp: xApp
 
   constructor (apiKey?: string, apiSecret?: string) {
     log('Constructed')
@@ -23,6 +25,7 @@ class XummSdk {
 
     this.storage = new Storage(this.Meta)
     this.payload = new Payload(this.Meta)
+    this.xApp = new xApp(this.Meta)
 
     return this
   }
