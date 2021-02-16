@@ -58,7 +58,8 @@ export const cancelPayloadResponseObject = {
     app_opened: expect.any(Boolean),
     opened_by_deeplink: expect.any(Boolean) || null,
     return_url_app: expect.any(String),
-    return_url_web: expect.any(String)
+    return_url_web: expect.any(String),
+    is_xapp: expect.any(Boolean)
   }
 }
 

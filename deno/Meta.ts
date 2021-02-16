@@ -47,7 +47,7 @@ export class Meta {
 
       const headers = {
         'Content-Type': 'application/json',
-        'User-Agent': 'xumm-sdk/deno:0.4.0',
+        'User-Agent': 'xumm-sdk/deno:0.4.1',
         'x-api-key': this.apiKey,
         'x-api-secret': this.apiSecret
       }

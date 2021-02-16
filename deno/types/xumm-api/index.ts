@@ -74,7 +74,7 @@ export interface XummPayloadMeta {
   forceAccount?: boolean
   return_url_app: string | null
   return_url_web: string | null
-  is_xapp: number
+  is_xapp: boolean
 }
 
 export interface XummPayloadBodyBase {
