@@ -145,7 +145,7 @@
         "hex": "ABCDEF123456789",
         "txid": "ABCDEF123456789",
         "resolved_at": "2020-05-03T17:28:40.000Z",
-        "dispatched_to": "wss://xrpl.ws",
+        "dispatched_to": "wss://xrplcluster.com",
         "dispatched_result": "tes_SUCCESS",
         "dispatched_nodetype": "MAINNET",
         "multisign_account": "rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY",
@@ -249,7 +249,7 @@
         }
       ]
     },
-    "node": "wss://xrpl.ws",
+    "node": "wss://xrplcluster.com",
     "transaction": {
       "Account": "r4bA4uZgXadPMzURqGLCvCmD48FmXJWHCG",
       "Amount": "1000000",

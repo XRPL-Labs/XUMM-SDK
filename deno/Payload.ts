@@ -195,7 +195,7 @@ export class Payload {
   }
 
   /**
-   * TODO: add xrpl.ws helper WebSocket client to verify payload result tx hash
+   * TODO: add xrplcluster.com helper WebSocket client to verify payload result tx hash
    * on ledger.
    */
 
