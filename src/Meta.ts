@@ -9,6 +9,8 @@ import type {
   CreatePayload,
   AnyJson,
   CuratedAssetsResponse,
+  KycStatusResponse,
+  PossibleKycStatuses,
   XrplTransaction
 } from './types'
 
@@ -83,6 +85,13 @@ export class Meta {
 
   public async getCuratedAssets (): Promise<CuratedAssetsResponse> {
     return await this.call<CuratedAssetsResponse>('curated-assets')
+  }
+
+  public async getKycStatus (userToken: string): Promise<keyof PossibleKycStatuses> {
+    const call = await this.call<KycStatusResponse>('kyc-status', 'POST', {
+      user_token: userToken
+    })
+    return call?.kycStatus || 'NONE'
   }
 
   public async getTransaction (txHash: string): Promise<XrplTransaction> {

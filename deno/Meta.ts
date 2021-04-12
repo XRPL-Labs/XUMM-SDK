@@ -7,6 +7,8 @@ import type {
   CreatePayload,
   AnyJson,
   CuratedAssetsResponse,
+  KycStatusResponse,
+  PossibleKycStatuses,
   XrplTransaction
 } from './types/index.ts'
 
@@ -47,7 +49,7 @@ export class Meta {
 
       const headers = {
         'Content-Type': 'application/json',
-        'User-Agent': 'xumm-sdk/deno:0.4.1',
+        'User-Agent': 'xumm-sdk/deno:0.4.2',
         'x-api-key': this.apiKey,
         'x-api-secret': this.apiSecret
       }
@@ -81,6 +83,13 @@ export class Meta {
 
   public async getCuratedAssets (): Promise<CuratedAssetsResponse> {
     return await this.call<CuratedAssetsResponse>('curated-assets')
+  }
+
+  public async getKycStatus (userToken: string): Promise<keyof PossibleKycStatuses> {
+    const call = await this.call<KycStatusResponse>('kyc-status', 'POST', {
+      user_token: userToken
+    })
+    return call?.kycStatus || 'NONE'
   }
 
   public async getTransaction (txHash: string): Promise<XrplTransaction> {

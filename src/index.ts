@@ -57,6 +57,10 @@ class XummSdk {
     return this.Meta.getCuratedAssets()
   }
 
+  public getKycStatus (userToken: string) {
+    return this.Meta.getKycStatus(userToken)
+  }
+
   public getTransaction (txHash: string) {
     return this.Meta.getTransaction(txHash)
   }
