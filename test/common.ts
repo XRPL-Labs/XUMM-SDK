@@ -63,6 +63,14 @@ describe('Common XUMM API client tests', () => {
     expect(await Sdk.getCuratedAssets()).toMatchObject(jsonFixtures.curatedAssets)
   })
 
+  it('should fetch user KYC status', async () => {
+    fetchMock.doMockOnce(JSON.stringify(jsonFixtures.kycStatus))
+
+    const Sdk = new XummSdk(jsonFixtures.api.key, jsonFixtures.api.secret)
+    const userToken = '2557f69c-6617-40dc-9d1e-a34487cb3f90'
+    expect(await Sdk.getKycStatus(userToken)).toEqual('IN_PROGRESS')
+  })
+
   it('should fetch an XRPL tx', async () => {
     fetchMock.doMockOnce(JSON.stringify(jsonFixtures.xrplTx))
 

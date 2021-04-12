@@ -231,6 +231,15 @@
       }
     }
   },
+  "kycStatus": {
+    "kycStatus": "IN_PROGRESS",
+    "possibleStatuses": {
+      "NONE": "No KYC attempt has been made",
+      "IN_PROGRESS": "KYC flow has been started, but did not finish (yet)",
+      "REJECTED": "KYC flow has been started and rejected (NO SUCCESSFUL KYC)",
+      "SUCCESSFUL": "KYC flow has been started and was SUCCESSFUL :)"
+    }
+  },
   "xrplTx": {
     "txid": "A17E4DEAD62BF705D9B73B4EAD2832F1C55C6C5A0067327A45E497FD8D31C0E3",
     "balanceChanges": {

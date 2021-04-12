@@ -102,6 +102,22 @@ Returns [`<CuratedAssetsResponse>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/m
 }
 ```
 
+
+##### Sdk.getKycStatus()
+
+The `getKycStatus` return the KYC status of a user based on a user_token, issued after the
+user signed a Sign Request (from your app) before (see Payloads - Intro).
+
+If a user token specified is invalid, revoked, expired, etc. the method will always
+return `NONE`, just like when a user didn't go through KYC. You cannot distinct a non-KYC'd user
+from an invalid token.
+
+```typescript
+const kycStatus = await Sdk.getKycStatus('00000000-0000-0000-0000-000000000000')
+```
+
+Returns [`<keyof PossibleKycStatuses>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/KycStatusResponse.ts#L1).
+
 ##### Sdk.getTransaction()
 
 The `getTransaction` method allows you to get the transaction outcome (mainnet)
