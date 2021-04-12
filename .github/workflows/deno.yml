@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        deno-version: [v1.x, nightly]
+        deno-version: [v1.x]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Fix Windows Git autocrlf
