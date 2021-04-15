@@ -38,7 +38,7 @@ class XummSdk {
       /* Deno */ value = typeof Deno !== 'undefined' ? (Deno.env.get(arg) || '') : ''
       /* Node */ dotenv.config()
       /* Node */ value = process?.env[arg] || ''
-    } catch (e) {
+    } catch (_e) {
       // Couldn't load .env
     }
 

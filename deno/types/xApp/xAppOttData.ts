@@ -7,5 +7,6 @@ export interface xAppOttData {
   accountaccess?: string,
   accounttype?: string,
   style?: string,
-  origin?: AnyJson
+  origin?: AnyJson,
+  user: string
 }

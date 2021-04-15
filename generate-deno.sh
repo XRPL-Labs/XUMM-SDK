@@ -70,9 +70,9 @@ find ./deno -iname '*.ts-e' -delete
 echo "Done, generated"
 echo
 echo "Generated, running basic checks (Deno Docker)"
-echo "Cleaning"
-docker rmi hayd/deno
+#echo "Cleaning"
+#docker rmi hayd/deno
 echo "Running"
-docker run --rm -v $(pwd)/.deno-cache:/deno-dir -v $(pwd):/root/xumm-sdk hayd/deno sh -c 'cd ~/xumm-sdk; deno lint --unstable mod.ts deno/*.ts deno/*/*; deno test --allow-read=.env,.env.defaults --allow-env=DEBUG,XUMM_API* mod.ts'
+docker run --rm -v $(pwd)/.deno-cache:/deno-dir -v $(pwd):/root/xumm-sdk hayd/deno sh -c 'cd ~/xumm-sdk; deno lint --unstable mod.ts deno/*.ts deno/*/*; deno test --allow-env=DEBUG,XUMM_APIKEY,XUMM_APISECRET --allow-read=.env,.env.defaults mod.ts'
 echo "Done"
 echo

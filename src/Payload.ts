@@ -144,7 +144,7 @@ export class Payload {
         }
       }
 
-      socket.onclose = (e: WebSocket.CloseEvent) => {
+      socket.onclose = (_e: WebSocket.CloseEvent) => {
         logWs(`Payload ${payloadDetails.meta.uuid}: Subscription ended (WebSocket closed)`)
       }
 

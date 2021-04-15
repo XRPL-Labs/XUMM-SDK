@@ -2,7 +2,6 @@ import {debug as Debug} from 'debug'
 import type {Meta} from './Meta'
 
 import type {
-  AnyJson,
   xAppOttData,
   xAppEventResponse,
   xAppPushResponse,

@@ -35,7 +35,7 @@ class XummSdk {
 
     try {
       value = typeof Deno !== 'undefined' ? (Deno.env.get(arg) || '') : ''
-    } catch (e) {
+    } catch (_e) {
       // Couldn't load .env
     }
 

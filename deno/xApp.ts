@@ -2,7 +2,6 @@ import {debug as Debug} from 'https://deno.land/x/debug/mod.ts'
 import type {Meta} from './Meta.ts'
 
 import type {
-  AnyJson,
   xAppOttData,
   xAppEventResponse,
   xAppPushResponse,

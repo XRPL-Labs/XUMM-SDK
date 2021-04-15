@@ -37,10 +37,10 @@ export function throwIfError(call: unknown): Error | void {
 }
 
 export class DeferredPromise {
-  private resolveFn: (arg?: unknown) => void = (arg?: unknown) => {
+  private resolveFn: (arg?: unknown) => void = (_arg?: unknown) => {
     // Will be replaced by Promise fn
   }
-  private rejectFn: (arg?: unknown) => void = (arg?: unknown) => {
+  private rejectFn: (arg?: unknown) => void = (_arg?: unknown) => {
     // Will be replaced by Promise fn
   }
 
