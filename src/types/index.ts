@@ -4,6 +4,7 @@ export type {AnyJson} from './Meta/AnyJson'
 export type {ApplicationDetails} from './Meta/ApplicationDetails'
 export type {CuratedAssetsResponse} from './Meta/CuratedAssetsResponse'
 export type {KycStatusResponse, PossibleKycStatuses} from './Meta/KycStatusResponse'
+export type {KycInfoResponse} from './Meta/KycInfoResponse'
 export type {Pong} from './Meta/Pong'
 export type {XrplTransaction} from './Meta/XrplTransaction'
 

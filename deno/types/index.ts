@@ -4,6 +4,7 @@ export type {AnyJson} from './Meta/AnyJson.ts'
 export type {ApplicationDetails} from './Meta/ApplicationDetails.ts'
 export type {CuratedAssetsResponse} from './Meta/CuratedAssetsResponse.ts'
 export type {KycStatusResponse, PossibleKycStatuses} from './Meta/KycStatusResponse.ts'
+export type {KycInfoResponse} from './Meta/KycInfoResponse.ts'
 export type {Pong} from './Meta/Pong.ts'
 export type {XrplTransaction} from './Meta/XrplTransaction.ts'
 

@@ -9,6 +9,7 @@ import type {
   CreatePayload,
   AnyJson,
   CuratedAssetsResponse,
+  KycInfoResponse,
   KycStatusResponse,
   PossibleKycStatuses,
   XrplTransaction
@@ -87,11 +88,16 @@ export class Meta {
     return await this.call<CuratedAssetsResponse>('curated-assets')
   }
 
-  public async getKycStatus (userToken: string): Promise<keyof PossibleKycStatuses> {
-    const call = await this.call<KycStatusResponse>('kyc-status', 'POST', {
-      user_token: userToken
-    })
-    return call?.kycStatus || 'NONE'
+  public async getKycStatus (userTokenOrAccount: string): Promise<keyof PossibleKycStatuses> {
+    if (userTokenOrAccount.trim().match(/^r/)) {
+      const call = await this.call<KycInfoResponse>('kyc-status/' + userTokenOrAccount.trim())
+      return call?.kycApproved ? 'SUCCESSFUL' : 'NONE'
+    } else {
+      const call = await this.call<KycStatusResponse>('kyc-status', 'POST', {
+        user_token: userTokenOrAccount
+      })
+      return call?.kycStatus || 'NONE'
+    }
   }
 
   public async getTransaction (txHash: string): Promise<XrplTransaction> {
