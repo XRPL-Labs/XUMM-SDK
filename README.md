@@ -112,8 +112,16 @@ If a user token specified is invalid, revoked, expired, etc. the method will alw
 return `NONE`, just like when a user didn't go through KYC. You cannot distinct a non-KYC'd user
 from an invalid token.
 
+Alternatively, KYC status can be retrieved for an XPRL account address: the address selected in
+XUMM when the session KYC was initiated by.
+
 ```typescript
 const kycStatus = await Sdk.getKycStatus('00000000-0000-0000-0000-000000000000')
+```
+
+... or using an account address:
+```typescript
+const kycStatus = await Sdk.getKycStatus('rwu1dgaUq8DCj3ZLFXzRbc1Aco5xLykMMQ')
 ```
 
 Returns [`<keyof PossibleKycStatuses>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/KycStatusResponse.ts#L1).
