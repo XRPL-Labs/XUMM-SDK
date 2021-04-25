@@ -126,6 +126,11 @@ const kycStatus = await Sdk.getKycStatus('rwu1dgaUq8DCj3ZLFXzRbc1Aco5xLykMMQ')
 
 Returns [`<keyof PossibleKycStatuses>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/KycStatusResponse.ts#L1).
 
+###### Notes on KYC information
+
+- Once an account has successfully completed the XUMM KYC flow, the KYC flag will be applied to the account even if the identity document used to KYC expired. The flag shows that the account was **once** KYC'd by a real person with a real identity document.
+- Please note that the KYC flag provided by XUMM can't be seen as a "all good, let's go ahead" flag: it should be used as **one of the data points** to determine if an account can be trusted. There are situations where the KYC flag is still `true`, but an account can no longer be trusted. Eg. when account keys are compromised and the account is now controlled by a 3rd party. While unlikely, depending on the level of trust required for your application you may want to mitigate against these kinds of fraud.
+
 ##### Sdk.getTransaction()
 
 The `getTransaction` method allows you to get the transaction outcome (mainnet)
