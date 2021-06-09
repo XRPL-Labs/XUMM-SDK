@@ -10,7 +10,8 @@ import type {
   KycInfoResponse,
   KycStatusResponse,
   PossibleKycStatuses,
-  XrplTransaction
+  XrplTransaction,
+  RatesResponse
 } from './types/index.ts'
 
 const log = Debug('xumm-sdk:meta')
@@ -84,6 +85,10 @@ export class Meta {
 
   public async getCuratedAssets (): Promise<CuratedAssetsResponse> {
     return await this.call<CuratedAssetsResponse>('curated-assets')
+  }
+
+  public async getRates (currencyCode: string): Promise<RatesResponse> {
+    return await this.call<RatesResponse>('rates/' + currencyCode.trim().toUpperCase())
   }
 
   public async getKycStatus (userTokenOrAccount: string): Promise<keyof PossibleKycStatuses> {

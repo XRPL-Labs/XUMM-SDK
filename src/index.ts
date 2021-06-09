@@ -57,6 +57,10 @@ class XummSdk {
     return this.Meta.getCuratedAssets()
   }
 
+  public getRates (currencyCode: string) {
+    return this.Meta.getRates(currencyCode)
+  }
+
   public getKycStatus (userTokenOrAccount: string) {
     return this.Meta.getKycStatus(userTokenOrAccount)
   }
