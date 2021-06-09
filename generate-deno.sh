@@ -53,7 +53,7 @@ sed -i -e "/.*\@ts-ignore/d" ./deno/index.ts
 sed -i -e "s+/\* Deno \*/ ++g" ./deno/index.ts
 
 # Meta AnyJson | Any » Unknown
-sed -i -e "s/, any/, unknown/" ./deno/types/meta/AnyJson.ts
+sed -i -e "s/, any/, unknown/" ./deno/types/Meta/AnyJson.ts
 
 # CamelCase
 sed -i -e "s/user_device/'user_device'/" ./deno/types/xApp/xAppOttData.ts
