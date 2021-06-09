@@ -52,6 +52,12 @@ sed -i -e "/.*\/\* Node \*\/.*/d" ./deno/index.ts
 sed -i -e "/.*\@ts-ignore/d" ./deno/index.ts
 sed -i -e "s+/\* Deno \*/ ++g" ./deno/index.ts
 
+# Meta AnyJson | Any » Unknown
+sed -i -e "s/, any/, unknown/" ./deno/types/meta/AnyJson.ts
+
+# CamelCase
+sed -i -e "s/user_device/'user_device'/" ./deno/types/xApp/xAppOttData.ts
+
 # Remove ws lib. import / namespace
 sed -i -e "/import type WebSocket from 'ws'/d" ./deno/types/Payload/PayloadSubscription.ts
 sed -i -e "/import WebSocket from 'ws'/d" ./deno/Payload.ts
