@@ -1,7 +1,7 @@
 import type {AnyJson} from '../'
 
 export interface xAppUserDeviceData extends AnyJson {
-  currency?: string  
+  currency?: string
 }
 
 export interface xAppOriginData extends AnyJson {
