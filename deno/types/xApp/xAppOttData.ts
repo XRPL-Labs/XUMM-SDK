@@ -13,7 +13,7 @@ export interface xAppOrigin extends AnyJson {
   data?: xAppOriginData
 }
 
-export interface xAppOttData {
+export interface xAppOttData extends AnyJson {
   locale?: string,
   version?: string,
   account?: string,
@@ -22,5 +22,7 @@ export interface xAppOttData {
   style?: string,
   origin?: xAppOrigin,
   user: string,
-  'user_device'?: xAppUserDeviceData
+  'user_device'?: xAppUserDeviceData,
+  nodetype?: string,
+  currency?: string
 }

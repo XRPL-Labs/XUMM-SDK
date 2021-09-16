@@ -39,11 +39,16 @@ sed -i -e "s+: WebSocket.CloseEvent+: CloseEvent+g" ./deno/Payload.ts
 # Replace SDK user agent
 packageVersion=$(cat package.json|grep version|cut -d '"' -f 4)
 sed -i -e "s+'User-Agent': .*+'User-Agent': 'xumm-sdk/deno:${packageVersion}',+g" deno/Meta.ts
+sed -i -e "s+if.*global.*window.*+if (typeof Deno !== 'undefined') {+g" deno/Meta.ts
+sed -i -e "s+Running in node+Running in Deno+g" deno/Meta.ts
 
 # Remove/replace TS specific packages
-sed -i -e "/import.*'node-fetch'/d" ./deno/Meta.ts
+sed -i -e "s/\.\/index/.\/index.ts/g" ./deno/Meta.ts
 sed -i -e "/import.*'os'/d" ./deno/Meta.ts
+sed -i -e "/fetchPonyfill/d" ./deno/Meta.ts
 sed -i -e "/import.*'..\/package.json'/d" ./deno/Meta.ts
+sed -i -e "/import.*'..\/package.json'/d" ./deno/Meta.ts
+sed -i -e "/import.*node-fetch'/d" ./deno/Meta.ts
 
 sed -i -e "s+.*from 'dotenv'+import 'https://deno.land/x/dotenv/load.ts'+g" ./deno/index.ts
 
@@ -51,6 +56,8 @@ sed -i -e "s+.*from 'dotenv'+import 'https://deno.land/x/dotenv/load.ts'+g" ./de
 sed -i -e "/.*\/\* Node \*\/.*/d" ./deno/index.ts
 sed -i -e "/.*\@ts-ignore/d" ./deno/index.ts
 sed -i -e "s+/\* Deno \*/ ++g" ./deno/index.ts
+sed -i -e "s/window.URLSearchParams/URLSearchParams/g" ./deno/index.ts
+sed -i -e "s/\.\/types\/index/.\/types\/index.ts/g" ./deno/index.ts
 
 # Meta AnyJson | Any » Unknown
 sed -i -e "s/, any/, unknown/" ./deno/types/Meta/AnyJson.ts
@@ -76,8 +83,8 @@ find ./deno -iname '*.ts-e' -delete
 echo "Done, generated"
 echo
 echo "Generated, running basic checks (Deno Docker)"
-#echo "Cleaning"
-#docker rmi hayd/deno
+# echo "Cleaning"
+# docker rmi hayd/deno
 echo "Running"
 docker run --rm -v $(pwd)/.deno-cache:/deno-dir -v $(pwd):/root/xumm-sdk hayd/deno sh -c 'cd ~/xumm-sdk; deno lint --unstable mod.ts deno/*.ts deno/*/*; deno test --allow-env=DEBUG,XUMM_APIKEY,XUMM_APISECRET --allow-read=.env,.env.defaults mod.ts'
 echo "Done"

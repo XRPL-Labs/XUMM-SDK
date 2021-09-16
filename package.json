@@ -10,30 +10,37 @@
     "build": "tsc",
     "watch": "tsc -w",
     "dev": "clear; npm run build; DEBUG=xumm-sdk* nodemon dist/samples/dev.js",
+    "browserify": "browserify -r ./dist/src/index.js:xumm-sdk -o dist/browser.js && npm run minify",
+    "minify": "cat dist/browser.js | terser --compress --mangle > dist/browser.min.js",
     "test": "jest --ci --verbose",
     "lint": "tslint -p ./"
   },
   "files": [
     "dist/src/**/*.js",
-    "dist/src/**/*.d.ts"
+    "dist/src/**/*.d.ts",
+    "dist/browser.js",
+    "dist/browser.min.js"
   ],
   "dependencies": {
     "assert": "^2.0.0",
     "bignumber.js": "^9.0.0",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
+    "fetch-ponyfill": "^7.1.0",
     "node-fetch": "^2.6.1",
     "ws": "^7.3.1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
     "@types/jest": "^26.0.12",
-    "@types/node": "^12.12.55",
+    "@types/node": "^12.20.25",
     "@types/node-fetch": "^2.5.7",
     "@types/ws": "^7.2.6",
+    "browserify": "^17.0.0",
     "jest": "^26.4.2",
     "jest-fetch-mock": "^3.0.3",
     "mock-socket": "^9.0.3",
+    "terser": "^5.8.0",
     "ts-jest": "^26.3.0",
     "tslint": "^5.20.1",
     "tslint-eslint-rules": "^5.4.0",

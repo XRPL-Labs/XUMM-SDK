@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": ["es6"],
+    "lib": ["dom", "dom.iterable", "es6"],
     "declaration": true,
     "outDir": "./dist",
     "strict": true,

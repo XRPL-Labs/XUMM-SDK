@@ -5,6 +5,7 @@ import {Storage} from './Storage'
 import {Payload} from './Payload'
 import {xApp} from './xApp'
 import type * as Types from './types/xumm-api'
+import type {xAppOttData} from './types/index'
 
 const log = Debug('xumm-sdk')
 
@@ -26,6 +27,8 @@ class XummSdk {
     this.storage = new Storage(this.Meta)
     this.payload = new Payload(this.Meta)
     this.xApp = new xApp(this.Meta)
+
+    this.Meta._inject(this)
 
     return this
   }
@@ -70,8 +73,51 @@ class XummSdk {
   }
 }
 
+class XummSdkJwt extends XummSdk {
+  private ottResolved: Promise<xAppOttData>
+  private resolve: (ottData: xAppOttData) => void
+
+  constructor (apiKey: string, ott?: string) {
+    let _ott = String(ott || '').trim().toLowerCase()
+
+    /**
+     * xAppToken from URL to param if not explicitly provided
+     */
+    if (typeof ott === 'undefined' && typeof window !== 'undefined' && typeof window.URLSearchParams !== 'undefined') {
+      console.log(window?.location?.search || '')
+      const urlSearchParams = new window.URLSearchParams(window?.location?.search || '')
+
+      for (const pair of urlSearchParams.entries()) {
+        if (pair[0] === 'xAppToken') {
+          _ott = pair[1].toLowerCase().trim()
+        }
+      }
+    }
+
+    super(apiKey, 'xApp:OneTimeToken:' + _ott)
+
+    this.resolve = (ottData: xAppOttData) => {
+      log('OTT data resolved', ottData)
+    }
+    this.ottResolved = new Promise(resolve => this.resolve = resolve)
+
+    log('Using JWT (xApp) flow')
+  }
+
+  public _inject (ottData: xAppOttData, invoker: Meta): void {
+    if (invoker && invoker?.constructor === Meta) {
+      this.resolve(ottData)
+    }
+  }
+
+  public async getOttData (): Promise<xAppOttData> {
+    return await this.ottResolved
+  }
+}
+
 export {
-  XummSdk
+  XummSdk,
+  XummSdkJwt
 }
 
 export type {

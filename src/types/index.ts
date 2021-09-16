@@ -24,6 +24,9 @@ export type {xAppEventResponse} from './xApp/xAppEventResponse'
 export type {xAppPushResponse} from './xApp/xAppPushResponse'
 export type {xAppEventPushPostBody} from './xApp/xAppEventPushPostBody'
 
+export type {xAppJwtOtt} from './xApp/xAppJwtOtt'
+export type {xAppJwtPong} from './xApp/xAppJwtPong'
+
 /**
  * Aliasses
  */

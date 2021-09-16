@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>XUMM SDK</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>XUMM SDK</h1>
+      <h2>Browserified</h2>
+
+      <pre id="results">Loading...</pre>
+
+      <script src="../dist/browser.js"></script>
+
+      <script>
+        const results = document.getElementById('results')
+        results.innerHTML = 'xumm-sdk loaded'
+        const append = (note, e) => {
+          console.log(e)
+          results.innerHTML = results.innerHTML + "\n--- " + note + ":\n" + JSON.stringify(e, null, 2)          
+        }
+
+        try {
+          const {XummSdkJwt} = require('xumm-sdk')
+
+          const app = '8525e32b-1bd0-4839-af2f-f794874a80b0'
+          // Pass your own ott:
+          //   const ott = '6bbe52ca-aa9d-46ab-80d7-1ef7fd997984'
+          //   const Sdk = new XummSdkJwt(app, ott)
+          // Have the SDK parse the OTT from the URL Query Params
+          const Sdk = new XummSdkJwt(app)
+
+          Sdk.getOttData()
+            .then(c => {
+              console.log('Got OTT data', c)
+              append('getOttData()', c)
+              Sdk.ping()
+                .then(c => append('ping()', c))
+                .catch(e => append('ping()', e))
+            })
+            .catch(e => append('getOttData()', e))
+        } catch (e) {
+          append('try/catch', e)
+        }
+      </script>
+    </div>
+  </body>
+</html>
