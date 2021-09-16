@@ -7,7 +7,7 @@
   "scripts": {
     "prepare": "npm run clean && npm run lint && npm run test && npm run build",
     "clean": "rm -rf dist",
-    "build": "tsc",
+    "build": "tsc && npm run browserify",
     "watch": "tsc -w",
     "dev": "clear; npm run build; DEBUG=xumm-sdk* nodemon dist/samples/dev.js",
     "browserify": "browserify -r ./dist/src/index.js:xumm-sdk -o dist/browser.js && npm run minify",
