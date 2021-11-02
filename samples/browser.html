@@ -18,6 +18,7 @@
       <script>
         const results = document.getElementById('results')
         results.innerHTML = 'xumm-sdk loaded'
+ 
         const append = (note, e) => {
           console.log(e)
           results.innerHTML = results.innerHTML + "\n--- " + note + ":\n" + JSON.stringify(e, null, 2)          

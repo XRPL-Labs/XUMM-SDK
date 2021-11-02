@@ -182,8 +182,8 @@ export interface XummWebhookBody {
   }
   userToken: {
     user_token: string
-    token_issued: string
-    token_expiration: string
+    token_issued: number
+    token_expiration: number
   } | null
 }
 
