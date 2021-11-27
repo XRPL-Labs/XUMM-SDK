@@ -64,6 +64,7 @@ sed -i -e "s/, any/, unknown/" ./deno/types/Meta/AnyJson.ts
 
 # CamelCase
 sed -i -e "s/user_device/'user_device'/" ./deno/types/xApp/xAppOttData.ts
+sed -i -e "s/account_info/'account_info'/" ./deno/types/xApp/xAppOttData.ts
 
 # Remove ws lib. import / namespace
 sed -i -e "/import type WebSocket from 'ws'/d" ./deno/types/Payload/PayloadSubscription.ts
