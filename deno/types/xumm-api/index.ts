@@ -179,6 +179,7 @@ export interface XummWebhookBody {
       app: string | null
       web: string | null
     }
+    txid: string
   }
   userToken: {
     user_token: string
@@ -197,6 +198,7 @@ export interface XummWebsocketBody {
     web: string | null
   }
   custom_meta: XummCustomMeta
+  txid: string
 }
 
 export interface XummApiError {
