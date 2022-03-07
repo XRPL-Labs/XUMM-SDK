@@ -34,7 +34,8 @@ const XrplTxTypes = [
 export type XummTransactionType = typeof XummTxTypes[number]
 export type XrplTransactionType = typeof XrplTxTypes[number]
 
-export type XummCancelReason = 'ALREADY_CANCELLED'
+export type XummCancelReason = 'OK'
+  | 'ALREADY_CANCELLED'
   | 'ALREADY_RESOLVED'
   | 'ALREADY_OPENED'
   | 'ALREADY_EXPIRED'
