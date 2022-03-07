@@ -295,7 +295,7 @@ The response (see: [Developer Docs](https://xumm.readme.io/docs/payload-response
 
 The `next.always` URL is the URL to send the end user to, to scan a QR code or automatically open the XUMM app (if on mobile). If a `user_token` has been provided as part of the payload data provided to `Sdk.payload.create()`, you can see if the payload has been pushed to the end user. A button "didn't receive a push notification" could then take the user to the `next.no_push_msg_received` URL. The 
 
-Alternatively user routing / instruction flows can be custom built using the QR information provided in the `refs` object, and a subscription for live status updates (opened, signed, etc.) using a WebSocket client can be setup by conneting to the `refs.websocket_status` URL. **Please note: this SDK already offers subscriptions. There's no need to setup your own WebSocket client, see [Payload subscriptions: live updates](#payload-subscriptions-live-updates).** There's more information about the [payload workflow](https://xumm.readme.io/docs/payload-workflow) and a [paylaod lifecycle](https://xumm.readme.io/docs/doc-payload-life-cycle) in the Developer Docs.
+Alternatively user routing / instruction flows can be custom built using the QR information provided in the `refs` object, and a subscription for live status updates (opened, signed, etc.) using a WebSocket client can be setup by conneting to the `refs.websocket_status` URL. **Please note: this SDK already offers subscriptions. There's no need to setup your own WebSocket client, see [Payload subscriptions: live updates](#payload-subscriptions-live-updates).** There's more information about the [payload workflow](https://xumm.readme.io/docs/payload-workflow) and a [payload lifecycle](https://xumm.readme.io/docs/doc-payload-life-cycle) in the Developer Docs.
 
 ##### Sdk.payload.cancel
 
@@ -352,7 +352,7 @@ async Sdk.payload.subscribe (
 
 If a callback function is not provided, the subscription will stay active until the `<PayloadSubscription>.resolve()` method is called manually, eg. based on handling `<PayloadSubscription>.websocket.onmessage` events.
 
-When a callback function is provided, for every paylaod specific event the callback function will be called with [`<SubscriptionCallbackParams>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/651bd409ee2aab47fb9151513b8cf981cc1a4f30/src/types/Payload/SubscriptionCallbackParams.ts). The `<SubscriptionCallbackParams>.data` property contains parsed JSON containing event information. Either by calling `<SubscriptionCallbackParams>.resolve()` or by returning a non-void value in the *callback function* the subscription will be ended, and the `<PayloadSubscription>.resolved` promise will resolve with the value returned or passed to the `<SubscriptionCallbackParams>.resolve()` method.
+When a callback function is provided, for every payload specific event the callback function will be called with [`<SubscriptionCallbackParams>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/651bd409ee2aab47fb9151513b8cf981cc1a4f30/src/types/Payload/SubscriptionCallbackParams.ts). The `<SubscriptionCallbackParams>.data` property contains parsed JSON containing event information. Either by calling `<SubscriptionCallbackParams>.resolve()` or by returning a non-void value in the *callback function* the subscription will be ended, and the `<PayloadSubscription>.resolved` promise will resolve with the value returned or passed to the `<SubscriptionCallbackParams>.resolve()` method.
 
 Resolving (by returning non-void in the callback or calling `resolve()` manually) closes the WebSocket client the XUMM SDK sets up 'under the hood'.
 
@@ -387,8 +387,8 @@ The [`<PayloadAndSubscription>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/mast
 
 All information that applies on [`Sdk.payload.create()`](#sdkpayloadcreate) and [`Sdk.payload.subscribe()`](#sdkpayloadsubscribe) applies. Differences are:
 
-1. The input for a `Sdk.payload.createAndSubscribe()` call isn't a payload UUID / existing payload, but a paykiad to create. 
-2. The response object also contains (`<PayloadAndSubscription>.created`) the response obtained when creating the payload
+1. The input for a `Sdk.payload.createAndSubscribe()` call isn't a payload UUID / existing payload, but a payload to create. 
+2. The response object also contains (`<PayloadAndSubscription>.created`) the response obtained when creating the payload.
 
 ## Debugging (logging)
 
