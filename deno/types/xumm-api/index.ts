@@ -10,25 +10,30 @@ const XummTxTypes = [
 ] as const
 
 const XrplTxTypes = [
-  'Payment',
-  'OfferCreate',
-  'OfferCancel',
-  'EscrowFinish',
-  'EscrowCreate',
-  'EscrowCancel',
-  'DepositPreauth',
-  'CheckCreate',
-  'CheckCash',
-  'CheckCancel',
+  'AccountDelete',
   'AccountSet',
+  'CheckCancel',
+  'CheckCash',
+  'CheckCreate',
+  'DepositPreauth',
+  'EscrowCancel',
+  'EscrowCreate',
+  'EscrowFinish',
+  'NFTokenAcceptOffer',
+  'NFTokenBurn',
+  'NFTokenCancelOffer',
+  'NFTokenCreateOffer',
+  'NFTokenMint',
+  'OfferCancel',
+  'OfferCreate',
+  'Payment',
+  'PaymentChannelClaim',
   'PaymentChannelCreate',
   'PaymentChannelFund',
   'SetRegularKey',
   'SignerListSet',
-  'TrustSet',
-  'EnableAmendment',
-  'AccountDelete',
-  'SetFee'
+  'TicketCreate',
+  'TrustSet'
 ] as const
 
 export type XummTransactionType = typeof XummTxTypes[number]
