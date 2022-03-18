@@ -1,4 +1,4 @@
-import type WebSocket from 'ws'
+import type {w3cwebsocket as WebSocket} from 'websocket'
 import type {XummGetPayloadResponse as XummPayload} from '../'
 
 export interface PayloadSubscription {

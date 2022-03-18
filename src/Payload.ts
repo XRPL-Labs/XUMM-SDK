@@ -1,6 +1,6 @@
 import {debug as Debug} from 'debug'
 import type {Meta} from './Meta'
-import WebSocket from 'ws'
+import {w3cwebsocket as WebSocket, ICloseEvent as WsCloseEvent, IMessageEvent as WsMessageEvent} from 'websocket'
 
 import type {
   AnyJson,
@@ -110,7 +110,7 @@ export class Payload {
         logWs(`Payload ${payloadDetails.meta.uuid}: Subscription active (WebSocket opened)`)
       }
 
-      socket.onmessage = async (MessageEvent: WebSocket.MessageEvent) => {
+      socket.onmessage = async (MessageEvent: WsMessageEvent) => {
         const m = MessageEvent.data
         let json: AnyJson | undefined = undefined
 
@@ -144,7 +144,7 @@ export class Payload {
         }
       }
 
-      socket.onclose = (_e: WebSocket.CloseEvent) => {
+      socket.onclose = (_e: WsCloseEvent) => {
         logWs(`Payload ${payloadDetails.meta.uuid}: Subscription ended (WebSocket closed)`)
       }
 
