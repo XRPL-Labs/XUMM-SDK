@@ -35,10 +35,10 @@ export class xAppUserdata {
 
     throwIfError(call)
 
-    return keys.split(',').length > 1 ? call.data : (call.data?.[keys] || {})
+    return keys.split(',').length > 1 ? call.data : (call.data?.[keys] as AnyJson || {})
   }
 
-  public async delete (key: string): Promise<Boolean> {
+  public async delete (key: string): Promise<boolean> {
     const call = await this.Meta.call<xAppUserdataDelete>('userdata/' + key, 'DELETE')
 
     throwIfError(call)
@@ -46,7 +46,7 @@ export class xAppUserdata {
     return call.persisted
   }
 
-  public async set (key: string, data: AnyJson): Promise<Boolean> {
+  public async set (key: string, data: AnyJson): Promise<boolean> {
     const call = await this.Meta.call<xAppUserdataSet>('userdata/' + key, 'POST', data)
 
     throwIfError(call)
