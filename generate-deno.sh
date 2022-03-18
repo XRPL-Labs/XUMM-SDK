@@ -29,12 +29,13 @@ replaceTsPath './Storage' './Storage.ts'
 replaceTsPath './Payload' './Payload.ts'
 replaceTsPath './Meta' './Meta.ts'
 replaceTsPath './xApp' './xApp.ts'
+replaceTsPath './xAppUserdata' './xAppUserdata.ts'
 
 # Transform TS / Deno paths globally in type export 
 sed -i -e "s+from './\(.*\)/\([a-zA-Z]*\)'+from './\1/\2.ts'+g" ./deno/types/index.ts
 
-sed -i -e "s+: WebSocket.MessageEvent+: MessageEvent+g" ./deno/Payload.ts
-sed -i -e "s+: WebSocket.CloseEvent+: CloseEvent+g" ./deno/Payload.ts
+sed -i -e "s+: WsMessageEvent+: MessageEvent+g" ./deno/Payload.ts
+sed -i -e "s+: WsCloseEvent+: CloseEvent+g" ./deno/Payload.ts
 
 # Replace SDK user agent
 packageVersion=$(cat package.json|grep version|cut -d '"' -f 4)
@@ -67,8 +68,9 @@ sed -i -e "s/user_device/'user_device'/" ./deno/types/xApp/xAppOttData.ts
 sed -i -e "s/account_info/'account_info'/" ./deno/types/xApp/xAppOttData.ts
 
 # Remove ws lib. import / namespace
-sed -i -e "/import type WebSocket from 'ws'/d" ./deno/types/Payload/PayloadSubscription.ts
+sed -i -e "/import.*w3cwebsocket.*websocket'/d" ./deno/types/Payload/PayloadSubscription.ts
 sed -i -e "/import WebSocket from 'ws'/d" ./deno/Payload.ts
+sed -i -e "/import.*w3cwebsocket.*websocket'/d" ./deno/Payload.ts
 
 # Update WS connection (skip mock)
 sed -i -e "/.*global as any.*MockedWebSocket.*/d" ./deno/Payload.ts

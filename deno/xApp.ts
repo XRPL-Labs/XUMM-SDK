@@ -1,6 +1,6 @@
 import {debug as Debug} from 'https://deno.land/x/debug/mod.ts'
 import type {Meta} from './Meta.ts'
-import {xAppUserdata} from './xAppUserdata'
+import {xAppUserdata} from './xAppUserdata.ts'
 
 import type {
   xAppOttData,

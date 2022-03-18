@@ -22,7 +22,7 @@ export class xAppUserdata {
   }
 
   public async list (): Promise<string[]> {
-    const call = await this.Meta.call<xAppUserdataList>('xapp/userdata', 'GET')
+    const call = await this.Meta.call<xAppUserdataList>('userdata', 'GET')
 
     throwIfError(call)
 
@@ -31,23 +31,23 @@ export class xAppUserdata {
 
   public async get (key: string | string[]): Promise<AnyJson> {
     const keys = Array.isArray(key) ? key.join(',') : key
-    const call = await this.Meta.call<xAppUserdataGet>('xapp/userdata/' + keys, 'GET')
+    const call = await this.Meta.call<xAppUserdataGet>('userdata/' + keys, 'GET')
 
     throwIfError(call)
 
-    return Array.isArray(key) ? call.data : (call.data?.[key] || {})
+    return keys.split(',').length > 1 ? call.data : (call.data?.[keys] as AnyJson || {})
   }
 
-  public async delete (key: string): Promise<Boolean> {
-    const call = await this.Meta.call<xAppUserdataDelete>('xapp/userdata/' + key, 'DELETE')
+  public async delete (key: string): Promise<boolean> {
+    const call = await this.Meta.call<xAppUserdataDelete>('userdata/' + key, 'DELETE')
 
     throwIfError(call)
 
     return call.persisted
   }
 
-  public async set (key: string, data: AnyJson): Promise<Boolean> {
-    const call = await this.Meta.call<xAppUserdataSet>('xapp/userdata/' + key, 'POST', data)
+  public async set (key: string, data: AnyJson): Promise<boolean> {
+    const call = await this.Meta.call<xAppUserdataSet>('userdata/' + key, 'POST', data)
 
     throwIfError(call)
 

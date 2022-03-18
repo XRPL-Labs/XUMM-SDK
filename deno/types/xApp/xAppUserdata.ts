@@ -3,22 +3,22 @@ import type {AnyJson} from '../index.ts'
 export interface xAppUserdataList extends AnyJson {
   operation: 'LIST'
   keys: string[]
-  count: Number
+  count: number
 }
 
 export interface xAppUserdataGet extends AnyJson {
   operation: 'RETRIEVE'
   data: AnyJson
   keys: string[]
-  count: Number
+  count: number
 }
 
 export interface xAppUserdataSet extends AnyJson {
   operation: 'PERSIST'
-  persisted: Boolean
+  persisted: boolean
 }
 
 export interface xAppUserdataDelete extends AnyJson {
   operation: 'REMOVE'
-  persisted: Boolean
+  persisted: boolean
 }
