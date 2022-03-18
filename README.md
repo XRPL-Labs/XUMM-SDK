@@ -398,6 +398,26 @@ When building an xApp, there are a couple of extra methods available. These endp
 
 Because xApps are user related, they must always be supplied a `user_token`, or be called from JWT context.
 
+##### Sdk.xApp.event
+
+To send a push notification & publish an xApp Event in the Event List of the end user. When tapped, the xApp opens. When the push notification is tapped, the xApp will open. When the push notification is dismissed, the user can still find it in the XUMM Event list.
+
+```typescript
+async Sdk.xApp.event (
+  data: xAppEventPushPostBody
+): Promise<xAppEventResponse>
+```
+
+##### Sdk.xApp.push
+
+To send a (native) push notification to an end user. When the push notification is tapped, the xApp will open. When the push notification is dismissed, the user can't access this event anymore.
+
+```typescript
+async Sdk.xApp.push (
+  data: xAppEventPushPostBody
+): Promise<xAppPushResponse>
+```
+
 ##### User storage
 
 When an xApp is opened and the XUMM SDK is used from a client side (xApp) context using the JWT flow, your xApp can read, write & delete key/value data that persists on the XUMM platform. This way, even if client side storage (cookies, localstorage, etc.) is cleared, your client related data is still available. This is useful for 3rd party platform credentials and state like "did the user pass xApp onboarding".
