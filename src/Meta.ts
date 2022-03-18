@@ -176,7 +176,8 @@ export class Meta {
         'ping',
         'curated-assets',
         'rates',
-        'payload'
+        'payload',
+        'userdata'
       ]
 
       const endpointType = this.jwtFlow && jwtEndpoints.indexOf(endpoint.split('/')[0]) > -1

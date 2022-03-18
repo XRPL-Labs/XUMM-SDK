@@ -390,6 +390,57 @@ All information that applies on [`Sdk.payload.create()`](#sdkpayloadcreate) and 
 1. The input for a `Sdk.payload.createAndSubscribe()` call isn't a payload UUID / existing payload, but a payload to create. 
 2. The response object also contains (`<PayloadAndSubscription>.created`) the response obtained when creating the payload.
 
+#### xApp endpoints
+
+##### Intro
+
+When building an xApp, there are a couple of extra methods available. These endpoints only work for xApp enabled API credentials, and can be used to e.g. push notifications and context to XUMM, opening your xApp.
+
+Because xApps are user related, they must always be supplied a `user_token`, or be called from JWT context.
+
+##### User storage
+
+When an xApp is opened and the XUMM SDK is used from a client side (xApp) context using the JWT flow, your xApp can read, write & delete key/value data that persists on the XUMM platform. This way, even if client side storage (cookies, localstorage, etc.) is cleared, your client related data is still available. This is useful for 3rd party platform credentials and state like "did the user pass xApp onboarding".
+
+##### Sdk.xApp.userdata.list
+
+List all keys stored for this user
+
+```typescript
+async Sdk.xApp.userdata.list (): Promise<string[]>
+```
+
+##### Sdk.xApp.userdata.get
+
+Get one or more values for specified keys. If one key is specified, the data is immediately returned. If multiple keys are supplied in string[] (Array) format, an object with those keys will be returned, with their respective value(s).
+
+```typescript
+async Sdk.xApp.userdata.get (
+  keys: string | string[]
+): Promise<AnyJson>
+```
+
+##### Sdk.xApp.userdata.set
+
+Store an arbitrary JSON object for a specific key. Returns a Boolean with the success state (persisted).
+
+```typescript
+async Sdk.xApp.userdata.set (
+  key: string,
+  data: AnyJson
+): Promise<Boolean>
+```
+
+##### Sdk.xApp.userdata.delete
+
+Remove an object for a specific key. Returns a Boolean with the success state (removed).
+
+```typescript
+async Sdk.xApp.userdata.delete (
+  key: string
+): Promise<Boolean>
+```
+
 ## Debugging (logging)
 
 The XUMM SDK will emit debugging info when invoked with a debug environment variable configured like: `DEBUG=xumm-sdk*` 

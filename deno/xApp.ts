@@ -1,5 +1,6 @@
 import {debug as Debug} from 'https://deno.land/x/debug/mod.ts'
 import type {Meta} from './Meta.ts'
+import {xAppUserdata} from './xAppUserdata'
 
 import type {
   xAppOttData,
@@ -15,9 +16,13 @@ const log = Debug('xumm-sdk:xapp')
 export class xApp {
   private Meta: Meta
 
+  public userdata: xAppUserdata
+
   constructor (MetaObject: Meta) {
     log('Constructed')
     this.Meta = MetaObject
+
+    this.userdata = new xAppUserdata(this.Meta)
   }
 
   public async get (ott: string): Promise<xAppOttData | null> {

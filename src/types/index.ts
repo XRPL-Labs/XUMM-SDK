@@ -27,6 +27,13 @@ export type {xAppEventPushPostBody} from './xApp/xAppEventPushPostBody'
 export type {xAppJwtOtt} from './xApp/xAppJwtOtt'
 export type {xAppJwtPong} from './xApp/xAppJwtPong'
 
+export type {
+  xAppUserdataList,
+  xAppUserdataGet,
+  xAppUserdataSet,
+  xAppUserdataDelete
+} from './xApp/xAppUserdata'
+
 /**
  * Aliasses
  */
