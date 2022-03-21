@@ -157,7 +157,7 @@ export class Meta {
       if (!this.isBrowser) {
         // TODO: Deno
         Object.assign(headers, {
-          'User-Agent': 'xumm-sdk/deno:1.1.0',
+          'User-Agent': 'xumm-sdk/deno:1.1.1',
         })
       }
 
