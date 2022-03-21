@@ -33,6 +33,8 @@ export class Meta {
   private injected = false
   private invoker?: XummSdk | XummSdkJwt
 
+  public endpoint = 'https://xumm.app'
+
   constructor (apiKey: string, apiSecret: string) {
     log('Constructed')
 
@@ -78,6 +80,15 @@ export class Meta {
     }
 
     return this
+  }
+
+  public setEndpoint (endpoint: string): boolean {
+    if (endpoint.match(/^http/)) {
+      this.endpoint = endpoint.trim()
+      return true
+    }
+
+    return false
   }
 
   private async authorize (): Promise<void> {
@@ -181,7 +192,7 @@ export class Meta {
         ? 'xapp-jwt'
         : 'platform'
 
-      const request = await fetch('https://xumm.app/api/v1/' + endpointType + '/' + endpoint, {
+      const request = await fetch(this.endpoint + '/api/v1/' + endpointType + '/' + endpoint, {
         method,
         body,
         headers

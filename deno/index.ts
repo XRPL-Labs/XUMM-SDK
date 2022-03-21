@@ -68,6 +68,10 @@ class XummSdk {
   public getTransaction (txHash: string) {
     return this.Meta.getTransaction(txHash)
   }
+
+  public setEndpoint (endpoint: string): boolean {
+    return this.Meta.setEndpoint(endpoint)
+  }
 }
 
 class XummSdkJwt extends XummSdk {
