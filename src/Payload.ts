@@ -94,7 +94,7 @@ export class Payload {
     if (payloadDetails) {
       const socket: WebSocket = typeof (global as any)?.MockedWebSocket !== 'undefined' && typeof jest !== 'undefined'
         ? new ((global as any)?.MockedWebSocket)('ws://xumm.local')
-        : new WebSocket('wss://xumm.app/sign/' + payloadDetails.meta.uuid)
+        : new WebSocket(this.Meta.endpoint.replace(/^http/, 'ws') + '/sign/' + payloadDetails.meta.uuid)
 
       callbackPromise.promise.then(() => {
         socket.close()
