@@ -5,7 +5,7 @@ import {Storage} from './Storage.ts'
 import {Payload} from './Payload.ts'
 import {xApp} from './xApp.ts'
 import type * as Types from './types/xumm-api/index.ts'
-import type {xAppOttData} from './types/index.ts'
+import type {xAppOttData, UserTokenValidity} from './types/index.ts'
 
 const log = Debug('xumm-sdk')
 
@@ -67,6 +67,17 @@ class XummSdk {
 
   public getTransaction (txHash: string) {
     return this.Meta.getTransaction(txHash)
+  }
+
+  public verifyUserTokens (userTokens: string[]) {
+    return this.Meta.verifyUserTokens(userTokens)
+  }
+
+  public async verifyUserToken (token: string): Promise<UserTokenValidity | null> {
+    const tokenResults = await this.Meta.verifyUserTokens([token])
+    return Array.isArray(tokenResults) && tokenResults.length === 1
+      ? tokenResults[0]
+      : null
   }
 
   public setEndpoint (endpoint: string): boolean {

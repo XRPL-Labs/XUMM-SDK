@@ -8,6 +8,7 @@ export type {KycInfoResponse} from './Meta/KycInfoResponse.ts'
 export type {Pong} from './Meta/Pong.ts'
 export type {XrplTransaction} from './Meta/XrplTransaction.ts'
 export type {RatesResponse} from './Meta/RatesResponse.ts'
+export type {UserTokenValidity, UserTokenResponse} from './Meta/UserTokens.ts'
 
 export type {onPayloadEvent} from './Payload/onPayloadEvent.ts'
 export type {PayloadAndSubscription} from './Payload/PayloadAndSubscription.ts'

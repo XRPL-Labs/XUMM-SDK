@@ -8,6 +8,7 @@ export type {KycInfoResponse} from './Meta/KycInfoResponse'
 export type {Pong} from './Meta/Pong'
 export type {XrplTransaction} from './Meta/XrplTransaction'
 export type {RatesResponse} from './Meta/RatesResponse'
+export type {UserTokenValidity, UserTokenResponse} from './Meta/UserTokens'
 
 export type {onPayloadEvent} from './Payload/onPayloadEvent'
 export type {PayloadAndSubscription} from './Payload/PayloadAndSubscription'

@@ -18,7 +18,9 @@ import type {
   RatesResponse,
   xAppJwtPong,
   XummApiError,
-  xAppJwtOtt
+  xAppJwtOtt,
+  UserTokenValidity,
+  UserTokenResponse
 } from './types'
 
 const log = Debug('xumm-sdk:meta')
@@ -266,6 +268,12 @@ export class Meta {
 
   public async getTransaction (txHash: string): Promise<XrplTransaction> {
     return await this.call<XrplTransaction>('xrpl-tx/' + txHash.trim())
+  }
+
+  public async verifyUserTokens (userTokens: string[]): Promise<UserTokenValidity[]> {
+    return (await this.call<UserTokenResponse>('user-tokens', 'POST', {
+      tokens: Array.isArray(userTokens) ? userTokens : [userTokens]
+    })).tokens
   }
 
   // Internal
