@@ -1,7 +1,7 @@
 import {debug as Debug} from 'debug'
 import fetchPonyfill from 'fetch-ponyfill'
 const {fetch, Request, Response, Headers} = fetchPonyfill()
-import {hostname} from 'os'
+import {hostname} from 'os-browserify'
 import {throwIfError} from './utils'
 import {XummSdk, XummSdkJwt} from './index'
 

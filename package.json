@@ -29,6 +29,7 @@
     "dotenv": "^8.2.0",
     "fetch-ponyfill": "^7.1.0",
     "node-fetch": "^2.6.1",
+    "os-browserify": "^0.3.0",
     "websocket": "^1.0.34"
   },
   "devDependencies": {

@@ -45,7 +45,7 @@ sed -i -e "s+Running in node+Running in Deno+g" deno/Meta.ts
 
 # Remove/replace TS specific packages
 sed -i -e "s/\.\/index/.\/index.ts/g" ./deno/Meta.ts
-sed -i -e "/import.*'os'/d" ./deno/Meta.ts
+sed -i -e "/import.*'os-browserify'/d" ./deno/Meta.ts
 sed -i -e "/fetchPonyfill/d" ./deno/Meta.ts
 sed -i -e "/import.*'..\/package.json'/d" ./deno/Meta.ts
 sed -i -e "/import.*'..\/package.json'/d" ./deno/Meta.ts
