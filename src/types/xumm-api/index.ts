@@ -174,6 +174,7 @@ export interface XummWebhookBody {
     url: string
     application_uuidv4: string
     payload_uuidv4: string
+    opened_by_deeplink: boolean
   }
   custom_meta: XummCustomMeta
   payloadResponse: {
