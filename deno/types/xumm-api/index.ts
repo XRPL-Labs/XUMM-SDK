@@ -81,6 +81,7 @@ export interface XummPayloadMeta {
   return_url_app: string | null
   return_url_web: string | null
   is_xapp: boolean
+  signers: string[] | null
 }
 
 export interface XummPayloadBodyBase {
@@ -88,8 +89,7 @@ export interface XummPayloadBodyBase {
     submit?: boolean
     multisign?: boolean
     expire?: number
-    immutable?: boolean
-    forceAccount?: boolean
+    signers?: string[]
     return_url?: {
       app?: string
       web?: string
