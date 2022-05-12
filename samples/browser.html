@@ -20,14 +20,14 @@
         results.innerHTML = 'xumm-sdk loaded'
  
         const append = (note, e) => {
-          console.log(e)
+          console.log('append', e)
           results.innerHTML = results.innerHTML + "\n--- " + note + ":\n" + JSON.stringify(e, null, 2)          
         }
 
         try {
           const {XummSdkJwt} = require('xumm-sdk')
 
-          const app = '8525e32b-1bd0-4839-af2f-f794874a80b0'
+          const app = 'ce0688f4-f7e7-4dd7-9366-ca2ce5487aa0'
           // Pass your own ott:
           //   const ott = '6bbe52ca-aa9d-46ab-80d7-1ef7fd997984'
           //   const Sdk = new XummSdkJwt(app, ott)
@@ -40,11 +40,11 @@
               append('getOttData()', c)
               Sdk.ping()
                 .then(c => append('ping()', c))
-                .catch(e => append('ping()', e))
+                .catch(e => append('ping()', e.message))
             })
-            .catch(e => append('getOttData()', e))
+            .catch(e => append('getOttData()', e.message))
         } catch (e) {
-          append('try/catch', e)
+          append('try/catch', e.message)
         }
       </script>
     </div>
