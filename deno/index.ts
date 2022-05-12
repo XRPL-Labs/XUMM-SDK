@@ -5,7 +5,7 @@ import {Storage} from './Storage.ts'
 import {Payload} from './Payload.ts'
 import {xApp} from './xApp.ts'
 import type * as Types from './types/xumm-api/index.ts'
-import type {xAppOttData, UserTokenValidity} from './types/index.ts'
+import type {xAppOttData, UserTokenValidity, xAppJwtOtt} from './types/index.ts'
 
 const log = Debug('xumm-sdk')
 
@@ -83,13 +83,29 @@ class XummSdk {
   public setEndpoint (endpoint: string): boolean {
     return this.Meta.setEndpoint(endpoint)
   }
+
+  public caught (error: Error) {
+    throw error
+  }
+}
+
+interface XummJwtOptionsStore {
+  get: (ott: string) => xAppJwtOtt | void
+  set: (ott: string, ottData: xAppJwtOtt) => void
+}
+
+export interface XummSdkJwtOptions {
+  store?: XummJwtOptionsStore
 }
 
 class XummSdkJwt extends XummSdk {
   private ottResolved: Promise<xAppOttData>
   private resolve: (ottData: xAppOttData) => void
+  private reject: (error: Error) => void
 
-  constructor (apiKey: string, ott?: string) {
+  private store: XummJwtOptionsStore
+
+  constructor (apiKey: string, ott?: string, options?: XummSdkJwtOptions) {
     let _ott = String(ott || '').trim().toLowerCase()
 
     /**
@@ -111,19 +127,77 @@ class XummSdkJwt extends XummSdk {
     this.resolve = (ottData: xAppOttData) => {
       log('OTT data resolved', ottData)
     }
-    this.ottResolved = new Promise(resolve => this.resolve = resolve)
+    this.reject = (error: Error) => {
+      log('OTT data rejected', error.message)
+    }
+    this.ottResolved = new Promise((resolve, reject) => {
+      this.resolve = resolve
+      this.reject = reject
+    })
+
+    if (options?.store?.get && options.store?.set) {
+      this.store = options.store
+    } else {
+      this.store = {
+        get (uuid) {
+          log('[JwtStore] » Builtin JWT store GET')
+
+          // Default store: localStorage
+          if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+            if (typeof window.localStorage['XummSdkJwt'] === 'string') {
+              const lsOttData = window.localStorage['XummSdkJwt'].split(':')
+              if (lsOttData[0] === uuid) {
+                // Restore from memory
+                log('Restoring OTT from localStorage:', uuid)
+                try {
+                  return JSON.parse(lsOttData.slice(1).join(':'))
+                } catch (e) {
+                  log('Error restoring OTT Data (JWT) from localStorage', (e as Error)?.message)
+                }
+              }
+            }
+          }
+        },
+        set (uuid: string, ottData: xAppJwtOtt) {
+          log('[JwtStore] » Builtin JWT store SET', uuid)
+
+          // Default store: localStorage
+          if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+            window.localStorage['XummSdkJwt'] = uuid + ':' + JSON.stringify(ottData)
+          }
+        }
+      }
+    }
 
     log('Using JWT (xApp) flow')
   }
 
-  public _inject (ottData: xAppOttData, invoker: Meta): void {
+  public _jwtStore (invoker: Meta, persistJwt: (jwt: string) => void): XummJwtOptionsStore {
     if (invoker && invoker?.constructor === Meta) {
-      this.resolve(ottData)
+      return {
+        get: uuid => {
+          log('[JwtStore] Proxy GET')
+          return this.store.get(uuid)
+        },
+        set: (uuid: string, ottData: xAppJwtOtt) => {
+          log('[JwtStore] Proxy SET')
+          this.resolve(ottData.ott)
+          persistJwt(ottData.jwt)
+
+          return this.store.set(uuid, ottData)
+        }
+      }
     }
+
+    throw new Error('Invalid _jwtStore invoker')
   }
 
   public async getOttData (): Promise<xAppOttData> {
     return await this.ottResolved
+  }
+
+  public caught (error: Error) {
+    this.reject(error)
   }
 }
 

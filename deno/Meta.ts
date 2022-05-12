@@ -78,7 +78,14 @@ export class Meta {
 
     if (this.jwtFlow) {
       // Eventloop: wait for _inject @ index.ts (XummSdk Constructor) to have happened
-      Promise.resolve().then(() => this.authorize())
+      Promise.resolve()
+        .then(() => this.authorize())
+        .catch(e => {
+          log('Authorize error:', e.message)
+          if (this?.invoker) {
+            this.invoker.caught(e)
+          }
+        })
     }
 
     return this
@@ -94,45 +101,22 @@ export class Meta {
   }
 
   private async authorize (): Promise<void> {
-    const handleOttJwt = (JwtOttResponse: xAppJwtOtt) => {
-      log('Resolved OTT, got JWT & OTT Data for xApp:', JwtOttResponse.app.name)
-      this.jwt = JwtOttResponse.jwt
-      if (this?.invoker) {
-        if (this.invoker.constructor === XummSdkJwt) {
-          this.invoker._inject(JwtOttResponse.ott, this)
-        }
-      }
+    log('JWT Authorize', this.apiSecret)
+
+    let store
+    if (this?.invoker && this.invoker.constructor === XummSdkJwt) {
+      store = this.invoker._jwtStore(this, (jwt: string) => this.jwt = jwt)
     }
 
-    if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
-      if (typeof window.localStorage['XummSdkJwt'] === 'string') {
-        const lsOttData = window.localStorage['XummSdkJwt'].split(':')
-        if (lsOttData[0] === this.apiSecret) {
-          // Restore from memory
-          console.log('Restoring OTT from localStorage:', this.apiSecret)
-          try {
-            const JwtOttResponse = JSON.parse(lsOttData.slice(1).join(':'))
-            handleOttJwt(JwtOttResponse)
-            return
-          } catch (e) {
-            console.log('Error restoring OTT Data (JWT) from localStorage', (e as Error)?.message)
-          }
-        }
-      }
-    }
+    const authorizeData: XummApiError | xAppJwtOtt = store?.get(this.apiSecret) || await this.call('authorize')
 
-    const authorizeData: XummApiError | xAppJwtOtt = await this.call('authorize')
     if ((authorizeData as XummApiError)?.error?.code) {
       log(`Could not resolve API Key & OTT to JWT (already fetched? Unauthorized?)`)
       throwIfError(authorizeData)
     } else if ((authorizeData as xAppJwtOtt)?.jwt) {
       const JwtOttResponse = authorizeData as xAppJwtOtt
 
-      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-        window.localStorage['XummSdkJwt'] = this.apiSecret + ':' + JSON.stringify(JwtOttResponse)
-      }
-
-      handleOttJwt(JwtOttResponse)
+      store?.set(this.apiSecret, JwtOttResponse)
     } else {
       throw new Error(`Unexpected response for xApp JWT authorize request`)
     }
@@ -159,7 +143,7 @@ export class Meta {
       if (!this.isBrowser) {
         // TODO: Deno
         Object.assign(headers, {
-          'User-Agent': 'xumm-sdk/deno:1.1.5',
+          'User-Agent': 'xumm-sdk/deno:1.2.0',
         })
       }
 

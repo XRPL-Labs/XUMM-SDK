@@ -88,7 +88,7 @@ class XummSdk {
   }
 
   public caught (error: Error) {
-    throw Error
+    throw error
   }
 }
 
