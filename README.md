@@ -296,9 +296,9 @@ You can `get()` a payload by:
 
 - Passing a created Payload object (see: [Sdk.payload.create](#sdkpayloadcreate))
   ```javascript
-  const newPayload: XummTypes.CreatedPayload = {txjson: {...}}
-  const created = await Sdk.payload.create(newPayload)
-  const payload = await Sdk.payload.get(created)
+  const newPayload: XummTypes.CreatePayload = {txjson: {...}}
+  const created: XummTypes.CreatedPayload = await Sdk.payload.create(newPayload)
+  const payload: XummTypes.XummPayload = await Sdk.payload.get(created)
   ```
 
 If a payload can't be fetched (eg. doesn't exist), `null` will be returned, unless a second param (boolean) is provided to get the SDK to throw an Error in case a payload can't be retrieved:
