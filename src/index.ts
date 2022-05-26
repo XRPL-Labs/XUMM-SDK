@@ -121,7 +121,6 @@ class XummSdkJwt extends XummSdk {
         && typeof window !== 'undefined'
         && typeof window.URLSearchParams !== 'undefined'
       ) {
-        console.log(window?.location?.search || '')
         const urlSearchParams = new window.URLSearchParams(window?.location?.search || '')
 
         for (const pair of urlSearchParams.entries()) {

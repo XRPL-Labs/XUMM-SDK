@@ -210,8 +210,6 @@ export class Meta {
       return (pong as Pong).auth
     }
 
-    // const jwtPong = typeof (pong as xAppJwtPong)?.ott_uuidvv4
-
     if (typeof (pong as xAppJwtPong)?.ott_uuidv4 !== 'undefined') {
       // return pong as xAppJwtPong
       return {
