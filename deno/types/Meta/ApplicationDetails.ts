@@ -1,4 +1,4 @@
-import type {xAppJwtPong} from '../index.ts'
+import type {xAppJwtPong, JwtPong} from '../index.ts'
 
 export interface ApplicationDetails {
   quota?: Record<string, unknown>
@@ -11,5 +11,5 @@ export interface ApplicationDetails {
   call?: {
     uuidv4: string
   },
-  jwtData?: xAppJwtPong
+  jwtData?: xAppJwtPong | JwtPong
 }

@@ -99,41 +99,55 @@ export interface XummSdkJwtOptions {
 }
 
 class XummSdkJwt extends XummSdk {
-  private ottResolved: Promise<xAppOttData>
+  private ottResolved: Promise<xAppOttData | void>
   private resolve: (ottData: xAppOttData) => void
   private reject: (error: Error) => void
 
   private store: XummJwtOptionsStore
 
-  constructor (apiKey: string, ott?: string, options?: XummSdkJwtOptions) {
+  constructor (apiKeyOrJwt: string, ott?: string, options?: XummSdkJwtOptions) {
     let _ott = String(ott || '').trim().toLowerCase()
+    const isRawJwt = apiKeyOrJwt.length !== 36
 
     /**
      * xAppToken from URL to param if not explicitly provided
      */
-    if (typeof ott === 'undefined' && typeof window !== 'undefined' && typeof URLSearchParams !== 'undefined') {
-      console.log(window?.location?.search || '')
-      const urlSearchParams = new URLSearchParams(window?.location?.search || '')
+    if (!isRawJwt) {
+      if (
+        typeof ott === 'undefined'
+        && typeof window !== 'undefined'
+        && typeof URLSearchParams !== 'undefined'
+      ) {
+        console.log(window?.location?.search || '')
+        const urlSearchParams = new URLSearchParams(window?.location?.search || '')
 
-      for (const pair of urlSearchParams.entries()) {
-        if (pair[0] === 'xAppToken') {
-          _ott = pair[1].toLowerCase().trim()
+        for (const pair of urlSearchParams.entries()) {
+          if (pair[0] === 'xAppToken') {
+            _ott = pair[1].toLowerCase().trim()
+          }
         }
       }
     }
 
-    super(apiKey, 'xApp:OneTimeToken:' + _ott)
+    super(apiKeyOrJwt, !isRawJwt && _ott !== ''
+      ? 'xApp:OneTimeToken:' + _ott
+      : 'RAWJWT:' + apiKeyOrJwt
+    )
 
     this.resolve = (ottData: xAppOttData) => {
       log('OTT data resolved', ottData)
     }
+
     this.reject = (error: Error) => {
       log('OTT data rejected', error.message)
     }
-    this.ottResolved = new Promise((resolve, reject) => {
-      this.resolve = resolve
-      this.reject = reject
-    })
+
+    this.ottResolved = isRawJwt
+      ? Promise.resolve()
+      : new Promise((resolve, reject) => {
+        this.resolve = resolve
+        this.reject = reject
+      })
 
     if (options?.store?.get && options.store?.set) {
       this.store = options.store
@@ -169,7 +183,12 @@ class XummSdkJwt extends XummSdk {
       }
     }
 
-    log('Using JWT (xApp) flow')
+    if (isRawJwt) {
+      this.reject(new Error('Not in OTT flow: in raw JWT (OAuth2-like) flow'))
+      log('Using JWT (Raw, OAuth2) flow')
+    } else{
+      log('Using JWT (xApp) flow')
+    }
   }
 
   public _jwtStore (invoker: Meta, persistJwt: (jwt: string) => void): XummJwtOptionsStore {
@@ -193,7 +212,13 @@ class XummSdkJwt extends XummSdk {
   }
 
   public async getOttData (): Promise<xAppOttData> {
-    return await this.ottResolved
+    const resolved = await this.ottResolved
+
+    if (resolved) {
+      return resolved
+    }
+
+    throw new Error('Called getOttData on a non OTT-JWT flow')
   }
 
   public caught (error: Error) {

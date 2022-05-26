@@ -5,6 +5,7 @@ import {XummSdk, XummSdkJwt} from './index.ts'
 import type {
   ApplicationDetails,
   Pong,
+  JwtPong,
   CreatePayload,
   AnyJson,
   CuratedAssetsResponse,
@@ -50,6 +51,9 @@ export class Meta {
       // xApp JWT flow
       secret.uuidv4 = secret.split[2]
       this.jwtFlow = true
+    } else if (secret.split.length > 1 && secret.split[0] === 'RAWJWT') {
+      this.jwtFlow = true
+      this.jwt = secret.split.slice(1).join(':')
     } else {
       // Regular SDK/API calls
       secret.uuidv4 = apiSecret
@@ -59,10 +63,12 @@ export class Meta {
       if (!this.jwtFlow) {
         throw new Error('Invalid API Key and/or API Secret. Use dotenv or constructor params.')
       } else {
-        throw new Error(
-          'Invalid API Key and/or OTT (One Time Token). ' +
-          'Provide OTT param (2nd param) or make sure `xAppToken` query param is present (Browser)'
-        )
+        if (!this.jwt) {
+          throw new Error(
+            'Invalid API Key and/or OTT (One Time Token). ' +
+            'Provide OTT param (2nd param) or make sure `xAppToken` query param is present (Browser)'
+          )
+        }
       }
     }
 
@@ -76,7 +82,7 @@ export class Meta {
     this.apiKey = apiKey
     this.apiSecret = secret.uuidv4
 
-    if (this.jwtFlow) {
+    if (this.jwtFlow && !this.jwt) {
       // Eventloop: wait for _inject @ index.ts (XummSdk Constructor) to have happened
       Promise.resolve()
         .then(() => this.authorize())
@@ -143,7 +149,7 @@ export class Meta {
       if (!this.isBrowser) {
         // TODO: Deno
         Object.assign(headers, {
-          'User-Agent': 'xumm-sdk/deno:1.2.0',
+          'User-Agent': 'xumm-sdk/deno:1.3.0',
         })
       }
 
@@ -175,7 +181,7 @@ export class Meta {
       ]
 
       const endpointType = this.jwtFlow && jwtEndpoints.indexOf(endpoint.split('/')[0]) > -1
-        ? 'xapp-jwt'
+        ? 'jwt'
         : 'platform'
 
       const request = await fetch(this.endpoint + '/api/v1/' + endpointType + '/' + endpoint, {
@@ -185,6 +191,7 @@ export class Meta {
       })
 
       const json: T = await request.json()
+
       // log({json})
       return json
     } catch (e) {
@@ -195,7 +202,7 @@ export class Meta {
   }
 
   public async ping (): Promise<ApplicationDetails> {
-    const pong = await this.call<Pong | xAppJwtPong>('ping')
+    const pong = await this.call<Pong | JwtPong | xAppJwtPong>('ping')
 
     throwIfError(pong)
 
@@ -203,25 +210,28 @@ export class Meta {
       return (pong as Pong).auth
     }
 
-    const jwtPong = pong as xAppJwtPong
-    if (typeof jwtPong.ott_uuidv4 !== 'undefined') {
+    // const jwtPong = typeof (pong as xAppJwtPong)?.ott_uuidvv4
+
+    if (typeof (pong as xAppJwtPong)?.ott_uuidv4 !== 'undefined') {
       // return pong as xAppJwtPong
       return {
         application: {
-          uuidv4: jwtPong.app_uuidv4,
-          name: jwtPong.app_name
+          uuidv4: (pong as xAppJwtPong).app_uuidv4,
+          name: (pong as xAppJwtPong).app_name
         },
-        jwtData: jwtPong
+        jwtData: (pong as xAppJwtPong)
       }
+    }
 
-      // xumm-sdk:sample   pong: {
-      //   xumm-sdk:sample     pong: true,
-      //   xumm-sdk:sample     ott_uuidv4: '6b2997ca-a6ad-4a9b-80d7-1ef7fd98be54',
-      //   xumm-sdk:sample     app_uuidv4: '8525e32b-1bd0-4839-af2f-f794874a80b0',
-      //   xumm-sdk:sample     app_name: 'XRP TipBot for Twitter, Reddit & Discord',
-      //   xumm-sdk:sample     iat: 1631744211,
-      //   xumm-sdk:sample     exp: 1631830611
-      //   xumm-sdk:sample   }
+    if (typeof (pong as JwtPong)?.usertoken_uuidv4 !== 'undefined') {
+      // return pong as JwtPong
+      return {
+        application: {
+          uuidv4: (pong as JwtPong).client_id,
+          name: (pong as JwtPong).app_name
+        },
+        jwtData: (pong as JwtPong)
+      }
     }
 
     throw new Error(`Unexpected response for ping request`)

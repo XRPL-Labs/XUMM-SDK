@@ -213,18 +213,14 @@ export class Meta {
       return (pong as Pong).auth
     }
 
-    const jwtPong = typeof (pong as xAppJwtPong)?.ott_uuidvv4
-      ? pong as xAppJwtPong
-      : pong as JwtPong
-
     if (typeof (pong as xAppJwtPong)?.ott_uuidv4 !== 'undefined') {
       // return pong as xAppJwtPong
       return {
         application: {
-          uuidv4: jwtPong.app_uuidv4,
-          name: jwtPong.app_name
+          uuidv4: (pong as xAppJwtPong).app_uuidv4,
+          name: (pong as xAppJwtPong).app_name
         },
-        jwtData: jwtPong
+        jwtData: (pong as xAppJwtPong)
       }
     }
 
@@ -232,10 +228,10 @@ export class Meta {
       // return pong as JwtPong
       return {
         application: {
-          uuidv4: jwtPong.client_id,
-          name: jwtPong.app_name
+          uuidv4: (pong as JwtPong).client_id,
+          name: (pong as JwtPong).app_name
         },
-        jwtData: jwtPong
+        jwtData: (pong as JwtPong)
       }
     }
 
