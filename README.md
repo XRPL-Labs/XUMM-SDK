@@ -51,11 +51,18 @@ Now continue by constructing the XummSdk object:
 const Sdk = new XummSdk();
 // Or with manually provided credentials (instead of using dotenv):
 //   const Sdk = new XummSdk('someAppKey', 'someAppSecret')
+//
 // Or when using this SDK in xApp frontend code:
 //   const Sdk = new XummSdkJwt('someAppKey', 'OTTxAppToken')
 //      > Then the SDK is used in a browser env. (frontend), the second
 //        param can be omitted as the SDK will pick up on the URL
 //        Query param (`xAppToken`) automatically.
+//      > Sample: https://github.com/XRPL-Labs/XUMM-SDK/blob/master/samples/dev-ott-jwt.js
+//
+// Or when using this SDK with a raw JWT (e.g. from the OAuth2 flow)
+//   const Sdk = new XummSdkJwt('someJwt...')
+//      > No other params should be added
+//      > Sample: https://github.com/XRPL-Labs/XUMM-SDK/blob/master/samples/dev-jwt.js
 ```
 
 #### If you are using this SDK in your [xApp](https://xumm.readme.io/docs/what-are-xapps) frontend code ([more about this here](https://xumm.readme.io/reference/xapps-jwt-endpoints)):
