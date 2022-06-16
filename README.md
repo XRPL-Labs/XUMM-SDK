@@ -2,6 +2,10 @@
 
 Interact with the XUMM SDK from Javascript / Typescript environments.
 
+## Questions?
+
+Do you have questions? Want Docs? All of that is available at https://xumm.readme.io.
+
 ### CDN (browser):
 
 A browserified version (latest) is available at [JSDelivr](https://cdn.jsdelivr.net/npm/xumm-sdk/dist/browser.min.js) & direclty from the `xumm.app` domain:
