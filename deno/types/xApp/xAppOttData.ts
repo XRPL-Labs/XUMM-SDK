@@ -1,7 +1,8 @@
 import type {AnyJson} from '../index.ts'
 
 export interface xAppUserDeviceData extends AnyJson {
-  currency?: string
+  currency: string
+  platform: string
 }
 
 export interface xAppOriginData extends AnyJson {
@@ -35,5 +36,6 @@ export interface xAppOttData extends AnyJson {
   'user_device'?: xAppUserDeviceData,
   'account_info': xAppAccountInfo,
   nodetype?: string,
-  currency?: string
+  currency?: string,
+  subscriptions?: string[]
 }
