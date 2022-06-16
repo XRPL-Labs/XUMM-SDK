@@ -155,6 +155,7 @@ export interface XummGetPayloadResponse {
     dispatched_result: string | null
     multisign_account: string | null
     account: string | null
+    signer: string | null
     approved_with?: XummTransactionApprovalType
   }
   custom_meta: XummCustomMeta
