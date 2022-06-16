@@ -98,13 +98,15 @@ interface XummJwtOptionsStore {
 }
 
 export interface XummSdkJwtOptions {
-  store?: XummJwtOptionsStore
+  store?: XummJwtOptionsStore,
+  fatalHandler?: (error: Error) => void
 }
 
 class XummSdkJwt extends XummSdk {
   private ottResolved: Promise<xAppOttData | void>
   private resolve: (ottData: xAppOttData) => void
   private reject: (error: Error) => void
+  public fatalHandler?: (error: Error) => void
 
   private store: XummJwtOptionsStore
 
@@ -151,38 +153,46 @@ class XummSdkJwt extends XummSdk {
         this.reject = reject
       })
 
-    if (options?.store?.get && options.store?.set) {
-      this.store = options.store
-    } else {
-      this.store = {
-        get (uuid) {
-          log('[JwtStore] » Builtin JWT store GET')
+    if (options?.fatalHandler) {
+      this.fatalHandler = options.fatalHandler
+    }
 
-          // Default store: localStorage
-          if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
-            if (typeof window.localStorage['XummSdkJwt'] === 'string') {
-              const lsOttData = window.localStorage['XummSdkJwt'].split(':')
-              if (lsOttData[0] === uuid) {
-                // Restore from memory
-                log('Restoring OTT from localStorage:', uuid)
-                try {
-                  return JSON.parse(lsOttData.slice(1).join(':'))
-                } catch (e) {
-                  log('Error restoring OTT Data (JWT) from localStorage', (e as Error)?.message)
-                }
+    this.store = {
+      get (uuid) {
+        log('[JwtStore] » Builtin JWT store GET')
+
+        // Default store: localStorage
+        if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+          if (typeof window.localStorage['XummSdkJwt'] === 'string') {
+            const lsOttData = window.localStorage['XummSdkJwt'].split(':')
+            if (lsOttData[0] === uuid) {
+              // Restore from memory
+              log('Restoring OTT from localStorage:', uuid)
+              try {
+                return JSON.parse(lsOttData.slice(1).join(':'))
+              } catch (e) {
+                log('Error restoring OTT Data (JWT) from localStorage', (e as Error)?.message)
               }
             }
           }
-        },
-        set (uuid: string, ottData: xAppJwtOtt) {
-          log('[JwtStore] » Builtin JWT store SET', uuid)
+        }
+      },
+      set (uuid: string, ottData: xAppJwtOtt) {
+        log('[JwtStore] » Builtin JWT store SET', uuid)
 
-          // Default store: localStorage
-          if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-            window.localStorage['XummSdkJwt'] = uuid + ':' + JSON.stringify(ottData)
-          }
+        // Default store: localStorage
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+          window.localStorage['XummSdkJwt'] = uuid + ':' + JSON.stringify(ottData)
         }
       }
+    }
+
+    if (options?.store?.get) {
+      this.store.get = options.store.get
+    }
+
+    if (options?.store?.set) {
+      this.store.set = options.store.set
     }
 
     if (isRawJwt) {
@@ -198,14 +208,14 @@ class XummSdkJwt extends XummSdk {
       return {
         get: uuid => {
           log('[JwtStore] Proxy GET')
-          return this.store.get(uuid)
+          return this.store?.get(uuid)
         },
         set: (uuid: string, ottData: xAppJwtOtt) => {
           log('[JwtStore] Proxy SET')
           this.resolve(ottData.ott)
           persistJwt(ottData.jwt)
 
-          return this.store.set(uuid, ottData)
+          return this.store?.set(uuid, ottData)
         }
       }
     }

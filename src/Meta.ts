@@ -121,7 +121,12 @@ export class Meta {
 
     if ((authorizeData as XummApiError)?.error?.code) {
       log(`Could not resolve API Key & OTT to JWT (already fetched? Unauthorized?)`)
-      throwIfError(authorizeData)
+
+      if (this?.invoker && this.invoker.constructor === XummSdkJwt && this?.invoker?.fatalHandler) {
+        this.invoker.fatalHandler(new Error((authorizeData as XummApiError).error.reference))
+      } else {
+        throwIfError(authorizeData)
+      }
     } else if ((authorizeData as xAppJwtOtt)?.jwt) {
       const JwtOttResponse = authorizeData as xAppJwtOtt
 
