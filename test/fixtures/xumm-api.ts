@@ -48,6 +48,7 @@ export const cancelPayloadResponseObject = {
     uuid: expect.any(String),
     multisign: expect.any(Boolean),
     submit: expect.any(Boolean),
+    pathfinding: expect.any(Boolean) || null,
     destination: expect.any(String),
     resolved_destination: expect.any(String),
     resolved: expect.any(Boolean),

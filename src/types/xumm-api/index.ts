@@ -67,6 +67,7 @@ export interface XummPayloadMeta {
   uuid: string
   multisign: boolean
   submit: boolean
+  pathfinding: boolean | null
   destination: string
   resolved_destination: string
   resolved: boolean
@@ -87,6 +88,7 @@ export interface XummPayloadMeta {
 export interface XummPayloadBodyBase {
   options?: {
     submit?: boolean
+    pathfinding?: boolean
     multisign?: boolean
     expire?: number
     signers?: string[]
