@@ -53,7 +53,7 @@ Now continue by constructing the XummSdk object:
 
 ```typescript
 const Sdk = new XummSdk();
-// Or with manually provided credentials (instead of using dotenv):
+// Or with manually provided credentials (instead of using dotenv (see note further down)):
 //   const Sdk = new XummSdk('someAppKey', 'someAppSecret')
 //
 // Or when using this SDK in xApp frontend code:
@@ -80,7 +80,21 @@ Please note not all methods are available on the xApp JWT endpoints. For the ava
 
 #### In case of backend use
 
-The SDK will look in your environment or dotenv file (`.env`) for the `XUMM_APIKEY` and `XUMM_APISECRET` values. A `.env.sample` file is provided in this repository. A [sample dotenv file looks like this](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/.env.sample). Alternatively you can provide your XUMM API Key & Secret by passing them to the XummSdk constructor.
+The SDK will look in your environment for the `XUMM_APIKEY` and `XUMM_APISECRET` environment values. A `.env.sample` file is provided in this repository. A [sample dotenv file looks like this](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/.env.sample). Alternatively you can provide your XUMM API Key & Secret by passing them to the XummSdk constructor.
+
+Please note that you will have to load `dotenv` yourself, when running on the command line, you can run `dotenv` to parse a `.env` file like this:
+```
+node --require dotenv/config dist/samples/dev.js
+```
+
+If you include `xumm-sdk` in a node project, make sure to include and call the `config()` method of `dotenv` before constructing the `XummSdk`:
+```
+import {XummSdk} from 'xumm-sdk'
+import * as dotenv from 'dotenv'
+dotenv.config()
+
+const sdk = new XummSdk()
+```
 
 If both your environment and the SDK constructor contain credentials, the values provided to the constructor will be used.
 

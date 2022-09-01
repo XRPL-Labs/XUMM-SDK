@@ -1,5 +1,4 @@
 import {debug as Debug} from 'debug'
-import * as dotenv from 'dotenv'
 import {Meta} from './Meta'
 import {Storage} from './Storage'
 import {Payload} from './Payload'
@@ -39,7 +38,6 @@ class XummSdk {
     try {
       /* Deno */ // @ts-ignore
       /* Deno */ value = typeof Deno !== 'undefined' ? (Deno.env.get(arg) || '') : ''
-      /* Node */ dotenv.config()
       /* Node */ value = process?.env[arg] || ''
     } catch (_e) {
       // Couldn't load .env
