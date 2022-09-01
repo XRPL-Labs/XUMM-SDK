@@ -1,5 +1,4 @@
 import {debug as Debug} from 'https://deno.land/x/debug/mod.ts'
-import 'https://deno.land/x/dotenv/load.ts'
 import {Meta} from './Meta.ts'
 import {Storage} from './Storage.ts'
 import {Payload} from './Payload.ts'
