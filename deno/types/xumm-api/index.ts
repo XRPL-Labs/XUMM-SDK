@@ -162,6 +162,7 @@ export interface XummGetPayloadResponse {
     account: string | null
     signer: string | null
     approved_with?: XummTransactionApprovalType
+    user: string | null
   }
   custom_meta: XummCustomMeta
 }
