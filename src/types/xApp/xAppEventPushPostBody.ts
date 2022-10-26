@@ -5,5 +5,6 @@ export interface xAppEventPushPostBody extends AnyJson {
   user_token: string,
   subtitle?: string,
   body?: string,
-  data?: AnyJson
+  data?: AnyJson,
+  silent?: boolean
 }
