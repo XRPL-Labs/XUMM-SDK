@@ -39,6 +39,9 @@ export class Meta {
   private injected = false
   private invoker?: XummSdk | XummSdkJwt
 
+  private authPromise?: Promise<void>
+  private authPromiseResolve?: (value: void | PromiseLike<void>) => void
+
   public endpoint = 'https://xumm.app'
 
   constructor (apiKey: string, apiSecret: string) {
@@ -86,6 +89,11 @@ export class Meta {
     this.apiSecret = secret.uuidv4
 
     if (this.jwtFlow && !this.jwt) {
+      // Allow calls to wait for JWT
+      this.authPromise = new Promise(resolve => {
+        this.authPromiseResolve = resolve
+      })
+
       // Eventloop: wait for _inject @ index.ts (XummSdk Constructor) to have happened
       Promise.resolve()
         .then(() => this.authorize())
@@ -93,6 +101,9 @@ export class Meta {
           log('Authorize error:', e.message)
           if (this?.invoker) {
             this.invoker.caught(e)
+          }
+          if (this.authPromiseResolve) {
+            this.authPromiseResolve()
           }
         })
     }
@@ -134,10 +145,18 @@ export class Meta {
     } else {
       throw new Error(`Unexpected response for xApp JWT authorize request`)
     }
+
+    if (this.authPromiseResolve) {
+      this.authPromiseResolve()
+    }
   }
 
   public async call<T> (endpoint: string, httpMethod = 'GET', data?: CreatePayload | AnyJson): Promise<T> {
     const method = httpMethod.toUpperCase()
+
+    if (this.jwtFlow && !this?.jwt && this.authPromise && endpoint !== 'authorize') {
+      await this.authPromise
+    }
 
     try {
       let body
