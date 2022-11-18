@@ -91,6 +91,7 @@ export class Payload {
     const payloadDetails = await this.resolvePayload(payload)
 
     if (payloadDetails) {
+      const u = 'undefined' // For globalThis.mockedWebSocket (leave note for Deno gen!)
       const socket = new WebSocket(this.Meta.endpoint.replace(/^http/, 'ws') + '/sign/' + payloadDetails.meta.uuid)
 
       callbackPromise.promise.then(() => {

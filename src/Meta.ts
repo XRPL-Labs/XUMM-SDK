@@ -78,7 +78,7 @@ export class Meta {
       }
     }
 
-    if (typeof global !== 'undefined' && Object.keys(global).indexOf('window') < 0) {
+    if (typeof globalThis !== 'undefined' && Object.keys(globalThis).indexOf('window') < 0) {
       log('Running in node')
     } else {
       console.log('XUMM SDK: Running in browser')

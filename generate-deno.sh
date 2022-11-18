@@ -73,7 +73,7 @@ sed -i -e "/import WebSocket from 'ws'/d" ./deno/Payload.ts
 sed -i -e "/import.*w3cwebsocket.*websocket'/d" ./deno/Payload.ts
 
 # Update WS connection (skip mock)
-sed -i -e "/.*global as any.*MockedWebSocket.*/d" ./deno/Payload.ts
+sed -i -e "/.*globalThis as any.*MockedWebSocket.*/d" ./deno/Payload.ts
 sed -i -e "s+  : \(new WebSocket.*\)+const socket = \1+g" ./deno/Payload.ts
 
 # Deno specific Debug

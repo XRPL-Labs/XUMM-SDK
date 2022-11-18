@@ -92,8 +92,9 @@ export class Payload {
     const payloadDetails = await this.resolvePayload(payload)
 
     if (payloadDetails) {
-      const socket: WebSocket = typeof (global as any)?.MockedWebSocket !== 'undefined' && typeof jest !== 'undefined'
-        ? new ((global as any)?.MockedWebSocket)('ws://xumm.local')
+      const u = 'undefined' // For globalThis.mockedWebSocket (leave note for Deno gen!)
+      const socket: WebSocket = typeof (globalThis as any)?.MockedWebSocket !== u && typeof jest !== u
+        ? new ((globalThis as any)?.MockedWebSocket)('ws://xumm.local')
         : new WebSocket(this.Meta.endpoint.replace(/^http/, 'ws') + '/sign/' + payloadDetails.meta.uuid)
 
       callbackPromise.promise.then(() => {
