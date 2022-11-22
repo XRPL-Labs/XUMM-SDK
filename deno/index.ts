@@ -94,12 +94,14 @@ interface XummJwtOptionsStore {
 }
 
 export interface XummSdkJwtOptions {
-  store?: XummJwtOptionsStore,
+  store?: XummJwtOptionsStore
   fatalHandler?: (error: Error) => void
+  noAutoRetrieve?: boolean
 }
 
 class XummSdkJwt extends XummSdk {
   private ottResolved: Promise<xAppOttData | void>
+  private jwt?: string
   private resolve: (ottData: xAppOttData) => void
   private reject: (error: Error) => void
   public fatalHandler?: (error: Error) => void
@@ -124,6 +126,30 @@ class XummSdkJwt extends XummSdk {
         for (const pair of urlSearchParams.entries()) {
           if (pair[0] === 'xAppToken') {
             _ott = pair[1].toLowerCase().trim()
+          }
+        }
+
+        if (_ott === '' && !options?.store && !options?.noAutoRetrieve) {
+          // Check if we have something in history
+          if (typeof window?.localStorage?.['XummSdkJwt'] === 'string') {
+            try {
+              const localStorageJwtData = window?.localStorage?.['XummSdkJwt']?.split(':')
+              const localStorageJwt = JSON.parse(localStorageJwtData?.slice(1)?.join(':'))
+              if (localStorageJwt?.jwt) {
+                const jwtContents = JSON.parse(atob(localStorageJwt.jwt.split('.')?.[1]))
+                if (jwtContents?.exp) {
+                  const validForSec = jwtContents?.exp - Math.floor((new Date()).getTime() / 1000)
+                  console.log('Restoring OTT ' + localStorageJwtData?.[0])
+                  if (validForSec > 60 * 60) {
+                    _ott = localStorageJwtData?.[0]
+                  } else {
+                    console.log('Skip restore: not valid for one more hour')
+                  }
+                }
+              }
+            } catch (e) {
+              console.log('JWT Restore Error', e)
+            }
           }
         }
       }
@@ -210,6 +236,7 @@ class XummSdkJwt extends XummSdk {
           log('[JwtStore] Proxy SET')
           this.resolve(ottData.ott)
           persistJwt(ottData.jwt)
+          this.jwt = ottData.jwt
 
           return this.store?.set(uuid, ottData)
         }
@@ -227,6 +254,11 @@ class XummSdkJwt extends XummSdk {
     }
 
     throw new Error('Called getOttData on a non OTT-JWT flow')
+  }
+
+  public async getJwt (): Promise<string | undefined> {
+    await this.ottResolved
+    return this.jwt
   }
 
   public caught (error: Error) {
