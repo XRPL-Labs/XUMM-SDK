@@ -96,8 +96,9 @@ interface XummJwtOptionsStore {
 }
 
 export interface XummSdkJwtOptions {
-  store?: XummJwtOptionsStore,
+  store?: XummJwtOptionsStore
   fatalHandler?: (error: Error) => void
+  noAutoRetrieve?: boolean
 }
 
 class XummSdkJwt extends XummSdk {
@@ -130,7 +131,7 @@ class XummSdkJwt extends XummSdk {
           }
         }
 
-        if (_ott === '') {
+        if (_ott === '' && !options?.store && !options?.noAutoRetrieve) {
           // Check if we have something in history
           if (typeof window?.localStorage?.['XummSdkJwt'] === 'string') {
             try {
