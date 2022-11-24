@@ -274,5 +274,6 @@ export {
 }
 
 export type {
-  Types as XummTypes
+  Types as XummTypes,
+  xAppOttData, UserTokenValidity, xAppJwtOtt
 }
