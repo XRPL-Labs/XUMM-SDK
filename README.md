@@ -460,6 +460,47 @@ All information that applies on [`Sdk.payload.create()`](#sdkpayloadcreate) and 
 1. The input for a `Sdk.payload.createAndSubscribe()` call isn't a payload UUID / existing payload, but a payload to create.
 2. The response object also contains (`<PayloadAndSubscription>.created`) the response obtained when creating the payload.
 
+#### Userdata endpoints (for JWT auth. only: xApp / OAuth2 (PKCE/Implicit))
+
+##### Sdk.jwtUserdata.list
+
+List all keys stored for this user
+
+```typescript
+async Sdk.jwtUserdata.list (): Promise<string[]>
+```
+
+##### Sdk.jwtUserdata.get
+
+Get one or more values for specified keys. If one key is specified, the data is immediately returned. If multiple keys are supplied in string[] (Array) format, an object with those keys will be returned, with their respective value(s).
+
+```typescript
+async Sdk.jwtUserdata.get (
+  keys: string | string[]
+): Promise<AnyJson>
+```
+
+##### Sdk.jwtUserdata.set
+
+Store an arbitrary JSON object for a specific key. Returns a Boolean with the success state (persisted).
+
+```typescript
+async Sdk.jwtUserdata.set (
+  key: string,
+  data: AnyJson
+): Promise<Boolean>
+```
+
+##### Sdk.jwtUserdata.delete
+
+Remove an object for a specific key. Returns a Boolean with the success state (removed).
+
+```typescript
+async Sdk.jwtUserdata.delete (
+  key: string
+): Promise<Boolean>
+```
+
 #### xApp endpoints
 
 ##### Intro
@@ -492,44 +533,6 @@ async Sdk.xApp.push (
 
 When an xApp is opened and the XUMM SDK is used from a client side (xApp) context using the JWT flow, your xApp can read, write & delete key/value data that persists on the XUMM platform. This way, even if client side storage (cookies, localstorage, etc.) is cleared, your client related data is still available. This is useful for 3rd party platform credentials and state like "did the user pass xApp onboarding".
 
-##### Sdk.xApp.userdata.list
-
-List all keys stored for this user
-
-```typescript
-async Sdk.xApp.userdata.list (): Promise<string[]>
-```
-
-##### Sdk.xApp.userdata.get
-
-Get one or more values for specified keys. If one key is specified, the data is immediately returned. If multiple keys are supplied in string[] (Array) format, an object with those keys will be returned, with their respective value(s).
-
-```typescript
-async Sdk.xApp.userdata.get (
-  keys: string | string[]
-): Promise<AnyJson>
-```
-
-##### Sdk.xApp.userdata.set
-
-Store an arbitrary JSON object for a specific key. Returns a Boolean with the success state (persisted).
-
-```typescript
-async Sdk.xApp.userdata.set (
-  key: string,
-  data: AnyJson
-): Promise<Boolean>
-```
-
-##### Sdk.xApp.userdata.delete
-
-Remove an object for a specific key. Returns a Boolean with the success state (removed).
-
-```typescript
-async Sdk.xApp.userdata.delete (
-  key: string
-): Promise<Boolean>
-```
 
 ## Debugging (logging)
 

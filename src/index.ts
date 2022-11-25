@@ -3,6 +3,7 @@ import {Meta} from './Meta'
 import {Storage} from './Storage'
 import {Payload} from './Payload'
 import {xApp} from './xApp'
+import {JwtUserdata} from './JwtUserdata'
 import type * as Types from './types/xumm-api'
 import type {xAppOttData, UserTokenValidity, xAppJwtOtt} from './types/index'
 
@@ -13,6 +14,7 @@ class XummSdk {
 
   public storage: Storage
   public payload: Payload
+  public jwtUserdata: JwtUserdata
   public xApp: xApp
 
   constructor (apiKey?: string, apiSecret?: string) {
@@ -25,6 +27,7 @@ class XummSdk {
 
     this.storage = new Storage(this.Meta)
     this.payload = new Payload(this.Meta)
+    this.jwtUserdata = new JwtUserdata(this.Meta)
     this.xApp = new xApp(this.Meta)
 
     this.Meta._inject(this)
