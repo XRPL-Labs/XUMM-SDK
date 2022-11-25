@@ -30,11 +30,11 @@ export type {xAppJwtOtt} from './xApp/xAppJwtOtt.ts'
 export type {xAppJwtPong} from './xApp/xAppJwtPong.ts'
 
 export type {
-  xAppUserdataList,
-  xAppUserdataGet,
-  xAppUserdataSet,
-  xAppUserdataDelete
-} from './xApp/xAppUserdata.ts'
+  JwtUserdataList,
+  JwtUserdataGet,
+  JwtUserdataSet,
+  JwtUserdataDelete
+} from './JwtUserdata.ts'
 
 /**
  * Aliasses

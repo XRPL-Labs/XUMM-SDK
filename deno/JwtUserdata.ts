@@ -3,17 +3,17 @@ import type {Meta} from './Meta.ts'
 
 import type {
   AnyJson,
-  xAppUserdataList,
-  xAppUserdataGet,
-  xAppUserdataSet,
-  xAppUserdataDelete
+  JwtUserdataList,
+  JwtUserdataGet,
+  JwtUserdataSet,
+  JwtUserdataDelete
 } from './types/index.ts'
 
 import {throwIfError} from './utils.ts'
 
 const log = Debug('xumm-sdk:xapp:userdata')
 
-export class xAppUserdata {
+export class JwtUserdata {
   private Meta: Meta
 
   constructor (MetaObject: Meta) {
@@ -22,7 +22,7 @@ export class xAppUserdata {
   }
 
   public async list (): Promise<string[]> {
-    const call = await this.Meta.call<xAppUserdataList>('userdata', 'GET')
+    const call = await this.Meta.call<JwtUserdataList>('userdata', 'GET')
 
     throwIfError(call)
 
@@ -31,7 +31,7 @@ export class xAppUserdata {
 
   public async get (key: string | string[]): Promise<AnyJson> {
     const keys = Array.isArray(key) ? key.join(',') : key
-    const call = await this.Meta.call<xAppUserdataGet>('userdata/' + keys, 'GET')
+    const call = await this.Meta.call<JwtUserdataGet>('userdata/' + keys, 'GET')
 
     throwIfError(call)
 
@@ -39,7 +39,7 @@ export class xAppUserdata {
   }
 
   public async delete (key: string): Promise<boolean> {
-    const call = await this.Meta.call<xAppUserdataDelete>('userdata/' + key, 'DELETE')
+    const call = await this.Meta.call<JwtUserdataDelete>('userdata/' + key, 'DELETE')
 
     throwIfError(call)
 
@@ -47,7 +47,7 @@ export class xAppUserdata {
   }
 
   public async set (key: string, data: AnyJson): Promise<boolean> {
-    const call = await this.Meta.call<xAppUserdataSet>('userdata/' + key, 'POST', data)
+    const call = await this.Meta.call<JwtUserdataSet>('userdata/' + key, 'POST', data)
 
     throwIfError(call)
 

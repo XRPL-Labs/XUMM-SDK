@@ -16,6 +16,7 @@ find ./src -type d |sed "s/^.\/src/deno/g"|xargs -I___ mkdir -p ___
 find ./src -iname '*.ts'|sed "s/^.\/src//g"|xargs -I___ cp ./src___ ./deno___
 
 # Transform TS / Deno paths (import / export)
+replaceTsPath './' './index.ts'
 replaceTsPath '../' '../index.ts'
 replaceTsPath './types' './types/index.ts'
 replaceTsPath './types/xumm-api' './types/xumm-api/index.ts'
@@ -29,7 +30,7 @@ replaceTsPath './Storage' './Storage.ts'
 replaceTsPath './Payload' './Payload.ts'
 replaceTsPath './Meta' './Meta.ts'
 replaceTsPath './xApp' './xApp.ts'
-replaceTsPath './xAppUserdata' './xAppUserdata.ts'
+replaceTsPath './JwtUserdata' './JwtUserdata.ts'
 
 # Transform TS / Deno paths globally in type export 
 sed -i -e "s+from './\(.*\)/\([a-zA-Z]*\)'+from './\1/\2.ts'+g" ./deno/types/index.ts

@@ -1,6 +1,5 @@
 import {debug as Debug} from 'https://deno.land/x/debug/mod.ts'
 import type {Meta} from './Meta.ts'
-import {xAppUserdata} from './xAppUserdata.ts'
 
 import type {
   xAppOttData,
@@ -9,20 +8,22 @@ import type {
   xAppEventPushPostBody
 } from './types/index.ts'
 
+import {JwtUserdata} from './JwtUserdata.ts'
+
 import {throwIfError} from './utils.ts'
 
 const log = Debug('xumm-sdk:xapp')
 
 export class xApp {
   private Meta: Meta
-
-  public userdata: xAppUserdata
+  private userdata: JwtUserdata
 
   constructor (MetaObject: Meta) {
     log('Constructed')
     this.Meta = MetaObject
-
-    this.userdata = new xAppUserdata(this.Meta)
+    // Backwards compatibility for old Sdk.xApp.userdata users
+    // - as xApps used to be the only JWT issuing env. - PKCE now is as well
+    this.userdata = new JwtUserdata(MetaObject)
   }
 
   public async get (ott: string): Promise<xAppOttData | null> {
