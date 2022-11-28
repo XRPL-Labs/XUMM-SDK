@@ -2,7 +2,9 @@ import {debug as Debug} from 'debug'
 import type {Meta} from './Meta'
 
 import type {
-  xAppOttData
+  EventResponse,
+  PushResponse,
+  EventPushPostBody
 } from './types'
 
 import {JwtUserdata} from './JwtUserdata'
@@ -11,7 +13,7 @@ import {throwIfError} from './utils'
 
 const log = Debug('xumm-sdk:xapp')
 
-export class xApp {
+export class Push {
   private Meta: Meta
   private userdata: JwtUserdata
 
@@ -23,8 +25,16 @@ export class xApp {
     this.userdata = new JwtUserdata(MetaObject)
   }
 
-  public async get (ott: string): Promise<xAppOttData | null> {
-    const call = await this.Meta.call<xAppOttData>('xapp/ott/' + ott, 'GET')
+  public async event (data: EventPushPostBody): Promise<EventResponse> {
+    const call = await this.Meta.call<EventResponse>('xapp/event', 'POST', data)
+
+    throwIfError(call)
+
+    return call
+  }
+
+  public async notification (data: EventPushPostBody): Promise<PushResponse> {
+    const call = await this.Meta.call<PushResponse>('xapp/push', 'POST', data)
 
     throwIfError(call)
 

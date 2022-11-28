@@ -288,8 +288,10 @@
       "locale": "en",
       "style": "LIGHT",
       "version": "1.0.1"
-    },
-    "push": {
+    }
+  },
+  "Push": {
+    "notification": {
       "pushed": true
     },
     "event": {

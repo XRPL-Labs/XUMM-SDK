@@ -24,7 +24,7 @@ const main = async () => {
 
     log('get', await Sdk.xApp.get('d7a0dd9e-a757-4b77-afd1-9970eb54e54d'))
 
-    log('event', await Sdk.xApp.event({
+    log('event', await Sdk.Push.event({
       user_token: 'ec079824-b804-49be-b521-a9502bc306ae',
       subtitle: 'AML inquiry',
       body: 'Please provide deposit information',
@@ -34,7 +34,7 @@ const main = async () => {
       }
     }))
 
-    log('push', await Sdk.xApp.push({
+    log('push', await Sdk.Push.notification({
       user_token: 'ec079824-b804-49be-b521-a9502bc306ae',
       subtitle: 'AML inquiry',
       body: 'Please provide deposit information',

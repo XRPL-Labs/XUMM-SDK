@@ -501,32 +501,33 @@ async Sdk.jwtUserdata.delete (
 ): Promise<Boolean>
 ```
 
-#### xApp endpoints
+#### xApp/Push endpoints
 
 ##### Intro
 
 When building an xApp, there are a couple of extra methods available. These endpoints only work for xApp enabled API credentials, and can be used to e.g. push notifications and context to XUMM, opening your xApp.
 
-Because xApps are user related, they must always be supplied a `user_token`, or be called from JWT context.
+Because xApps are user related, they must always be supplied a `user_token`, or be called from JWT context. Alternatively, if granted extra permissiopns, a push destination
+can also be: `user_uuid` / `user_account`.
 
-##### Sdk.xApp.event
+##### Sdk.Push.event
 
 To send a push notification & publish an xApp Event in the Event List of the end user. When tapped, the xApp opens. When the push notification is tapped, the xApp will open. When the push notification is dismissed, the user can still find it in the XUMM Event list.
 
 ```typescript
-async Sdk.xApp.event (
-  data: xAppEventPushPostBody
-): Promise<xAppEventResponse>
+async Sdk.Push.event (
+  data: EventPushPostBody
+): Promise<EventResponse>
 ```
 
-##### Sdk.xApp.push
+##### Sdk.Push.notification
 
 To send a (native) push notification to an end user. When the push notification is tapped, the xApp will open. When the push notification is dismissed, the user can't access this event anymore.
 
 ```typescript
-async Sdk.xApp.push (
-  data: xAppEventPushPostBody
-): Promise<xAppPushResponse>
+async Sdk.Push.notification (
+  data: EventPushPostBody
+): Promise<PushResponse>
 ```
 
 ##### User storage

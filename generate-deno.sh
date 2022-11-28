@@ -30,6 +30,7 @@ replaceTsPath './Storage' './Storage.ts'
 replaceTsPath './Payload' './Payload.ts'
 replaceTsPath './Meta' './Meta.ts'
 replaceTsPath './xApp' './xApp.ts'
+replaceTsPath './Push' './Push.ts'
 replaceTsPath './JwtUserdata' './JwtUserdata.ts'
 
 # Transform TS / Deno paths globally in type export 

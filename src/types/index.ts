@@ -21,11 +21,11 @@ export type {StorageGetResponse} from './Storage/StorageGetResponse'
 export type {StorageResponse} from './Storage/StorageResponse'
 export type {StorageSetResponse} from './Storage/StorageSetResponse'
 
-export type {xAppOttData} from './xApp/xAppOttData'
-export type {xAppEventResponse} from './xApp/xAppEventResponse'
-export type {xAppPushResponse} from './xApp/xAppPushResponse'
-export type {xAppEventPushPostBody} from './xApp/xAppEventPushPostBody'
+export type {EventResponse} from './Push/EventResponse'
+export type {PushResponse} from './Push/PushResponse'
+export type {EventPushPostBody} from './Push/EventPushPostBody'
 
+export type {xAppOttData} from './xApp/xAppOttData'
 export type {xAppJwtOtt} from './xApp/xAppJwtOtt'
 export type {xAppJwtPong} from './xApp/xAppJwtPong'
 

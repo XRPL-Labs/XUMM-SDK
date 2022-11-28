@@ -3,8 +3,10 @@ import {Meta} from './Meta.ts'
 import {Storage} from './Storage.ts'
 import {Payload} from './Payload.ts'
 import {xApp} from './xApp.ts'
+import {Push} from './Push.ts'
 import {JwtUserdata} from './JwtUserdata.ts'
-import type * as Types from './types/xumm-api/index.ts'
+import type * as XummTypes from './types/xumm-api/index.ts'
+import type * as SdkTypes from './types/index.ts'
 import type {xAppOttData, UserTokenValidity, xAppJwtOtt} from './types/index.ts'
 
 const log = Debug('xumm-sdk')
@@ -15,6 +17,7 @@ class XummSdk {
   public storage: Storage
   public payload: Payload
   public jwtUserdata: JwtUserdata
+  public Push: Push
   public xApp: xApp
 
   constructor (apiKey?: string, apiSecret?: string) {
@@ -28,6 +31,7 @@ class XummSdk {
     this.storage = new Storage(this.Meta)
     this.payload = new Payload(this.Meta)
     this.jwtUserdata = new JwtUserdata(this.Meta)
+    this.Push = new Push(this.Meta)
     this.xApp = new xApp(this.Meta)
 
     this.Meta._inject(this)
@@ -275,6 +279,14 @@ export {
 }
 
 export type {
-  Types as XummTypes,
-  xAppOttData, UserTokenValidity, xAppJwtOtt
+  XummTypes,
+  SdkTypes,
+  xAppOttData,
+  UserTokenValidity,
+  xAppJwtOtt,
+  Storage,
+  Payload,
+  JwtUserdata,
+  xApp,
+  Push
 }
