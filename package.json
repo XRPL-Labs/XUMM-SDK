@@ -1,6 +1,6 @@
 {
   "name": "xumm-sdk",
-  "version": "1.6.5",
+  "version": "1.7.0",
   "description": "Interact with the Xumm Developer API",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
