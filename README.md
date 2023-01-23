@@ -2,6 +2,8 @@
 
 Interact with the XUMM SDK from Javascript / Typescript environments.
 
+#### Part of the "Xumm Universal SDK", which is the preferred way of interacting with the Xumm ecosystem from JS/TS environments: https://www.npmjs.com/package/xumm - https://github.com/XRPL-Labs/Xumm-Universal-SDK
+
 ## Questions?
 
 Do you have questions? Want Docs? All of that is available at https://xumm.readme.io.
