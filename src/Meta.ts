@@ -207,7 +207,7 @@ export class Meta {
         'rates',
         'payload',
         'userdata',
-        'nftoken-detail',
+        'nftoken-detail'
       ]
 
       const endpointType = this.jwtFlow && jwtEndpoints.indexOf(trEndpoint) > -1
