@@ -214,6 +214,19 @@ const txInfo = await Sdk.getTransaction(txHash);
 
 Returns: [`<XrplTransaction>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/XrplTransaction.ts)
 
+##### Sdk.getNftokenDetail()
+
+The `getNftokenDetail` method allows you to get basic XLS20 token information
+as fetched/parsed/cached for you by the XUMM backend.
+
+**Note**: it's best to retrieve these results **yourself** instead of relying on the XUMM platform to get live XRPL transaction information!
+
+```typescript
+const txInfo = await Sdk.getNftokenDetail(tokenId);
+```
+
+Returns: [`<NftokenDetail>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/NftokenDetail.ts)
+
 ##### Sdk.verifyUserTokens(string[]) / Sdk.verifyUserToken(string)
 
 The `verifyUserTokens` (or single token: `verifyUserToken`) method allows you to verify one or more User Tokens obtained

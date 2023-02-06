@@ -77,6 +77,10 @@ class XummSdk {
     return this.Meta.getTransaction(txHash)
   }
 
+  public getNftokenDetail (tokenId: string) {
+    return this.Meta.getNftokenDetail(tokenId)
+  }
+
   public verifyUserTokens (userTokens: string[]) {
     return this.Meta.verifyUserTokens(userTokens)
   }
