@@ -7,6 +7,7 @@ export type {KycStatusResponse, PossibleKycStatuses} from './Meta/KycStatusRespo
 export type {KycInfoResponse} from './Meta/KycInfoResponse.ts'
 export type {Pong} from './Meta/Pong.ts'
 export type {XrplTransaction} from './Meta/XrplTransaction.ts'
+export type {NftokenDetail} from './Meta/NftokenDetail.ts'
 export type {RatesResponse} from './Meta/RatesResponse.ts'
 export type {UserTokenValidity, UserTokenResponse} from './Meta/UserTokens.ts'
 export type {JwtPong} from './Meta/JwtPong.ts'
