@@ -218,6 +218,8 @@ Returns: [`<XrplTransaction>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master
 
 ##### Sdk.getNftokenDetail()
 
+> This method is only available when using the SDK in a `JWT` context!
+
 The `getNftokenDetail` method allows you to get basic XLS20 token information
 as fetched/parsed/cached for you by the XUMM backend.
 
