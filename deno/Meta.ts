@@ -149,7 +149,7 @@ export class Meta {
     }
   }
 
-  public async call<T> (endpoint: string, httpMethod = 'GET', data?: CreatePayload | AnyJson): Promise<T> {
+  public async call<T> (endpoint: string, httpMethod = 'GET', data?: CreatePayload | AnyJson): Promise<T> | never {
     const method = httpMethod.toUpperCase()
     const trEndpoint = endpoint.split('/')[0]
 
@@ -204,7 +204,7 @@ export class Meta {
         'rates',
         'payload',
         'userdata',
-        'nftoken-detail',
+        'nftoken-detail'
       ]
 
       const endpointType = this.jwtFlow && jwtEndpoints.indexOf(trEndpoint) > -1
@@ -286,7 +286,7 @@ export class Meta {
     return await this.call<XrplTransaction>('xrpl-tx/' + txHash.trim())
   }
 
-  public async getNftokenDetail (tokenId: string): Promise<NftokenDetail | Error> {
+  public async getNftokenDetail (tokenId: string): Promise<NftokenDetail> | never {
     if (!this.jwtFlow) {
       throw new Error('getNftokenDetail: only available in JWT (XummSdkJwt) mode')
     }
