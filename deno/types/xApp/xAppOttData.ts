@@ -22,6 +22,9 @@ export interface xAppAccountInfo extends AnyJson {
   source: string,
   kycApproved: boolean,
   proSubscription: boolean
+  slug: string | null,
+  accountSlug: string | null,
+  payString: string | null
 }
 
 export interface xAppOttData extends AnyJson {
