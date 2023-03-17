@@ -67,7 +67,9 @@ export interface XummPayloadMeta {
   uuid: string
   multisign: boolean
   submit: boolean
-  pathfinding: boolean | null
+  pathfinding: boolean
+  pathfinding_fallback: boolean
+  force_network: string
   destination: string
   resolved_destination: string
   resolved: boolean
@@ -89,9 +91,11 @@ export interface XummPayloadBodyBase {
   options?: {
     submit?: boolean
     pathfinding?: boolean
+    pathfinding_fallback?: boolean
     multisign?: boolean
     expire?: number
     signers?: string[]
+    force_network?: string
     return_url?: {
       app?: string
       web?: string
