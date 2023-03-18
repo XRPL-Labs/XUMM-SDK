@@ -69,7 +69,7 @@ export interface XummPayloadMeta {
   submit: boolean
   pathfinding: boolean
   pathfinding_fallback: boolean
-  force_network: string
+  force_network?: string
   destination: string
   resolved_destination: string
   resolved: boolean
