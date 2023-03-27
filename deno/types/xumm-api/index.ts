@@ -153,6 +153,7 @@ export interface XummGetPayloadResponse {
     computed?: Record<string, unknown>
   }
   response: {
+    signer_pubkey?: string
     hex: string | null
     txid: string | null
     resolved_at: string | null
