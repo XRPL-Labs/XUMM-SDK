@@ -175,7 +175,7 @@ export class Meta {
       if (!this.isBrowser) {
         // TODO: Deno
         Object.assign(headers, {
-          'User-Agent': 'xumm-sdk/deno:1.8.2',
+          'User-Agent': 'xumm-sdk/deno:1.8.4',
         })
       }
 
@@ -204,6 +204,7 @@ export class Meta {
         'rates',
         'payload',
         'userdata',
+        'xrpl-tx',
         'nftoken-detail'
       ]
 
