@@ -207,6 +207,7 @@ export class Meta {
         'rates',
         'payload',
         'userdata',
+        'xrpl-tx',
         'nftoken-detail'
       ]
 
