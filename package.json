@@ -25,6 +25,7 @@
     "@types/websocket": "^1.0.5",
     "assert": "^2.0.0",
     "bignumber.js": "^9.0.0",
+    "buffer": "^6.0.3",
     "debug": "^4.1.1",
     "events": "^3.3.0",
     "fetch-ponyfill": "^7.1.0",

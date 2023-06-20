@@ -7,7 +7,8 @@ import {Push} from './Push'
 import {JwtUserdata} from './JwtUserdata'
 import type * as XummTypes from './types/xumm-api'
 import type * as SdkTypes from './types/index'
-import type {xAppOttData, UserTokenValidity, xAppJwtOtt} from './types/index'
+import type { xAppOttData, UserTokenValidity, xAppJwtOtt } from './types/index'
+import { Buffer } from 'buffer/'
 
 const log = Debug('xumm-sdk')
 
@@ -149,7 +150,7 @@ class XummSdkJwt extends XummSdk {
               const localStorageJwtData = window?.localStorage?.['XummSdkJwt']?.split(':')
               const localStorageJwt = JSON.parse(localStorageJwtData?.slice(1)?.join(':'))
               if (localStorageJwt?.jwt) {
-                const jwtContents = JSON.parse(atob(localStorageJwt.jwt.split('.')?.[1]))
+                const jwtContents = JSON.parse(Buffer.from(localStorageJwt.jwt.split('.')?.[1], 'base64').toString('utf8'))
                 if (jwtContents?.exp) {
                   const validForSec = jwtContents?.exp - Math.floor((new Date()).getTime() / 1000)
                   console.log('Restoring OTT ' + localStorageJwtData?.[0])
