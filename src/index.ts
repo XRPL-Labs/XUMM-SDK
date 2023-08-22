@@ -8,7 +8,7 @@ import {JwtUserdata} from './JwtUserdata'
 import type * as XummTypes from './types/xumm-api'
 import type * as SdkTypes from './types/index'
 import type {xAppOttData, UserTokenValidity, xAppJwtOtt} from './types/index'
-import {Buffer} from 'buffer/'
+import {Buffer} from 'buffer'
 
 const log = Debug('xumm-sdk')
 
