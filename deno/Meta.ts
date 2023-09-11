@@ -13,6 +13,9 @@ import type {
   KycStatusResponse,
   PossibleKycStatuses,
   XrplTransaction,
+  HookHash,
+  HookHashes,
+  Rails,
   NftokenDetail,
   RatesResponse,
   xAppJwtPong,
@@ -175,7 +178,7 @@ export class Meta {
       if (!this.isBrowser) {
         // TODO: Deno
         Object.assign(headers, {
-          'User-Agent': 'xumm-sdk/deno:1.8.4',
+          'User-Agent': 'xumm-sdk/deno:1.8.9',
         })
       }
 
@@ -281,6 +284,21 @@ export class Meta {
       })
       return call?.kycStatus || 'NONE'
     }
+  }
+
+  public async getRails (): Promise<Rails> {
+    return await this.call<Rails>('rails')
+  }
+
+  public async getHookHash (hookHash: string): Promise<HookHash> {
+    if (typeof hookHash === 'string' && hookHash.trim().match(/^[A-Fa-f0-9]{64}$/)) {
+      return await this.call<HookHash>('hookhash/' + hookHash.trim())
+    }
+    throw Error('Invalid Hook Hash (expecting 64 char hex)')
+  }
+
+  public async getHookHashes (): Promise<HookHashes> {
+    return await this.call<HookHashes>('hookhash')
   }
 
   public async getTransaction (txHash: string): Promise<XrplTransaction> {

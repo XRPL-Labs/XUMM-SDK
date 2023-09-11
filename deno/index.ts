@@ -8,6 +8,7 @@ import {JwtUserdata} from './JwtUserdata.ts'
 import type * as XummTypes from './types/xumm-api/index.ts'
 import type * as SdkTypes from './types/index.ts'
 import type {xAppOttData, UserTokenValidity, xAppJwtOtt} from './types/index.ts'
+import { decode } from 'https://deno.land/std/encoding/base64.ts'
 
 const log = Debug('xumm-sdk')
 
@@ -61,6 +62,18 @@ class XummSdk {
 
   public getCuratedAssets () {
     return this.Meta.getCuratedAssets()
+  }
+
+  public getRails () {
+    return this.Meta.getRails()
+  }
+
+  public getHookHashes () {
+    return this.Meta.getHookHashes()
+  }
+
+  public getHookHash (hookHash: string) {
+    return this.Meta.getHookHash(hookHash)
   }
 
   public getRates (currencyCode: string) {
@@ -147,7 +160,8 @@ class XummSdkJwt extends XummSdk {
               const localStorageJwtData = window?.localStorage?.['XummSdkJwt']?.split(':')
               const localStorageJwt = JSON.parse(localStorageJwtData?.slice(1)?.join(':'))
               if (localStorageJwt?.jwt) {
-                const jwtContents = JSON.parse(atob(localStorageJwt.jwt.split('.')?.[1]))
+                const decodedJwt = new TextDecoder().decode(decode(localStorageJwt.jwt.split('.')?.[1]))
+                const jwtContents = JSON.parse(decodedJwt)
                 if (jwtContents?.exp) {
                   const validForSec = jwtContents?.exp - Math.floor((new Date()).getTime() / 1000)
                   console.log('Restoring OTT ' + localStorageJwtData?.[0])

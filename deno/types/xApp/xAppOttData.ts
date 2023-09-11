@@ -43,6 +43,7 @@ export interface xAppOttData extends AnyJson {
   'account_info': xAppAccountInfo,
   nodetype?: string,
   nodewss?: string,
+  networkid?: number,
   currency?: string,
   subscriptions?: string[]
 }
