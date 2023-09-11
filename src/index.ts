@@ -162,7 +162,10 @@ class XummSdkJwt extends XummSdk {
               const localStorageJwtData = window?.localStorage?.['XummSdkJwt']?.split(':')
               const localStorageJwt = JSON.parse(localStorageJwtData?.slice(1)?.join(':'))
               if (localStorageJwt?.jwt) {
-                const decodedJwt = Buffer.from(localStorageJwt.jwt.split('.')?.[1], 'base64').toString('utf8')
+                /* Deno */ // @ts-ignore
+                /* Deno */ const decodedJwt = new TextDecoder().decode(decode(localStorageJwt.jwt.split('.')?.[1]))
+                /* Node */ // @ts-ignore
+                /* Node */ const decodedJwt = Buffer.from(localStorageJwt.jwt.split('.')?.[1], 'base64').toString('utf8')
                 const jwtContents = JSON.parse(decodedJwt)
                 if (jwtContents?.exp) {
                   const validForSec = jwtContents?.exp - Math.floor((new Date()).getTime() / 1000)

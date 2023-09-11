@@ -33,6 +33,8 @@ replaceTsPath './xApp' './xApp.ts'
 replaceTsPath './Push' './Push.ts'
 replaceTsPath './JwtUserdata' './JwtUserdata.ts'
 
+# sed -i -e "/import.*Buffer.*/d" ./deno/index.ts
+
 # Transform TS / Deno paths globally in type export 
 sed -i -e "s+from './\(.*\)/\([a-zA-Z]*\)'+from './\1/\2.ts'+g" ./deno/types/index.ts
 
@@ -46,6 +48,9 @@ sed -i -e "s+if.*global.*window.*+if (typeof Deno !== 'undefined') {+g" deno/Met
 sed -i -e "s+Running in node+Running in Deno+g" deno/Meta.ts
 
 # Remove/replace TS specific packages
+# sed -i -e "s/'buffer'/'https:\\/\\/deno.land\\/std\\/io\\/buffer.ts'/g" ./deno/index.ts
+# sed -i -e "s/'buffer'/'https:\\/\\/deno.land\\/std@0.177.0\\/node\\/buffer.ts'/g" ./deno/index.ts
+sed -i -e "s/.*import.*'buffer'/import { decode } from 'https:\\/\\/deno.land\\/std\\/encoding\\/base64.ts'/" ./deno/index.ts
 sed -i -e "s/\.\/index/.\/index.ts/g" ./deno/Meta.ts
 sed -i -e "/import.*'os-browserify'/d" ./deno/Meta.ts
 sed -i -e "/fetchPonyfill/d" ./deno/Meta.ts

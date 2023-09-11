@@ -5,9 +5,9 @@ interface Endpoint {
 
 interface Explorer {
   name: string
-  url_tx: string
-  url_account?: string
-  url_ctid?: string
+  "url_tx": string
+  "url_account"?: string
+  "url_ctid"?: string
 }
 
 export interface Rails {
