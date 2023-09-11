@@ -231,6 +231,36 @@ const txInfo = await Sdk.getNftokenDetail(tokenId);
 
 Returns: [`<NftokenDetail>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/NftokenDetail.ts)
 
+##### Sdk.getRails()
+
+The `getRails` method allows you to get the network information for all networks known to Xumm.
+
+```typescript
+const rails = await Sdk.getRails();
+```
+
+Returns: [`<Rails>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/Rails.ts)
+
+##### Sdk.getHookHash(hookHash: string)
+
+The `getHookHash` method allows you to get meta information for a specific Hook hash (64 hex chars)
+
+```typescript
+const hookInfo = await Sdk.getHookHash('64hexchars');
+```
+
+Returns: [`<HookHash>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/HookHash.ts)
+
+##### Sdk.getHookHashes()
+
+The `getHookHashes` allows you to get all meta information for all Hooks known to Xumm.
+
+```typescript
+const hookHashes = await Sdk.getHookHashes();
+```
+
+Returns: [`<HookHashes>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/HookHashes.ts)
+
 ##### Sdk.verifyUserTokens(string[]) / Sdk.verifyUserToken(string)
 
 The `verifyUserTokens` (or single token: `verifyUserToken`) method allows you to verify one or more User Tokens obtained

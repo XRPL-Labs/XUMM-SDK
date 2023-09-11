@@ -66,6 +66,18 @@ class XummSdk {
     return this.Meta.getCuratedAssets()
   }
 
+  public getRails () {
+    return this.Meta.getRails()
+  }
+
+  public getHookHashes () {
+    return this.Meta.getHookHashes()
+  }
+
+  public getHookHash (hookHash: string) {
+    return this.Meta.getHookHash(hookHash)
+  }
+
   public getRates (currencyCode: string) {
     return this.Meta.getRates(currencyCode)
   }

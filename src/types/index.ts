@@ -12,6 +12,10 @@ export type {RatesResponse} from './Meta/RatesResponse'
 export type {UserTokenValidity, UserTokenResponse} from './Meta/UserTokens'
 export type {JwtPong} from './Meta/JwtPong'
 
+export type {HookHash} from './Meta/HookHash'
+export type {HookHashes} from './Meta/HookHashes'
+export type {Rails} from './Meta/Rails'
+
 export type {onPayloadEvent} from './Payload/onPayloadEvent'
 export type {PayloadAndSubscription} from './Payload/PayloadAndSubscription'
 export type {PayloadSubscription} from './Payload/PayloadSubscription'
