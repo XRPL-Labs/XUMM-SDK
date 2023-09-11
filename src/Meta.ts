@@ -211,7 +211,9 @@ export class Meta {
         'payload',
         'userdata',
         'xrpl-tx',
-        'nftoken-detail'
+        'nftoken-detail',
+        'rails',
+        'hookhash'
       ]
 
       const endpointType = this.jwtFlow && jwtEndpoints.indexOf(trEndpoint) > -1
