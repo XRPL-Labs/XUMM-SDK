@@ -44,8 +44,8 @@ const XrplTxTypes = [
   'URITokenBuy',
   'URITokenCancelSellOffer',
   'URITokenCreateSellOffer',
-  'URITokenMint',
-] as const;
+  'URITokenMint'
+] as const
 
 export type XummTransactionType = typeof XummTxTypes[number]
 export type XrplTransactionType = typeof XrplTxTypes[number]
