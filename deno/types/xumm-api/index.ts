@@ -6,7 +6,8 @@
 // Definitions: https://github.com/XRPL-Labs/XUMM-SDK
 
 const XummTxTypes = [
-  'SignIn'
+  'SignIn',
+  'PaymentChannelAuthorize'
 ] as const
 
 const XrplTxTypes = [
@@ -15,10 +16,13 @@ const XrplTxTypes = [
   'CheckCancel',
   'CheckCash',
   'CheckCreate',
+  'ClaimReward',
   'DepositPreauth',
   'EscrowCancel',
   'EscrowCreate',
   'EscrowFinish',
+  'Import',
+  'Invoke',
   'NFTokenAcceptOffer',
   'NFTokenBurn',
   'NFTokenCancelOffer',
@@ -30,10 +34,17 @@ const XrplTxTypes = [
   'PaymentChannelClaim',
   'PaymentChannelCreate',
   'PaymentChannelFund',
+  'Remit',
+  'SetHook',
   'SetRegularKey',
   'SignerListSet',
   'TicketCreate',
-  'TrustSet'
+  'TrustSet',
+  'URITokenBurn',
+  'URITokenBuy',
+  'URITokenCancelSellOffer',
+  'URITokenCreateSellOffer',
+  'URITokenMint'
 ] as const
 
 export type XummTransactionType = typeof XummTxTypes[number]
