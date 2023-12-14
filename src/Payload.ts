@@ -112,8 +112,8 @@ export class Payload {
         try {
           json = JSON.parse(m.toString())
 
-          if (json?.signed) {
-            // The payload has been signed, update the referenced payload
+          if (json?.signed || json?.expired) {
+            // The payload has been signed or expired, update the referenced payload
             const updatedPayloadDetails = await this.resolvePayload(payload)
             Object.assign(payloadDetails, {...updatedPayloadDetails})
           }
