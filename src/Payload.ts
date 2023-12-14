@@ -111,6 +111,12 @@ export class Payload {
 
         try {
           json = JSON.parse(m.toString())
+
+          if (json?.signed) {
+            // The payload has been signed, update the referenced payload
+            const updatedPayloadDetails = await this.resolvePayload(payload)
+            Object.assign(payloadDetails, {...updatedPayloadDetails})
+          }
         } catch (e) {
           // Do nothing
           logWs(`Payload ${payloadDetails.meta.uuid}: Received message, unable to parse as JSON`, e)
@@ -135,6 +141,8 @@ export class Payload {
           } catch (e) {
             // Do nothing
             logWs(`Payload ${payloadDetails.meta.uuid}: Callback exception`, e)
+            // This one emit for devs to know about this problem
+            console.log(`Payload ${payloadDetails.meta.uuid}: Callback exception: ${(e as Error).message}`)
           }
         }
       }
