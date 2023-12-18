@@ -117,33 +117,36 @@ export class Payload {
 
         socket.onopen = () => {
           console.log(`Payload ${payloadDetails.meta.uuid}: subscription active (WebSocket opened)`)
-  
+
           keepAlivePing = setInterval(() => {
             logWs('Send keepalive')
             socket.send('{"ping":true}')
           }, socketKeepaliveSendSeconds * 1000)
         }
-  
+
         socket.onmessage = async (MessageEvent: WsMessageEvent) => {
           reconnectAttempts = 0
 
           const m = MessageEvent.data
           let json: AnyJson | undefined = undefined
-  
+
           try {
             json = JSON.parse(m.toString())
-  
+
             if (json?.message && json.message === 'Right back at you!') {
               // Keepalive responses
               logWs('Keepalive response')
               clearTimeout(keepAliveReinstateTimer)
               keepAliveReinstateTimer = setTimeout(() => {
-                console.log(`WebSocket for ${payloadDetails.meta.uuid} keepalive response timeout, assume dead... (Reconnect)`)
+                console.log(
+                  `WebSocket for ${payloadDetails.meta.uuid} ` +
+                  `keepalive response timeout, assume dead... (Reconnect)`
+                )
                 socket.close(1002, 'Assume dead')
               }, socketKeepaliveTimeoutSeconds * 1000)
               return
             }
-  
+
             if (json?.signed || json?.expired) {
               // The payload has been signed or expired, update the referenced payload
               const updatedPayloadDetails = await this.resolvePayload(payload)
@@ -153,11 +156,11 @@ export class Payload {
             // Do nothing
             logWs(`Payload ${payloadDetails.meta.uuid}: Received message, unable to parse as JSON`, e)
           }
-  
+
           if (json && callback && typeof json.devapp_fetched === 'undefined') {
             try {
               // log(`Payload ${payload}`, json)
-  
+
               const callbackResult = await callback({
                 uuid: payloadDetails.meta.uuid,
                 data: json,
@@ -166,7 +169,7 @@ export class Payload {
                 },
                 payload: payloadDetails
               })
-  
+
               if (callbackResult !== undefined) {
                 callbackPromise.resolve(callbackResult)
               }
@@ -178,12 +181,12 @@ export class Payload {
             }
           }
         }
-  
+
         socket.onclose = (_e: WsCloseEvent) => {
           logWs('Closed [code]', _e.code)
           logWs('Closed [reason]', _e.reason)
           logWs('Closed [wasClean]', _e.wasClean)
-  
+
           clearInterval(keepAlivePing)
           clearTimeout(keepAliveReinstateTimer)
 
@@ -205,10 +208,10 @@ export class Payload {
           } else {
             // Socket closed on purpose (?)
           }
-  
+
           logWs(`Payload ${payloadDetails.meta.uuid}: Subscription ended (WebSocket closed)`)
         }
-          
+
         return socket
       }
 
