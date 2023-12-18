@@ -44,9 +44,7 @@ class XummSdk {
     let value = ''
 
     try {
-      /* Deno */ // @ts-ignore
-      /* Deno */ value = typeof Deno !== 'undefined' ? (Deno.env.get(arg) || '') : ''
-      /* Node */ value = process?.env[arg] || ''
+      value = process?.env[arg] || ''
     } catch (_e) {
       // Couldn't load .env
     }
@@ -162,15 +160,7 @@ class XummSdkJwt extends XummSdk {
               const localStorageJwtData = window?.localStorage?.['XummSdkJwt']?.split(':')
               const localStorageJwt = JSON.parse(localStorageJwtData?.slice(1)?.join(':'))
               if (localStorageJwt?.jwt) {
-                // @ts-ignore
-                const decodedJwt = typeof Deno !== 'undefined'
-                  // @ts-ignore
-                  ? new TextDecoder().decode(decode(localStorageJwt.jwt.split('.')?.[1]))
-                  :
-                  // @ts-ignore
-                  /* Node */Buffer.from(localStorageJwt.jwt.split('.')?.[1], 'base64').toString('utf8') +
-                  // @ts-ignore
-                  /* Deno */''
+                const decodedJwt = Buffer.from(localStorageJwt.jwt.split('.')?.[1], 'base64').toString('utf8')
                 const jwtContents = JSON.parse(decodedJwt)
                 if (jwtContents?.exp) {
                   const validForSec = jwtContents?.exp - Math.floor((new Date()).getTime() / 1000)

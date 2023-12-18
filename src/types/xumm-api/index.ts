@@ -1,5 +1,3 @@
-// deno-lint-ignore-file
-
 // Type definitions for non-npm package xumm-sdk 0.1
 // Project: https://xumm.app
 // Definitions by: Wietse Wind <https://github.com/WietseWind>
