@@ -23,7 +23,7 @@ import {
 const log = Debug('xumm-sdk:payload')
 const logWs = Debug('xumm-sdk:payload:websocket')
 
-const maxSocketConnectAttempts = 30
+const maxSocketConnectAttempts = typeof jest !== 'undefined' ? 0 : 30
 const socketConnectAttemptSecondsDelay = 2
 const socketKeepaliveSendSeconds = 2
 const socketKeepaliveTimeoutSeconds = 10
@@ -97,7 +97,7 @@ export class Payload {
     const payloadDetails = await this.resolvePayload(payload)
 
     if (payloadDetails) {
-      const _u = 'undefined' // For globalThis.mockedWebSocket (leave note for Deno gen!)
+      const _u = 'undefined' // For Jest tests
 
       let socket: WebSocket
       let keepAlivePing: ReturnType<typeof setInterval>
@@ -200,10 +200,14 @@ export class Payload {
               setTimeout(() => {
                 reconnectAttempts++
                 logWs('# Reconnect')
-                socket = connect()
+                if (typeof jest === 'undefined') {
+                  socket = connect()
+                }
               }, socketConnectAttemptSecondsDelay * 1000)
             } else {
-              console.log(`WebSocket for ${payloadDetails.meta.uuid} exceeded reconnect timeouts, give up`)
+              if (typeof jest === 'undefined') {
+                console.log(`WebSocket for ${payloadDetails.meta.uuid} exceeded reconnect timeouts, give up`)
+              }
             }
           } else {
             // Socket closed on purpose (?)
