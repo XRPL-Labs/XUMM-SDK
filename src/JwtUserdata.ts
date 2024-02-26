@@ -13,6 +13,12 @@ import {throwIfError} from './utils'
 
 const log = Debug('xumm-sdk:xapp:userdata')
 
+const validateKey = (key: string) => {
+  if(!(typeof key === 'string' && key.match(/^[a-z0-9]{3,}$/))) {
+    throw new Error('Invalid key, only a-z0-9 (min three chars) allowed: ' + key)
+  }
+}
+
 export class JwtUserdata {
   private Meta: Meta
 
@@ -31,6 +37,9 @@ export class JwtUserdata {
 
   public async get (key: string | string[]): Promise<AnyJson> {
     const keys = Array.isArray(key) ? key.join(',') : key
+
+    keys.split(',').forEach(k => validateKey(k))
+
     const call = await this.Meta.call<JwtUserdataGet>('userdata/' + keys, 'GET')
 
     throwIfError(call)
@@ -39,6 +48,7 @@ export class JwtUserdata {
   }
 
   public async delete (key: string): Promise<boolean> {
+    validateKey(key)
     const call = await this.Meta.call<JwtUserdataDelete>('userdata/' + key, 'DELETE')
 
     throwIfError(call)
@@ -47,6 +57,7 @@ export class JwtUserdata {
   }
 
   public async set (key: string, data: AnyJson): Promise<boolean> {
+    validateKey(key)
     const call = await this.Meta.call<JwtUserdataSet>('userdata/' + key, 'POST', data)
 
     throwIfError(call)
