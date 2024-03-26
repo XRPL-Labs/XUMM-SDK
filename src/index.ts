@@ -8,6 +8,7 @@ import {JwtUserdata} from './JwtUserdata'
 import type * as XummTypes from './types/xumm-api'
 import type * as SdkTypes from './types/index'
 import type {xAppOttData, UserTokenValidity, xAppJwtOtt} from './types/index'
+import {Buffer} from 'buffer'
 
 const log = Debug('xumm-sdk')
 
@@ -43,9 +44,7 @@ class XummSdk {
     let value = ''
 
     try {
-      /* Deno */ // @ts-ignore
-      /* Deno */ value = typeof Deno !== 'undefined' ? (Deno.env.get(arg) || '') : ''
-      /* Node */ value = process?.env[arg] || ''
+      value = process?.env[arg] || ''
     } catch (_e) {
       // Couldn't load .env
     }
@@ -65,6 +64,18 @@ class XummSdk {
     return this.Meta.getCuratedAssets()
   }
 
+  public getRails () {
+    return this.Meta.getRails()
+  }
+
+  public getHookHashes () {
+    return this.Meta.getHookHashes()
+  }
+
+  public getHookHash (hookHash: string) {
+    return this.Meta.getHookHash(hookHash)
+  }
+
   public getRates (currencyCode: string) {
     return this.Meta.getRates(currencyCode)
   }
@@ -75,6 +86,10 @@ class XummSdk {
 
   public getTransaction (txHash: string) {
     return this.Meta.getTransaction(txHash)
+  }
+
+  public getNftokenDetail (tokenId: string) {
+    return this.Meta.getNftokenDetail(tokenId)
   }
 
   public verifyUserTokens (userTokens: string[]) {
@@ -145,7 +160,8 @@ class XummSdkJwt extends XummSdk {
               const localStorageJwtData = window?.localStorage?.['XummSdkJwt']?.split(':')
               const localStorageJwt = JSON.parse(localStorageJwtData?.slice(1)?.join(':'))
               if (localStorageJwt?.jwt) {
-                const jwtContents = JSON.parse(atob(localStorageJwt.jwt.split('.')?.[1]))
+                const decodedJwt = Buffer.from(localStorageJwt.jwt.split('.')?.[1], 'base64').toString('utf8')
+                const jwtContents = JSON.parse(decodedJwt)
                 if (jwtContents?.exp) {
                   const validForSec = jwtContents?.exp - Math.floor((new Date()).getTime() / 1000)
                   console.log('Restoring OTT ' + localStorageJwtData?.[0])

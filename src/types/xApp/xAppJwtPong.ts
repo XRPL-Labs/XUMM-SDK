@@ -1,5 +1,3 @@
-// deno-lint-ignore-file camelcase
-
 import type {AnyJson} from '../'
 
 export interface xAppJwtPong extends AnyJson {

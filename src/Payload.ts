@@ -23,6 +23,11 @@ import {
 const log = Debug('xumm-sdk:payload')
 const logWs = Debug('xumm-sdk:payload:websocket')
 
+const maxSocketConnectAttempts = typeof jest !== 'undefined' ? 0 : 30
+const socketConnectAttemptSecondsDelay = 2
+const socketKeepaliveSendSeconds = 2
+const socketKeepaliveTimeoutSeconds = 10
+
 export class Payload {
   private Meta: Meta
 
@@ -92,56 +97,129 @@ export class Payload {
     const payloadDetails = await this.resolvePayload(payload)
 
     if (payloadDetails) {
-      const _u = 'undefined' // For globalThis.mockedWebSocket (leave note for Deno gen!)
-      const socket: WebSocket = typeof (globalThis as any)?.MockedWebSocket !== _u && typeof jest !== _u
-        ? new ((globalThis as any)?.MockedWebSocket)('ws://xumm.local')
-        : new WebSocket(this.Meta.endpoint.replace(/^http/, 'ws') + '/sign/' + payloadDetails.meta.uuid)
+      const _u = 'undefined' // For Jest tests
+
+      let socket: WebSocket
+      let keepAlivePing: ReturnType<typeof setInterval>
+      let keepAliveReinstateTimer: ReturnType<typeof setTimeout>
+      let reconnectAttempts = 0
 
       callbackPromise.promise.then(() => {
+        clearTimeout(keepAlivePing)
+        clearTimeout(keepAliveReinstateTimer)
         socket.close()
       })
 
-      socket.onopen = () => {
-        logWs(`Payload ${payloadDetails.meta.uuid}: Subscription active (WebSocket opened)`)
-      }
+      const connect = () => {
+        socket = typeof (globalThis as any)?.MockedWebSocket !== _u && typeof jest !== _u
+          ? new ((globalThis as any)?.MockedWebSocket)('ws://xumm.local')
+          : new WebSocket(this.Meta.endpoint.replace(/^http/, 'ws') + '/sign/' + payloadDetails.meta.uuid)
 
-      socket.onmessage = async (MessageEvent: WsMessageEvent) => {
-        const m = MessageEvent.data
-        let json: AnyJson | undefined = undefined
+        socket.onopen = () => {
+          console.log(`Payload ${payloadDetails.meta.uuid}: subscription active (WebSocket opened)`)
 
-        try {
-          json = JSON.parse(m.toString())
-        } catch (e) {
-          // Do nothing
-          logWs(`Payload ${payloadDetails.meta.uuid}: Received message, unable to parse as JSON`, e)
+          keepAlivePing = setInterval(() => {
+            logWs('Send keepalive')
+            socket.send('{"ping":true}')
+          }, socketKeepaliveSendSeconds * 1000)
         }
 
-        if (json && callback && typeof json.devapp_fetched === 'undefined') {
+        socket.onmessage = async (MessageEvent: WsMessageEvent) => {
+          reconnectAttempts = 0
+
+          const m = MessageEvent.data
+          let json: AnyJson | undefined = undefined
+
           try {
-            // log(`Payload ${payload}`, json)
+            json = JSON.parse(m.toString())
 
-            const callbackResult = await callback({
-              uuid: payloadDetails.meta.uuid,
-              data: json,
-              async resolve (resolveData?: unknown) {
-                await callbackPromise.resolve(resolveData || undefined)
-              },
-              payload: payloadDetails
-            })
+            if (json?.message && json.message === 'Right back at you!') {
+              // Keepalive responses
+              logWs('Keepalive response')
+              clearTimeout(keepAliveReinstateTimer)
+              keepAliveReinstateTimer = setTimeout(() => {
+                console.log(
+                  `WebSocket for ${payloadDetails.meta.uuid} ` +
+                  `keepalive response timeout, assume dead... (Reconnect)`
+                )
+                socket.close(1002, 'Assume dead')
+              }, socketKeepaliveTimeoutSeconds * 1000)
+              return
+            }
 
-            if (callbackResult !== undefined) {
-              callbackPromise.resolve(callbackResult)
+            if (json?.signed || json?.expired) {
+              // The payload has been signed or expired, update the referenced payload
+              const updatedPayloadDetails = await this.resolvePayload(payload)
+              Object.assign(payloadDetails, {...updatedPayloadDetails})
             }
           } catch (e) {
             // Do nothing
-            logWs(`Payload ${payloadDetails.meta.uuid}: Callback exception`, e)
+            logWs(`Payload ${payloadDetails.meta.uuid}: Received message, unable to parse as JSON`, e)
+          }
+
+          if (json && callback && typeof json.devapp_fetched === 'undefined') {
+            try {
+              // log(`Payload ${payload}`, json)
+
+              const callbackResult = await callback({
+                uuid: payloadDetails.meta.uuid,
+                data: json,
+                async resolve (resolveData?: unknown) {
+                  await callbackPromise.resolve(resolveData || undefined)
+                },
+                payload: payloadDetails
+              })
+
+              if (callbackResult !== undefined) {
+                callbackPromise.resolve(callbackResult)
+              }
+            } catch (e) {
+              // Do nothing
+              logWs(`Payload ${payloadDetails.meta.uuid}: Callback exception`, e)
+              // This one emit for devs to know about this problem
+              console.log(`Payload ${payloadDetails.meta.uuid}: Callback exception: ${(e as Error).message}`)
+            }
           }
         }
+
+        socket.onclose = (_e: WsCloseEvent) => {
+          logWs('Closed [code]', _e.code)
+          logWs('Closed [reason]', _e.reason)
+          logWs('Closed [wasClean]', _e.wasClean)
+
+          clearInterval(keepAlivePing)
+          clearTimeout(keepAliveReinstateTimer)
+
+          // Reconnect
+          if (_e.code > 1000 || _e.wasClean === false) {
+            logWs('Unhealthy disconnect, reconnecting...', _e.code)
+            if (reconnectAttempts < maxSocketConnectAttempts) {
+              if (reconnectAttempts === 0) {
+                console.log(`WebSocket for ${payloadDetails.meta.uuid} lost, reconnecting...`)
+              }
+              setTimeout(() => {
+                reconnectAttempts++
+                logWs('# Reconnect')
+                if (typeof jest === 'undefined') {
+                  socket = connect()
+                }
+              }, socketConnectAttemptSecondsDelay * 1000)
+            } else {
+              if (typeof jest === 'undefined') {
+                console.log(`WebSocket for ${payloadDetails.meta.uuid} exceeded reconnect timeouts, give up`)
+              }
+            }
+          } else {
+            // Socket closed on purpose (?)
+          }
+
+          logWs(`Payload ${payloadDetails.meta.uuid}: Subscription ended (WebSocket closed)`)
+        }
+
+        return socket
       }
 
-      socket.onclose = (_e: WsCloseEvent) => {
-        logWs(`Payload ${payloadDetails.meta.uuid}: Subscription ended (WebSocket closed)`)
-      }
+      socket = connect()
 
       return {
         payload: payloadDetails,

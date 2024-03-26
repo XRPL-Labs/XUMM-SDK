@@ -22,6 +22,12 @@ export interface xAppAccountInfo extends AnyJson {
   source: string,
   kycApproved: boolean,
   proSubscription: boolean
+  profile?: {
+    slug: string | null,
+    profileUrl: string | null,
+    accountSlug: string | null,
+    payString: string | null
+  }
 }
 
 export interface xAppOttData extends AnyJson {
@@ -36,6 +42,8 @@ export interface xAppOttData extends AnyJson {
   user_device?: xAppUserDeviceData,
   account_info: xAppAccountInfo,
   nodetype?: string,
+  nodewss?: string,
+  networkid?: number,
   currency?: string,
   subscriptions?: string[]
 }

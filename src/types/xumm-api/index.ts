@@ -1,12 +1,11 @@
-// deno-lint-ignore-file
-
 // Type definitions for non-npm package xumm-sdk 0.1
 // Project: https://xumm.app
 // Definitions by: Wietse Wind <https://github.com/WietseWind>
 // Definitions: https://github.com/XRPL-Labs/XUMM-SDK
 
 const XummTxTypes = [
-  'SignIn'
+  'SignIn',
+  'PaymentChannelAuthorize'
 ] as const
 
 const XrplTxTypes = [
@@ -15,10 +14,13 @@ const XrplTxTypes = [
   'CheckCancel',
   'CheckCash',
   'CheckCreate',
+  'ClaimReward',
   'DepositPreauth',
   'EscrowCancel',
   'EscrowCreate',
   'EscrowFinish',
+  'Import',
+  'Invoke',
   'NFTokenAcceptOffer',
   'NFTokenBurn',
   'NFTokenCancelOffer',
@@ -30,10 +32,17 @@ const XrplTxTypes = [
   'PaymentChannelClaim',
   'PaymentChannelCreate',
   'PaymentChannelFund',
+  'Remit',
+  'SetHook',
   'SetRegularKey',
   'SignerListSet',
   'TicketCreate',
-  'TrustSet'
+  'TrustSet',
+  'URITokenBurn',
+  'URITokenBuy',
+  'URITokenCancelSellOffer',
+  'URITokenCreateSellOffer',
+  'URITokenMint'
 ] as const
 
 export type XummTransactionType = typeof XummTxTypes[number]
@@ -67,7 +76,9 @@ export interface XummPayloadMeta {
   uuid: string
   multisign: boolean
   submit: boolean
-  pathfinding: boolean | null
+  pathfinding: boolean
+  pathfinding_fallback: boolean
+  force_network?: string
   destination: string
   resolved_destination: string
   resolved: boolean
@@ -89,9 +100,11 @@ export interface XummPayloadBodyBase {
   options?: {
     submit?: boolean
     pathfinding?: boolean
+    pathfinding_fallback?: boolean
     multisign?: boolean
     expire?: number
     signers?: string[]
+    force_network?: string
     return_url?: {
       app?: string
       web?: string
@@ -149,6 +162,7 @@ export interface XummGetPayloadResponse {
     computed?: Record<string, unknown>
   }
   response: {
+    signer_pubkey?: string
     hex: string | null
     txid: string | null
     resolved_at: string | null
@@ -158,6 +172,7 @@ export interface XummGetPayloadResponse {
     dispatched_to_node: boolean | null
     environment_nodeuri: string | null
     environment_nodetype: string | null
+    environment_networkid: number | null
     multisign_account: string | null
     account: string | null
     signer: string | null

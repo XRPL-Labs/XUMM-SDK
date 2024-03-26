@@ -16,6 +16,10 @@ import type {
   KycStatusResponse,
   PossibleKycStatuses,
   XrplTransaction,
+  HookHash,
+  HookHashes,
+  Rails,
+  NftokenDetail,
   RatesResponse,
   xAppJwtPong,
   XummApiError,
@@ -151,8 +155,9 @@ export class Meta {
     }
   }
 
-  public async call<T> (endpoint: string, httpMethod = 'GET', data?: CreatePayload | AnyJson): Promise<T> {
+  public async call<T> (endpoint: string, httpMethod = 'GET', data?: CreatePayload | AnyJson): Promise<T> | never {
     const method = httpMethod.toUpperCase()
+    const trEndpoint = endpoint.split('/')[0]
 
     if (this.jwtFlow && !this?.jwt && this.authPromise && endpoint !== 'authorize') {
       await this.authPromise
@@ -174,7 +179,6 @@ export class Meta {
       }
 
       if (!this.isBrowser) {
-        // TODO: Deno
         Object.assign(headers, {
           'User-Agent': `xumm-sdk/node (${hostname()}) node-fetch`
         })
@@ -204,10 +208,14 @@ export class Meta {
         'curated-assets',
         'rates',
         'payload',
-        'userdata'
+        'userdata',
+        'xrpl-tx',
+        'nftoken-detail',
+        'rails',
+        'hookhash'
       ]
 
-      const endpointType = this.jwtFlow && jwtEndpoints.indexOf(endpoint.split('/')[0]) > -1
+      const endpointType = this.jwtFlow && jwtEndpoints.indexOf(trEndpoint) > -1
         ? 'jwt'
         : 'platform'
 
@@ -222,7 +230,7 @@ export class Meta {
       // log({json})
       return json
     } catch (e) {
-      const err = new Error(`Unexpected response from XUMM API [${method}:${endpoint}]`)
+      const err = new Error(`Unexpected response from XUMM API [${method}:${trEndpoint}]`)
       err.stack = (e as Error)?.stack || undefined
       throw err
     }
@@ -282,8 +290,30 @@ export class Meta {
     }
   }
 
+  public async getRails (): Promise<Rails> {
+    return await this.call<Rails>('rails')
+  }
+
+  public async getHookHash (hookHash: string): Promise<HookHash> {
+    if (typeof hookHash === 'string' && hookHash.trim().match(/^[A-Fa-f0-9]{64}$/)) {
+      return await this.call<HookHash>('hookhash/' + hookHash.trim())
+    }
+    throw Error('Invalid Hook Hash (expecting 64 char hex)')
+  }
+
+  public async getHookHashes (): Promise<HookHashes> {
+    return await this.call<HookHashes>('hookhash')
+  }
+
   public async getTransaction (txHash: string): Promise<XrplTransaction> {
     return await this.call<XrplTransaction>('xrpl-tx/' + txHash.trim())
+  }
+
+  public async getNftokenDetail (tokenId: string): Promise<NftokenDetail> | never {
+    if (!this.jwtFlow) {
+      throw new Error('getNftokenDetail: only available in JWT (XummSdkJwt) mode')
+    }
+    return await this.call<NftokenDetail>('nftoken-detail/' + tokenId.trim())
   }
 
   public async verifyUserTokens (userTokens: string[]): Promise<UserTokenValidity[]> {

@@ -1,6 +1,8 @@
-# XUMM SDK (JS/TS) [![npm version](https://badge.fury.io/js/xumm-sdk.svg)](https://www.npmjs.com/xumm-sdk) [![GitHub Actions NodeJS status](https://github.com/XRPL-Labs/XUMM-SDK/workflows/NodeJS/badge.svg?branch=master)](https://github.com/XRPL-Labs/XUMM-SDK/actions) [![GitHub Actions Deno status](https://github.com/XRPL-Labs/XUMM-SDK/workflows/Deno/badge.svg?branch=master)](https://github.com/XRPL-Labs/XUMM-SDK/actions)
+# XUMM SDK (JS/TS) [![npm version](https://badge.fury.io/js/xumm-sdk.svg)](https://www.npmjs.com/xumm-sdk) [![GitHub Actions NodeJS status](https://github.com/XRPL-Labs/XUMM-SDK/workflows/NodeJS/badge.svg?branch=master)](https://github.com/XRPL-Labs/XUMM-SDK/actions)
 
 Interact with the XUMM SDK from Javascript / Typescript environments.
+
+#### Part of the "Xumm Universal SDK", which is the preferred way of interacting with the Xumm ecosystem from JS/TS environments: https://www.npmjs.com/package/xumm - https://github.com/XRPL-Labs/Xumm-Universal-SDK
 
 ## Questions?
 
@@ -8,7 +10,7 @@ Do you have questions? Want Docs? All of that is available at https://xumm.readm
 
 ### CDN (browser):
 
-A browserified version (latest) is available at [JSDelivr](https://cdn.jsdelivr.net/npm/xumm-sdk/dist/browser.min.js) & direclty from the `xumm.app` domain:
+A browserified version (latest) is available at [JSDelivr](https://cdn.jsdelivr.net/npm/xumm-sdk/dist/browser.min.js) & directly from the `xumm.app` domain:
 
 ```html
 <script src="https://xumm.app/assets/cdn/xumm-sdk.min.js"></script>
@@ -25,7 +27,7 @@ communication with the XUMM SDK (or XUMM API) will take place. Your XUMM credent
 
 ## How to use the XUMM SDK
 
-Get the SDK straight from npm: `npm install xumm-sdk`. The SDK is [also available](https://deno.land/x/xumm) for [Deno](https://deno.land) ([XUMM SDK Deno Readme](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/deno/README.md)).
+Get the SDK straight from npm: `npm install xumm-sdk`.
 
 Initialize the SDK in Javascript (backend use):
 
@@ -148,7 +150,7 @@ Returns [`<ApplicationDetails>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/mast
 ##### Sdk.getCuratedAssets()
 
 The `getCuratedAssets` method allows you to get the list of trusted issuers and IOU's. This is the same list used to
-populate the "Add Asset" button at the XUMM home screan.
+populate the "Add Asset" button on the XUMM home screen.
 
 ```typescript
 const curatedAssets = await Sdk.getCuratedAssets();
@@ -214,6 +216,51 @@ const txInfo = await Sdk.getTransaction(txHash);
 
 Returns: [`<XrplTransaction>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/XrplTransaction.ts)
 
+##### Sdk.getNftokenDetail()
+
+> This method is only available when using the SDK in a `JWT` context!
+
+The `getNftokenDetail` method allows you to get basic XLS20 token information
+as fetched/parsed/cached for you by the XUMM backend.
+
+**Note**: it's best to retrieve these results **yourself** instead of relying on the XUMM platform to get live XRPL transaction information!
+
+```typescript
+const txInfo = await Sdk.getNftokenDetail(tokenId);
+```
+
+Returns: [`<NftokenDetail>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/NftokenDetail.ts)
+
+##### Sdk.getRails()
+
+The `getRails` method allows you to get the network information for all networks known to Xumm.
+
+```typescript
+const rails = await Sdk.getRails();
+```
+
+Returns: [`<Rails>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/Rails.ts)
+
+##### Sdk.getHookHash(hookHash: string)
+
+The `getHookHash` method allows you to get meta information for a specific Hook hash (64 hex chars)
+
+```typescript
+const hookInfo = await Sdk.getHookHash('64hexchars');
+```
+
+Returns: [`<HookHash>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/HookHash.ts)
+
+##### Sdk.getHookHashes()
+
+The `getHookHashes` allows you to get all meta information for all Hooks known to Xumm.
+
+```typescript
+const hookHashes = await Sdk.getHookHashes();
+```
+
+Returns: [`<HookHashes>`](https://github.com/XRPL-Labs/XUMM-SDK/blob/master/src/types/Meta/HookHashes.ts)
+
 ##### Sdk.verifyUserTokens(string[]) / Sdk.verifyUserToken(string)
 
 The `verifyUserTokens` (or single token: `verifyUserToken`) method allows you to verify one or more User Tokens obtained
@@ -272,7 +319,7 @@ console.log(storageGetAfterDelete);
 
 Payloads are the primary reason for the XUMM API (thus this SDK) to exist. The [XUMM API Docs explain '**Payloads**'](https://xumm.readme.io/docs/introduction) like this:
 
-> An XRPL transaction "template" can be posted to the XUMM API. Your transaction templete to sign (so: your "sign request") will be persisted at the XUMM API backend. We now call it a a **Payload**. XUMM app user(s) can open the Payload (sign request) by scanning a QR code, opening deeplink or receiving push notification and resolve (reject or sign) on their own device.
+An XRPL transaction "template" can be posted to the XUMM API. Your transaction template to sign (so: your "sign request") will be persisted at the XUMM API backend. We now call it a **Payload**. XUMM app user(s) can open the Payload (sign request) by scanning a QR code, opening deeplink or receiving push notification and resolve (reject or sign) on their own device.
 
 A payload can contain an XRPL transaction template. Some properties may be omitted, as they will be added by the XUMM app when a user signs a transaction. A simple payload may look like this:
 
@@ -291,7 +338,7 @@ As you can see the payload looks like a regular XRPL transaction, wrapped in an 
 Optionally (besides `txjson`) a payload can contain these properties ([TS definition](https://github.com/XRPL-Labs/XUMM-SDK/blob/d2aae98eb8f496f4d77079c777aa41df754d4ebc/src/types/xumm-api/index.ts#L79)):
 
 - `options` to define payload options like a return URL, expiration, etc.
-- `custom_meta` to add metadata, user insruction, your own unique ID, ...
+- `custom_meta` to add metadata, user instruction, your own unique ID, ...
 - `user_token` to push the payload to a user (after [obtaining a user specific token](https://xumm.readme.io/docs/pushing-sign-requests))
 
 A more complex payload [could look like this](https://gist.github.com/WietseWind/ecdfd58bece14e5d15e41138fa4b0f4a). A [reference for payload options & custom meta](https://xumm.readme.io/reference/post-payload) can be found in the [API Docs](https://xumm.readme.io/reference/post-payload).
@@ -364,7 +411,7 @@ The response (see: [Developer Docs](https://xumm.readme.io/docs/payload-response
 
 The `next.always` URL is the URL to send the end user to, to scan a QR code or automatically open the XUMM app (if on mobile). If a `user_token` has been provided as part of the payload data provided to `Sdk.payload.create()`, you can see if the payload has been pushed to the end user. A button "didn't receive a push notification" could then take the user to the `next.no_push_msg_received` URL. The
 
-Alternatively user routing / instruction flows can be custom built using the QR information provided in the `refs` object, and a subscription for live status updates (opened, signed, etc.) using a WebSocket client can be setup by conneting to the `refs.websocket_status` URL. **Please note: this SDK already offers subscriptions. There's no need to setup your own WebSocket client, see [Payload subscriptions: live updates](#payload-subscriptions-live-updates).** There's more information about the [payload workflow](https://xumm.readme.io/docs/payload-workflow) and a [payload lifecycle](https://xumm.readme.io/docs/doc-payload-life-cycle) in the Developer Docs.
+Alternatively user routing / instruction flows can be custom built using the QR information provided in the `refs` object, and a subscription for live status updates (opened, signed, etc.) using a WebSocket client can be setup by connecting to the `refs.websocket_status` URL. **Please note: this SDK already offers subscriptions. There's no need to setup your own WebSocket client, see [Payload subscriptions: live updates](#payload-subscriptions-live-updates).** There's more information about the [payload workflow](https://xumm.readme.io/docs/payload-workflow) and a [payload lifecycle](https://xumm.readme.io/docs/doc-payload-life-cycle) in the Developer Docs.
 
 ##### Sdk.payload.cancel
 
@@ -507,7 +554,7 @@ async Sdk.jwtUserdata.delete (
 
 When building an xApp, there are a couple of extra methods available. These endpoints only work for xApp enabled API credentials, and can be used to e.g. push notifications and context to XUMM, opening your xApp.
 
-Because xApps are user related, they must always be supplied a `user_token`, or be called from JWT context. Alternatively, if granted extra permissiopns, a push destination
+Because xApps are user related, they must always be supplied a `user_token`, or be called from JWT context. Alternatively, if granted extra permissions, a push destination
 can also be: `user_uuid` / `user_account`.
 
 ##### Sdk.Push.event
