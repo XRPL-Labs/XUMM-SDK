@@ -177,7 +177,7 @@ The `getKycStatus` return the KYC status of a user based on a user_token, issued
 user signed a Sign Request (from your app) before (see Payloads - Intro).
 
 If a user token specified is invalid, revoked, expired, etc. the method will always
-return `NONE`, just like when a user didn't go through KYC. You cannot distinct a non-KYC'd user
+return `NONE`, just like when a user didn't go through KYC. You cannot distinguish a non-KYC'd user
 from an invalid token.
 
 Alternatively, KYC status can be retrieved for an XPRL account address: the address selected in
