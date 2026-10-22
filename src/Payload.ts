@@ -147,9 +147,9 @@ export class Payload {
               return
             }
 
-            if (json?.signed || json?.expired) {
+            if (typeof json?.signed === 'boolean' || json?.expired) {
               // The payload has been signed or expired, update the referenced payload
-              const updatedPayloadDetails = await this.resolvePayload(payload)
+              const updatedPayloadDetails = await this.resolvePayload(payloadDetails.meta.uuid)
               Object.assign(payloadDetails, {...updatedPayloadDetails})
             }
           } catch (e) {
@@ -165,7 +165,7 @@ export class Payload {
                 uuid: payloadDetails.meta.uuid,
                 data: json,
                 async resolve (resolveData?: unknown) {
-                  await callbackPromise.resolve(resolveData || undefined)
+                  await callbackPromise.resolve(resolveData)
                 },
                 payload: payloadDetails
               })
@@ -225,7 +225,7 @@ export class Payload {
       return {
         payload: payloadDetails,
         resolve (resolveData?: unknown) {
-          callbackPromise.resolve(resolveData || undefined)
+          callbackPromise.resolve(resolveData)
         },
         resolved: callbackPromise.promise,
         websocket: socket
