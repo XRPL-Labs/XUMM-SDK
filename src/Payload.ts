@@ -147,9 +147,9 @@ export class Payload {
               return
             }
 
-            if (json?.signed || json?.expired) {
+            if (typeof json?.signed === 'boolean' || json?.expired) {
               // The payload has been signed or expired, update the referenced payload
-              const updatedPayloadDetails = await this.resolvePayload(payload)
+              const updatedPayloadDetails = await this.resolvePayload(payloadDetails.meta.uuid)
               Object.assign(payloadDetails, {...updatedPayloadDetails})
             }
           } catch (e) {
